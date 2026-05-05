@@ -598,6 +598,47 @@ section.tinted { background: var(--gray-50); }
 @media (max-width: 720px) { .arch-connector { margin-left: 0; } }
 
 /* =============================================================
+   MEMORY EXPLORER
+   ============================================================= */
+.memory-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 980px) { .memory-grid { grid-template-columns: 1fr; } }
+.memory-card { background: #fff; border: 1px solid var(--border-2); border-radius: 14px; padding: 22px 22px 18px; box-shadow: 0 1px 0 rgba(4,56,134,0.04); display: flex; flex-direction: column; gap: 14px; }
+.memory-card-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.memory-card-title { display: flex; gap: 14px; align-items: center; }
+.memory-card-title h3 { margin: 0; font-size: 17px; color: var(--finexio-navy); letter-spacing: -0.2px; }
+.memory-card-meta { font-family: var(--font-caption); font-size: 11px; color: var(--fg-3); letter-spacing: 0.04em; }
+.memory-icon { width: 38px; height: 38px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 700; font-size: 16px; flex-shrink: 0; }
+.memory-icon[data-c="cortex"] { background: linear-gradient(135deg, #043886 0%, #169EE3 100%); color: #fff; }
+.memory-icon[data-c="mem"] { background: linear-gradient(135deg, #0B6694 0%, #43BCEC 100%); color: #fff; }
+.memory-card-link { font-family: var(--font-caption); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--finexio-blue); text-decoration: none; padding: 6px 10px; border: 1px solid var(--border-2); border-radius: 6px; }
+.memory-card-link[data-static] { color: var(--fg-3); cursor: default; }
+.memory-card-link:hover:not([data-static]) { background: var(--finexio-blue-wash); border-color: var(--finexio-blue); }
+.memory-card-foot { display: flex; flex-wrap: wrap; gap: 6px 10px; font-family: var(--font-caption); font-size: 11px; color: var(--fg-3); padding-top: 10px; border-top: 1px solid var(--border-2); }
+.memory-card-foot code { background: var(--gray-50); border: 1px solid var(--border-2); padding: 2px 6px; border-radius: 4px; font-size: 10.5px; color: var(--finexio-navy); }
+.memory-tree { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--fg-2); background: var(--gray-50); border: 1px solid var(--border-2); border-radius: 8px; padding: 14px 16px; max-height: 320px; overflow: auto; }
+.memory-tree-node { display: flex; align-items: center; gap: 8px; }
+.memory-tree-node.is-folder b { color: var(--finexio-navy); font-weight: 700; }
+.memory-tree-node .tree-glyph { width: 14px; opacity: 0.5; flex-shrink: 0; }
+.memory-tree-node .tree-count { margin-left: auto; font-size: 10.5px; color: var(--fg-3); background: #fff; border: 1px solid var(--border-2); padding: 1px 7px; border-radius: 999px; }
+.memory-tree-node .tree-file-icon { color: var(--finexio-blue); }
+.memory-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.memory-tab { padding: 6px 11px; border-radius: 999px; border: 1px solid var(--border-2); font-family: var(--font-caption); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg-2); cursor: pointer; transition: 120ms; }
+.memory-tab.is-active { background: var(--finexio-navy); color: #fff; border-color: var(--finexio-navy); }
+.memory-tab:hover:not(.is-active) { border-color: var(--finexio-blue); color: var(--finexio-navy); }
+.memory-tab .tab-count { display: inline-block; margin-left: 6px; font-size: 10.5px; padding: 0 5px; border-radius: 999px; background: rgba(0,0,0,0.1); color: inherit; }
+.memory-tab.is-active .tab-count { background: rgba(255,255,255,0.18); }
+.memory-files { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; max-height: 320px; overflow: auto; padding-right: 4px; }
+@media (max-width: 720px) { .memory-files { grid-template-columns: 1fr; } }
+.memory-file { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 6px; font-size: 12.5px; color: var(--fg-2); transition: background 100ms; }
+.memory-file:hover { background: var(--gray-50); }
+.memory-file .file-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.memory-file[data-type="user"] .file-dot { background: #169EE3; }
+.memory-file[data-type="feedback"] .file-dot { background: #F4A940; }
+.memory-file[data-type="project"] .file-dot { background: #10B981; }
+.memory-file[data-type="reference"] .file-dot { background: #9CB4D7; }
+.memory-file b { font-weight: 600; color: var(--finexio-navy); }
+
+/* =============================================================
    COMMAND PALETTE
    ============================================================= */
 .cmdk-overlay {
@@ -704,6 +745,7 @@ footer.foot::before {
       <a href="#providers" data-sec="providers">Connections</a>
       <a href="#projects" data-sec="projects">Case studies</a>
       <a href="#stack" data-sec="stack">Discipline</a>
+      <a href="#memory" data-sec="memory">Memory</a>
       <a href="#arch" data-sec="arch">Architecture</a>
     </nav>
     <div class="top-actions">
@@ -968,8 +1010,62 @@ footer.foot::before {
   </div>
 </section>
 
+<!-- ============== MEMORY EXPLORER ============== -->
+<section id="memory" class="section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="section-num">07 · MEMORY EXPLORER</span>
+      <div>
+        <h2 class="section-title">Live snapshot of the wiki + memory store.</h2>
+        <p class="section-sub">Two systems holding what Claude knows about Finexio. Cortex is the human-curated wiki. Memory files are auto-managed across sessions. Both are real, both are loaded on every conversation.</p>
+      </div>
+      <div></div>
+    </header>
+    <div class="memory-grid reveal">
+      <!-- CORTEX TREE -->
+      <div class="memory-card">
+        <div class="memory-card-head">
+          <div class="memory-card-title">
+            <span class="memory-icon" data-c="cortex">C</span>
+            <div>
+              <h3>Cortex Wiki</h3>
+              <span class="memory-card-meta">Karpathy-style Obsidian vault · Git-versioned · booyajones/cortex</span>
+            </div>
+          </div>
+          <a class="memory-card-link" href="https://github.com/booyajones/cortex" target="_blank" rel="noopener">github ↗</a>
+        </div>
+        <div class="memory-tree" id="cortexTree"></div>
+        <div class="memory-card-foot">
+          <code>[[wiki-links]]</code> <span>·</span> <code>frontmatter</code> <span>·</span> <code>memory ingest-directory --recursive</code>
+        </div>
+      </div>
+      <!-- MEMORY FILES -->
+      <div class="memory-card">
+        <div class="memory-card-head">
+          <div class="memory-card-title">
+            <span class="memory-icon" data-c="mem">M</span>
+            <div>
+              <h3>Project Memory Files</h3>
+              <span class="memory-card-meta">Auto-managed · 61 files · loaded via MEMORY.md on every conversation</span>
+            </div>
+          </div>
+          <span class="memory-card-link" data-static="1">~/.claude/memory</span>
+        </div>
+        <div class="memory-tabs" id="memTabs" role="tablist"></div>
+        <div class="memory-files" id="memFiles"></div>
+        <div class="memory-card-foot">
+          <span><b style="color:var(--mc-blue-soft)">user</b> who Chris is</span> <span>·</span>
+          <span><b style="color:#F4A940">feedback</b> rules + corrections</span> <span>·</span>
+          <span><b style="color:#10B981">project</b> active context</span> <span>·</span>
+          <span><b style="color:#9CB4D7">reference</b> external systems</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============== ARCHITECTURE ============== -->
-<section id="arch" class="section">
+<section id="arch" class="section tinted">
   <div class="wrap">
     <header class="section-head reveal">
       <span class="section-num">07 · ARCHITECTURE</span>
@@ -1143,6 +1239,79 @@ footer.foot::before {
         { name: "Memory MCP", status: "active", desc: "Semantic search across sessions", detail: "Persistent memory MCP server with hybrid semantic search. Cortex is ingested periodically (memory ingest-directory --recursive). Answers 'have we talked about X' across the full corpus, including past Claude sessions and the wiki." },
         { name: "Project Memory Files", status: "active", desc: "50+ structured notes", detail: "Auto-managed project memory under ~/.claude/projects/.../memory/. Four types: user (who Chris is), feedback (corrections + validations), project (active work context), reference (external systems). Loaded on every conversation via MEMORY.md index." }
       ]}
+    ],
+    cortexTree: [
+      { type: "file", name: "index.md", desc: "hub" },
+      { type: "file", name: "CLAUDE.md", desc: "rules for Claude" },
+      { type: "file", name: "README.md", desc: "human-facing" },
+      { type: "folder", name: "people", count: 3 },
+      { type: "folder", name: "companies", count: 2 },
+      { type: "folder", name: "products", count: 1 },
+      { type: "folder", name: "projects", count: 3 },
+      { type: "folder", name: "concepts", count: 2 },
+      { type: "folder", name: "playbooks", count: 3 },
+      { type: "folder", name: "decisions", count: 0 },
+      { type: "folder", name: "daily", count: 1 },
+      { type: "folder", name: "inbox", count: 0 },
+      { type: "file", name: "meta-mcp-stack.md", desc: "stack overview" },
+      { type: "file", name: "meta-memory-architecture.md", desc: "memory model" }
+    ],
+    memoryFiles: [
+      { type: "user", name: "user_chris_finexio", desc: "Chris's role + workstreams at Finexio" },
+      { type: "feedback", name: "feedback_no_em_dashes_stop_slop", desc: "Voice rules: no em dashes, scrub slop" },
+      { type: "feedback", name: "feedback_just_do_it", desc: "Use tools to complete work end-to-end" },
+      { type: "feedback", name: "feedback_full_permissions", desc: "Full access, no prompts" },
+      { type: "feedback", name: "feedback_email_formatting_to_chris", desc: "TL;DR, headers, bullets, HTML body" },
+      { type: "feedback", name: "feedback_finance_model_formatting", desc: "Pro formatting required" },
+      { type: "feedback", name: "feedback_validation_pass_is_not_done", desc: "Two-layer audit required" },
+      { type: "feedback", name: "feedback_catastrophic_stale_numbers_in_narrative", desc: "Stale narrative numbers post-edit" },
+      { type: "feedback", name: "feedback_qa_before_declaring_done", desc: "Validate end-user experience" },
+      { type: "feedback", name: "feedback_finexio_erp_framing", desc: "Don't lead with ERP names" },
+      { type: "feedback", name: "feedback_webflow_schema", desc: "Use Custom Code head, not Schema field" },
+      { type: "feedback", name: "feedback_never_use_onedrive", desc: "Working artifacts go to Downloads" },
+      { type: "feedback", name: "feedback_skill_usage", desc: "Auto-invoke skills, never prompt" },
+      { type: "feedback", name: "feedback_skill_trigger_map", desc: "Master skill trigger map" },
+      { type: "feedback", name: "feedback_auto_invoke_protocol", desc: "Pre-response checklist + intent buckets" },
+      { type: "feedback", name: "feedback_google_docs_edit_via_api", desc: "Edit Google Docs via API, not Chrome" },
+      { type: "feedback", name: "feedback_pbir_report_json_external_edit", desc: "Never externally edit PBIR report.json" },
+      { type: "feedback", name: "feedback_webflow_redirect_precedence", desc: "Webflow page shadows redirect" },
+      { type: "feedback", name: "feedback_financial_line_item_semantics", desc: "Financial line item semantics" },
+      { type: "feedback", name: "feedback_auto_invoke_new_skills", desc: "Triggers for new skill suites" },
+      { type: "project", name: "project_finexio_company", desc: "APaaS platform, JPMC infra, products" },
+      { type: "project", name: "project_finexio_phoenix_thesis", desc: "2026 Agentic Payments OS pivot" },
+      { type: "project", name: "project_finexio_sales_voice", desc: "CEO messaging playbook" },
+      { type: "project", name: "project_finexio_product_pipeline", desc: "Three-project PRD pipeline" },
+      { type: "project", name: "project_finexio_icp_screening", desc: "BDR qualification rubric" },
+      { type: "project", name: "project_phoenix_v7_interactive_model", desc: "Active financial model" },
+      { type: "project", name: "project_pdf_deck_engine_v2", desc: "Reusable slide template engine" },
+      { type: "project", name: "project_prd_pipeline_v05_backlog", desc: "PRD pipeline v0.5 shipped" },
+      { type: "project", name: "project_chriswyatt_site", desc: "Personal site only owns .dev" },
+      { type: "project", name: "project_finexio_website_overhaul", desc: "Webflow rebuild" },
+      { type: "project", name: "project_avidx_diligence_response", desc: "Diligence response project" },
+      { type: "project", name: "project_phoenix_v6_onepager", desc: "v6 one-pager state" },
+      { type: "reference", name: "reference_cortex_wiki", desc: "Cortex location + ingestion workflow" },
+      { type: "reference", name: "reference_finexio_brand_guidelines", desc: "DM Sans + navy palette" },
+      { type: "reference", name: "reference_finexio_qa_pytest_and_routine", desc: "61-test QA suite + weekly cron" },
+      { type: "reference", name: "reference_finexio_narrative_scanner", desc: "Layer-3 stale numbers scanner" },
+      { type: "reference", name: "reference_finexio_qa_runner", desc: "Unified QA runner" },
+      { type: "reference", name: "reference_finexio_blog_image_generator", desc: "Blog hero image generator" },
+      { type: "reference", name: "reference_voice_guard_hook", desc: "Voice-compliance Write/Edit hook" },
+      { type: "reference", name: "reference_webflow_postpublish", desc: "Live URL verifier" },
+      { type: "reference", name: "reference_webflow_api", desc: "Production site + page IDs" },
+      { type: "reference", name: "reference_webflow_staging", desc: "Staging site + token" },
+      { type: "reference", name: "reference_salesforce_api", desc: "Connected App OAuth flow" },
+      { type: "reference", name: "reference_wyattplayground_bq", desc: "Production BigQuery + key tables" },
+      { type: "reference", name: "reference_finexio_forecast_model", desc: "Canonical forecast Sheet ID" },
+      { type: "reference", name: "reference_finexio_automation_sa", desc: "Automation service account" },
+      { type: "reference", name: "reference_google_credentials", desc: "Credentials routing map" },
+      { type: "reference", name: "reference_email_send_to_chris", desc: "Email helper script + SMTP" },
+      { type: "reference", name: "reference_emailing_ernest", desc: "Pre-write Qs + 3-para system" },
+      { type: "reference", name: "reference_mcp_stack", desc: "MCP + plugin stack overview" },
+      { type: "reference", name: "reference_memory_mcp_dedup", desc: "Memory MCP dual registration" },
+      { type: "reference", name: "reference_memory_mcp_timeout", desc: "Memory MCP timeout fix" },
+      { type: "reference", name: "reference_finexio_cloud_projects", desc: "All 17 claude.ai projects indexed" },
+      { type: "reference", name: "reference_meta_harness_paper", desc: "Meta-Harness paper notes" },
+      { type: "reference", name: "reference_pbip_newtonsoft_gac_fix", desc: "PBIP Newtonsoft GAC fix" }
     ]
   };
 
@@ -1494,6 +1663,37 @@ footer.foot::before {
     container.addEventListener('keydown', e => { if (e.key!=='Enter' && e.key!==' ') return; const it=e.target.closest('.proj-item'); if (!it) return; e.preventDefault(); it.classList.toggle('is-open'); });
   }
 
+  // ─── MEMORY EXPLORER ──────────────────────────────────────
+  function renderMemory() {
+    const tree = $('#cortexTree');
+    if (!tree) return;
+    tree.innerHTML = DATA.cortexTree.map(n => {
+      if (n.type === 'folder') {
+        return `<div class="memory-tree-node is-folder"><span class="tree-glyph">▾</span><b>${esc(n.name)}/</b><span class="tree-count">${n.count}</span></div>`;
+      }
+      return `<div class="memory-tree-node"><span class="tree-glyph tree-file-icon">▸</span><span>${esc(n.name)}</span><span class="tree-count" style="background:transparent;border:0;">${esc(n.desc || '')}</span></div>`;
+    }).join('');
+
+    const tabsEl = $('#memTabs');
+    const filesEl = $('#memFiles');
+    if (!tabsEl || !filesEl) return;
+    const types = ['all','user','feedback','project','reference'];
+    const counts = Object.fromEntries(types.map(t => [t, t === 'all' ? DATA.memoryFiles.length : DATA.memoryFiles.filter(f => f.type === t).length]));
+    tabsEl.innerHTML = types.map((t, i) => `<button class="memory-tab${i===0?' is-active':''}" data-type="${t}" type="button">${t === 'all' ? 'All' : t}<span class="tab-count">${counts[t]}</span></button>`).join('');
+    function paint(active) {
+      filesEl.innerHTML = DATA.memoryFiles
+        .filter(f => active === 'all' || f.type === active)
+        .map(f => `<div class="memory-file" data-type="${f.type}"><span class="file-dot"></span><div><b>${esc(f.name)}</b><div style="font-size:11.5px;color:var(--fg-3);line-height:1.35;">${esc(f.desc)}</div></div></div>`).join('');
+    }
+    paint('all');
+    tabsEl.addEventListener('click', e => {
+      const b = e.target.closest('.memory-tab'); if (!b) return;
+      $$('.memory-tab', tabsEl).forEach(x => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      paint(b.dataset.type);
+    });
+  }
+
   // ─── ARCHITECTURE ─────────────────────────────────────────
   function renderArch() {
     const layers = [
@@ -1536,18 +1736,20 @@ footer.foot::before {
     const list = $('#cmdkList');
 
     const sectionItems = [
-      { group: 'Sections', label: 'Lifecycle', sub: '01 · the request path', href: '#flow', meta: '6 steps', ico: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' },
-      { group: 'Sections', label: 'Integrations', sub: '02 · the network', href: '#integrations', meta: '19', ico: 'M16 18l6-6-6-6 M8 6l-6 6 6 6' },
-      { group: 'Sections', label: 'Crons', sub: '03 · automation', href: '#crons', meta: '19', ico: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' },
-      { group: 'Sections', label: 'Providers', sub: '04 · inference', href: '#providers', meta: '5', ico: 'M3 18v-6a9 9 0 0 1 18 0v6 M21 19a2 2 0 0 1-2 2h-1v-6h3v4z' },
-      { group: 'Sections', label: 'Projects', sub: '05 · work', href: '#projects', meta: '38', ico: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' },
-      { group: 'Sections', label: 'Stack', sub: '06 · foundation', href: '#stack', meta: '11', ico: 'M12 2L2 7l10 5 10-5z M2 17l10 5 10-5 M2 12l10 5 10-5' },
-      { group: 'Sections', label: 'Architecture', sub: '07 · blueprint', href: '#arch', meta: '6 layers', ico: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10' },
+      { group: 'Sections', label: 'How it works', sub: '01 · stakeholder ask to ship', href: '#flow', meta: '6 steps', ico: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' },
+      { group: 'Sections', label: 'Skills', sub: '02 · Finexio skills', href: '#integrations', meta: '14', ico: 'M16 18l6-6-6-6 M8 6l-6 6 6 6' },
+      { group: 'Sections', label: 'Workflows', sub: '03 · automation', href: '#crons', meta: '9', ico: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' },
+      { group: 'Sections', label: 'Connections', sub: '04 · MCP servers', href: '#providers', meta: '12', ico: 'M3 18v-6a9 9 0 0 1 18 0v6 M21 19a2 2 0 0 1-2 2h-1v-6h3v4z' },
+      { group: 'Sections', label: 'Case studies', sub: '05 · what shipped', href: '#projects', meta: '18', ico: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' },
+      { group: 'Sections', label: 'Discipline', sub: '06 · standing rules', href: '#stack', meta: '11', ico: 'M12 2L2 7l10 5 10-5z M2 17l10 5 10-5 M2 12l10 5 10-5' },
+      { group: 'Sections', label: 'Memory', sub: '07 · cortex + memory files', href: '#memory', meta: 'live', ico: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' },
+      { group: 'Sections', label: 'Architecture', sub: '08 · blueprint', href: '#arch', meta: '6 layers', ico: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10' },
     ];
-    const integItems = DATA.integrations.map(d => ({ group: 'Integrations', label: d.name, sub: d.desc, href: '#integrations', meta: d.type, ico: 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M23 21v-2a4 4 0 0 0-3-3.87' }));
-    const projItems = DATA.projects.flatMap(c => c.items.map(it => ({ group: 'Projects', label: it.name, sub: c.cat + ' · ' + it.desc, href: '#projects', meta: it.status, ico: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' })));
-    const cronItems = DATA.crons.map(c => ({ group: 'Crons', label: c.name, sub: c.sched, href: '#crons', meta: c.tag, ico: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' }));
-    const all = [...sectionItems, ...integItems, ...cronItems, ...projItems];
+    const integItems = DATA.integrations.map(d => ({ group: 'Skills', label: d.name, sub: d.desc, href: '#integrations', meta: d.type, ico: 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M23 21v-2a4 4 0 0 0-3-3.87' }));
+    const projItems = DATA.projects.flatMap(c => c.items.map(it => ({ group: 'Case studies', label: it.name, sub: c.cat + ' · ' + it.desc, href: '#projects', meta: it.status, ico: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' })));
+    const cronItems = DATA.crons.map(c => ({ group: 'Workflows', label: c.name, sub: c.sched, href: '#crons', meta: c.tag, ico: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' }));
+    const memItems = DATA.memoryFiles.map(f => ({ group: 'Memory', label: f.name, sub: f.desc, href: '#memory', meta: f.type, ico: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }));
+    const all = [...sectionItems, ...integItems, ...cronItems, ...projItems, ...memItems];
     let idx = 0, filtered = all.slice();
 
     function render() {
@@ -1596,6 +1798,7 @@ footer.foot::before {
     renderProviders();
     renderStack();
     renderProjects();
+    renderMemory();
     renderArch();
     setupReveal();
     setupNav();
