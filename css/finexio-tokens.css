@@ -1,0 +1,210 @@
+/* Finexio Design System — Colors & Type
+ * Source: Finexio Brand Guidelines 2023/2026
+ * Primary: DM Sans (Google Fonts). Fallback stack matches the guidelines' approved list.
+ */
+
+/* Local DM Sans (uploaded by the user). Default optical-size = 24pt (text).
+ * The Display Extra-Large / Large / Small classes switch to the 36pt optical
+ * cut, and small UI labels (<14px) switch to the 18pt cut. */
+
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 100; font-display: swap; src: url('../fonts/DMSans_24pt-Thin.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 100; font-display: swap; src: url('../fonts/DMSans_24pt-ThinItalic.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 200; font-display: swap; src: url('../fonts/DMSans_24pt-ExtraLight.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 200; font-display: swap; src: url('../fonts/DMSans_24pt-ExtraLightItalic.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 300; font-display: swap; src: url('../fonts/DMSans_24pt-Light.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 300; font-display: swap; src: url('../fonts/DMSans_24pt-LightItalic.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 400; font-display: swap; src: url('../fonts/DMSans_24pt-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 400; font-display: swap; src: url('../fonts/DMSans_24pt-Italic.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 500; font-display: swap; src: url('../fonts/DMSans_24pt-Medium.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 500; font-display: swap; src: url('../fonts/DMSans_24pt-MediumItalic.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 600; font-display: swap; src: url('../fonts/DMSans_24pt-SemiBold.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 600; font-display: swap; src: url('../fonts/DMSans_24pt-SemiBoldItalic.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 700; font-display: swap; src: url('../fonts/DMSans_24pt-Bold.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 700; font-display: swap; src: url('../fonts/DMSans_24pt-BoldItalic.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 800; font-display: swap; src: url('../fonts/DMSans_24pt-ExtraBold.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 800; font-display: swap; src: url('../fonts/DMSans_24pt-ExtraBoldItalic.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal;  font-weight: 900; font-display: swap; src: url('../fonts/DMSans_24pt-Black.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: italic;  font-weight: 900; font-display: swap; src: url('../fonts/DMSans_24pt-BlackItalic.ttf') format('truetype'); }
+
+/* Display-optical cut — use with .display-xl/.display-lg/.display-sm */
+@font-face { font-family: 'DM Sans Display'; font-style: normal;  font-weight: 400; font-display: swap; src: url('../fonts/DMSans_36pt-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Display'; font-style: normal;  font-weight: 500; font-display: swap; src: url('../fonts/DMSans_36pt-Medium.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Display'; font-style: normal;  font-weight: 600; font-display: swap; src: url('../fonts/DMSans_36pt-SemiBold.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Display'; font-style: normal;  font-weight: 700; font-display: swap; src: url('../fonts/DMSans_36pt-Bold.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Display'; font-style: normal;  font-weight: 800; font-display: swap; src: url('../fonts/DMSans_36pt-ExtraBold.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Display'; font-style: normal;  font-weight: 900; font-display: swap; src: url('../fonts/DMSans_36pt-Black.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Display'; font-style: italic;  font-weight: 700; font-display: swap; src: url('../fonts/DMSans_36pt-BoldItalic.ttf') format('truetype'); }
+
+/* Small-optical cut — use for nav labels, eyebrows, captions */
+@font-face { font-family: 'DM Sans Caption'; font-style: normal;  font-weight: 400; font-display: swap; src: url('../fonts/DMSans_18pt-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Caption'; font-style: normal;  font-weight: 500; font-display: swap; src: url('../fonts/DMSans_18pt-Medium.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Caption'; font-style: normal;  font-weight: 600; font-display: swap; src: url('../fonts/DMSans_18pt-SemiBold.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans Caption'; font-style: normal;  font-weight: 700; font-display: swap; src: url('../fonts/DMSans_18pt-Bold.ttf') format('truetype'); }
+
+:root {
+  /* ── BRAND COLORS ─────────────────────────────────── */
+  --finexio-navy:       #043886;   /* primary dark     */
+  --finexio-blue:       #169EE3;   /* primary bright   */
+  --finexio-white:      #FFFFFF;
+  --finexio-neutral:    #ECECEC;   /* approved light bg */
+
+  /* Secondary — soft blue tints for fills, hovers, wash backgrounds */
+  --finexio-blue-soft:  #ADDDF5;
+  --finexio-blue-wash:  #E7F5FC;
+
+  /* UI / semantic — restricted to the brand blue + navy + grays.
+   * Yellow / orange / green / red are intentionally NOT in the palette. */
+  --finexio-info:       #169EE3;   /* informational / in-progress */
+  --finexio-success:    #043886;   /* confirmed / complete — use navy */
+  --finexio-warning:    #5D6878;   /* attention — use gray-500 */
+  --finexio-danger:     #0B1220;   /* destructive / error — use gray-900 */
+
+  /* ── NEUTRAL SCALE ────────────────────────────────── */
+  --gray-25:  #FAFBFC;
+  --gray-50:  #F4F6F8;
+  --gray-100: #ECECEC;
+  --gray-200: #D9DEE4;
+  --gray-300: #B8C0CA;
+  --gray-400: #8892A0;
+  --gray-500: #5D6878;
+  --gray-600: #3E4857;
+  --gray-700: #2A3342;
+  --gray-800: #151C2B;
+  --gray-900: #0B1220;
+
+  /* ── SEMANTIC TOKENS ──────────────────────────────── */
+  --fg-1: var(--gray-900);         /* primary text      */
+  --fg-2: var(--gray-600);         /* secondary text    */
+  --fg-3: var(--gray-400);         /* tertiary/meta     */
+  --fg-on-brand: var(--finexio-white);
+  --fg-link: var(--finexio-blue);
+  --fg-link-hover: var(--finexio-navy);
+
+  --bg-page:    var(--finexio-white);
+  --bg-canvas:  var(--gray-50);
+  --bg-raised:  var(--finexio-white);
+  --bg-muted:   var(--gray-100);
+  --bg-brand:   var(--finexio-navy);
+  --bg-brand-2: var(--finexio-blue);
+  --bg-wash:    var(--finexio-blue-wash);
+
+  --border-1: #E5E8EC;
+  --border-2: #D9DEE4;
+  --border-strong: var(--gray-400);
+  --border-focus: var(--finexio-blue);
+
+  /* ── TYPE ─────────────────────────────────────────── */
+  --font-sans: 'DM Sans', Arial, 'Lato', 'Roboto', Calibri, Verdana, system-ui, sans-serif;
+  --font-display: 'DM Sans Display', 'DM Sans', Arial, system-ui, sans-serif;
+  --font-caption: 'DM Sans Caption', 'DM Sans', Arial, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Type scale — from Brand Guidelines 'Hierarchy' page + extensions */
+  --text-display-xl: 72px;   --lh-display-xl: 90px;  /* DM Sans Bold */
+  --text-display-lg: 48px;   --lh-display-lg: 62px;  /* DM Sans Bold */
+  --text-display-sm: 32px;   --lh-display-sm: 38px;  /* DM Sans Bold */
+  --text-h1: 40px;           --lh-h1: 48px;
+  --text-h2: 28px;           --lh-h2: 36px;
+  --text-h3: 22px;           --lh-h3: 30px;
+  --text-h4: 18px;           --lh-h4: 26px;
+  --text-body-lg: 17px;      --lh-body-lg: 26px;
+  --text-body:    15px;      --lh-body:    24px;      /* guideline body size */
+  --text-body-sm: 13px;      --lh-body-sm: 20px;
+  --text-caption: 12px;      --lh-caption: 16px;
+  --text-label:   11px;      --lh-label:   14px;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+
+  /* ── RADII ────────────────────────────────────────── */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-pill: 999px;
+
+  /* ── SPACING ──────────────────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 72px;
+  --space-11: 96px;
+
+  /* ── ELEVATION ────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(4, 56, 134, 0.06);
+  --shadow-sm: 0 2px 6px rgba(4, 56, 134, 0.08);
+  --shadow-md: 0 8px 20px rgba(4, 56, 134, 0.10);
+  --shadow-lg: 0 18px 40px rgba(4, 56, 134, 0.14);
+  --shadow-focus: 0 0 0 3px rgba(22, 158, 227, 0.28);
+
+  /* Finexio platform-illustration signature soft gradient bar */
+  --gradient-accent: linear-gradient(90deg, rgba(22,158,227,0) 0%, rgba(22,158,227,0.65) 45%, rgba(22,158,227,0.05) 100%);
+  --gradient-brand: linear-gradient(135deg, #043886 0%, #0B57B8 55%, #169EE3 100%);
+
+  /* ── MOTION ───────────────────────────────────────── */
+  --ease-standard: cubic-bezier(.2, .0, .2, 1);
+  --ease-emphasized: cubic-bezier(.2, .7, .1, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+}
+
+/* ── ELEMENT DEFAULTS ─────────────────────────────── */
+html, body {
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  background: var(--bg-page);
+  font-size: var(--text-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, .h1, .display-xl {
+  font-family: var(--font-display); font-weight: var(--fw-bold);
+  font-size: var(--text-display-xl); line-height: var(--lh-display-xl);
+  letter-spacing: -0.02em; color: var(--finexio-navy); margin: 0;
+}
+h2, .h2, .display-lg {
+  font-family: var(--font-display); font-weight: var(--fw-bold);
+  font-size: var(--text-display-lg); line-height: var(--lh-display-lg);
+  letter-spacing: -0.015em; color: var(--finexio-navy); margin: 0;
+}
+h3, .h3, .display-sm {
+  font-family: var(--font-display); font-weight: var(--fw-bold);
+  font-size: var(--text-display-sm); line-height: var(--lh-display-sm);
+  letter-spacing: -0.01em; color: var(--finexio-navy); margin: 0;
+}
+h4, .h4 {
+  font-family: var(--font-sans); font-weight: var(--fw-bold);
+  font-size: var(--text-h3); line-height: var(--lh-h3); color: var(--finexio-navy); margin: 0;
+}
+h5, .h5 {
+  font-family: var(--font-sans); font-weight: var(--fw-medium);
+  font-size: var(--text-h4); line-height: var(--lh-h4); color: var(--fg-1); margin: 0;
+}
+
+p, .body { font-size: var(--text-body); line-height: var(--lh-body); color: var(--fg-1); }
+.body-lg { font-size: var(--text-body-lg); line-height: var(--lh-body-lg); }
+.body-sm { font-size: var(--text-body-sm); line-height: var(--lh-body-sm); color: var(--fg-2); }
+.caption { font-family: var(--font-caption); font-size: var(--text-caption); line-height: var(--lh-caption); color: var(--fg-3); }
+.eyebrow {
+  font-family: var(--font-caption);
+  font-size: var(--text-label); line-height: var(--lh-label);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: var(--fw-bold); color: var(--finexio-blue);
+}
+
+a { color: var(--fg-link); text-decoration: none; border-bottom: 1px solid transparent; transition: color var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard); }
+a:hover { color: var(--fg-link-hover); border-bottom-color: currentColor; }
+
+code, pre { font-family: var(--font-mono); font-size: 13px; }

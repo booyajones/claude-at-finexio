@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<!-- VOICE-GUARD-OFF -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claude @ Finexio · How we use AI</title>
+<meta name="description" content="An interactive look at how Finexio uses Claude Code: skills, MCP connections, automated workflows, case studies, and the operating discipline that makes them ship." />
+<link rel="stylesheet" href="css/finexio-tokens.css" />
+<style>
+/* =============================================================
+   Wyattbot Mission Control · Finexio brand
+   ============================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg-page); color: var(--fg-1); -webkit-font-smoothing: antialiased; overflow-x: hidden; font-feature-settings: "ss01","cv11"; }
+img { max-width: 100%; display: block; }
+button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+input, kbd { font: inherit; }
+kbd {
+  font-family: var(--font-mono); font-size: 11px;
+  padding: 2px 6px; border-radius: 4px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-bottom-width: 2px;
+  color: rgba(255,255,255,0.9);
+}
+:root.light kbd { background: var(--gray-50); border-color: var(--border-2); color: var(--fg-1); }
+::selection { background: rgba(22,158,227,0.28); color: var(--finexio-navy); }
+
+/* dark theme tokens override */
+:root {
+  --mc-bg: #050B1A;
+  --mc-bg-2: #081229;
+  --mc-bg-3: #0C1A38;
+  --mc-line: rgba(173,221,245,0.12);
+  --mc-line-strong: rgba(173,221,245,0.24);
+  --mc-text: #E6F1FB;
+  --mc-text-2: rgba(230,241,251,0.65);
+  --mc-text-3: rgba(230,241,251,0.42);
+  --mc-blue: #169EE3;
+  --mc-blue-soft: #6FCBF0;
+  --mc-blue-dim: #0B6694;
+  --mc-good: #10B981;
+  --mc-amber: #F4A940;
+}
+
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 28px; }
+@media (max-width: 720px) { .wrap { padding: 0 20px; } }
+
+/* =============================================================
+   TOP BAR
+   ============================================================= */
+.topbar {
+  position: sticky; top: 0; z-index: 60;
+  height: 60px;
+  background: rgba(5,11,26,0.85);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--mc-line);
+  color: var(--mc-text);
+}
+.topbar-inner { display: flex; align-items: center; gap: 24px; height: 100%; }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 14px; letter-spacing: -0.1px; color: var(--mc-text); text-decoration: none; }
+.brand-mark { width: 28px; height: 28px; flex-shrink: 0; }
+.brand-name { line-height: 1.1; display: flex; flex-direction: column; gap: 2px; }
+.brand-name b { font-weight: 700; font-size: 14px; color: var(--mc-text); letter-spacing: -0.2px; }
+.brand-name small { font-family: var(--font-caption); font-size: 9.5px; font-weight: 700; letter-spacing: 0.18em; color: var(--mc-blue-soft); text-transform: uppercase; }
+
+.top-nav { display: flex; align-items: center; gap: 2px; flex: 1; margin-left: 8px; }
+.top-nav a {
+  font-family: var(--font-caption);
+  font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--mc-text-2);
+  padding: 7px 11px; border-radius: 6px; border-bottom: 0;
+  transition: color 120ms, background 120ms;
+}
+.top-nav a:hover { color: var(--mc-text); background: rgba(255,255,255,0.05); border-bottom: 0; }
+.top-nav a.is-active { color: var(--mc-blue-soft); background: rgba(22,158,227,0.10); }
+@media (max-width: 1080px) { .top-nav { display: none; } }
+
+.top-actions { display: flex; align-items: center; gap: 10px; }
+.search-trigger {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 6px 8px 6px 12px;
+  border: 1px solid var(--mc-line);
+  border-radius: 8px;
+  font-size: 12.5px; color: var(--mc-text-3);
+  background: rgba(255,255,255,0.02);
+  transition: border-color 150ms, color 150ms;
+}
+.search-trigger:hover { border-color: var(--mc-line-strong); color: var(--mc-text-2); }
+.search-trigger svg { color: var(--mc-blue-soft); }
+.search-trigger .k { display: inline-flex; gap: 2px; }
+.live-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-caption); font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 6px 10px; border-radius: 999px;
+  background: rgba(16,185,129,0.10); color: #6EE7B7;
+  border: 1px solid rgba(16,185,129,0.22);
+}
+.live-pill .led { width: 6px; height: 6px; border-radius: 50%; background: var(--mc-good); box-shadow: 0 0 0 0 rgba(16,185,129,0.6); animation: pulse 2.4s cubic-bezier(.2,0,.2,1) infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.6); } 70% { box-shadow: 0 0 0 8px rgba(16,185,129,0); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
+.icon-btn {
+  width: 34px; height: 34px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--mc-text-2); border: 1px solid var(--mc-line);
+  transition: color 120ms, border-color 120ms, background 120ms;
+}
+.icon-btn:hover { color: var(--mc-text); border-color: var(--mc-line-strong); background: rgba(255,255,255,0.04); }
+
+@media (max-width: 720px) {
+  .live-pill { display: none; }
+  .search-trigger .label, .search-trigger .k { display: none; }
+}
+
+/* =============================================================
+   HERO — MISSION CONTROL
+   ============================================================= */
+.hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(22,158,227,0.18), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(22,158,227,0.10), transparent 70%),
+    linear-gradient(180deg, var(--mc-bg) 0%, var(--mc-bg-2) 100%);
+  color: var(--mc-text);
+  padding: 32px 0 0;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='156' viewBox='0 0 180 156'><g fill='none' stroke='%23169EE3' stroke-width='1' opacity='0.16'><polygon points='90,4 174,49 174,106 90,151 6,106 6,49'/></g></svg>");
+  background-size: 180px 156px;
+  opacity: 0.5;
+  mask-image: linear-gradient(180deg, black 30%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, black 30%, transparent 100%);
+}
+.hero::after {
+  content: ''; position: absolute; left: -10%; right: -10%; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(22,158,227,0.5), transparent);
+}
+
+.hero-grid {
+  position: relative;
+  display: grid; grid-template-columns: 5fr 7fr; gap: 48px;
+  padding: 36px 0 24px;
+  align-items: stretch;
+}
+@media (max-width: 1100px) { .hero-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-caption); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--mc-blue-soft);
+  margin-bottom: 16px;
+}
+.hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--mc-blue-soft); }
+
+.hero h1 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(40px, 5.6vw, 76px); line-height: 1.02;
+  letter-spacing: -0.028em;
+  color: var(--mc-text); margin: 0 0 18px;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(120deg, var(--mc-blue-soft) 0%, var(--mc-blue) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.hero-lede { font-size: 17px; line-height: 1.6; color: var(--mc-text-2); max-width: 520px; margin: 0 0 22px; }
+.hero-lede b { color: var(--mc-text); font-weight: 600; }
+
+.hero-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 26px; }
+.hero-meta .chip {
+  font-family: var(--font-mono); font-size: 11px;
+  padding: 5px 9px; border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--mc-line);
+  color: var(--mc-text-2);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.hero-meta .chip b { color: var(--mc-blue-soft); font-weight: 600; }
+
+.hero-cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 16px; border-radius: 8px;
+  font-size: 13.5px; font-weight: 600;
+  transition: transform 120ms, background 150ms, border-color 150ms;
+  border: 1px solid transparent;
+}
+.btn-primary { background: var(--mc-blue); color: #fff; box-shadow: 0 6px 20px rgba(22,158,227,0.35); }
+.btn-primary:hover { background: #0F8BCB; transform: translateY(-1px); }
+.btn-ghost { background: rgba(255,255,255,0.04); color: var(--mc-text); border-color: var(--mc-line); }
+.btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: var(--mc-line-strong); }
+.btn:active { transform: translateY(0) scale(0.98); }
+
+.hero-stats {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--mc-line);
+  border-radius: 12px; overflow: hidden;
+}
+@media (max-width: 720px) { .hero-stats { grid-template-columns: repeat(3, 1fr); } }
+.hero-stats .stat { padding: 14px 14px; border-right: 1px solid var(--mc-line); }
+.hero-stats .stat:last-child { border-right: 0; }
+.hero-stats .stat-num { font-family: var(--font-display); font-weight: 800; font-size: 30px; color: var(--mc-text); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.hero-stats .stat-label { font-family: var(--font-caption); font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mc-text-3); margin-top: 6px; }
+
+/* HERO RIGHT — DATAFLOW MAP */
+.dataflow {
+  position: relative;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(22,158,227,0.06), transparent 70%),
+    rgba(8,18,41,0.6);
+  border: 1px solid var(--mc-line);
+  border-radius: 16px;
+  padding: 18px 18px 14px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  min-height: 520px;
+}
+.dataflow-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding-bottom: 10px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--mc-line);
+}
+.dataflow-title {
+  font-family: var(--font-caption); font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--mc-blue-soft);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.dataflow-title .led { width: 6px; height: 6px; border-radius: 50%; background: var(--mc-good); animation: pulse 2.4s cubic-bezier(.2,0,.2,1) infinite; }
+.dataflow-meter {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--mc-text-3);
+}
+.dataflow-meter b { color: var(--mc-text); font-weight: 500; }
+
+.dataflow-svg {
+  flex: 1; display: block; width: 100%; min-height: 460px;
+}
+
+.df-rail-label {
+  font-family: var(--font-caption); font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  fill: var(--mc-blue-soft);
+}
+.df-node-rect {
+  fill: rgba(255,255,255,0.04); stroke: var(--mc-line-strong); stroke-width: 1;
+  transition: fill 200ms, stroke 200ms;
+}
+.df-node:hover .df-node-rect, .df-node.is-hot .df-node-rect {
+  fill: rgba(22,158,227,0.16); stroke: var(--mc-blue);
+}
+.df-node-name { fill: var(--mc-text); font-family: var(--font-sans); font-weight: 600; font-size: 12px; }
+.df-node-meta { fill: var(--mc-text-3); font-family: var(--font-mono); font-size: 10px; }
+.df-node-icon { fill: var(--mc-blue-soft); }
+.df-edge { stroke: rgba(173,221,245,0.18); stroke-width: 1; fill: none; }
+.df-edge.is-hot { stroke: var(--mc-blue); stroke-width: 1.5; }
+.df-core-shape { fill: url(#dfCoreGrad); stroke: var(--mc-blue); stroke-width: 1.5; filter: drop-shadow(0 8px 28px rgba(22,158,227,0.45)); }
+.df-core-pulse { fill: none; stroke: var(--mc-blue); stroke-width: 1.5; opacity: 0.5; transform-origin: center; animation: corePulse 3.2s cubic-bezier(.2,.7,.1,1) infinite; }
+@keyframes corePulse { 0% { transform: scale(1); opacity: 0.55; } 70% { transform: scale(1.5); opacity: 0; } 100% { opacity: 0; } }
+.df-core-label { fill: #fff; font-family: var(--font-display); font-weight: 800; font-size: 11.5px; letter-spacing: 0.06em; }
+.df-core-sub { fill: rgba(255,255,255,0.7); font-family: var(--font-mono); font-size: 9px; }
+
+/* console strip */
+.console {
+  margin-top: 12px;
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5;
+  color: var(--mc-text-2);
+  background: rgba(0,0,0,0.35);
+  border: 1px solid var(--mc-line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  height: 86px; overflow: hidden;
+  position: relative;
+}
+.console::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 28px; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.35)); pointer-events: none; }
+.console .line { display: flex; gap: 10px; opacity: 0; animation: linein 320ms cubic-bezier(.2,0,.2,1) forwards; }
+.console .ts { color: var(--mc-text-3); flex-shrink: 0; }
+.console .lvl { font-weight: 600; flex-shrink: 0; width: 50px; }
+.console .lvl.ok { color: #6EE7B7; }
+.console .lvl.info { color: var(--mc-blue-soft); }
+.console .lvl.warn { color: #FBBF77; }
+@keyframes linein { from { opacity: 0; transform: translateY(4px);} to { opacity: 1; transform: none; } }
+
+/* =============================================================
+   TICKER
+   ============================================================= */
+.ticker {
+  background: var(--mc-bg-3); color: var(--mc-text-2);
+  border-top: 1px solid var(--mc-line);
+  border-bottom: 1px solid var(--mc-line);
+  height: 38px; overflow: hidden; position: relative;
+}
+.ticker-track {
+  display: flex; gap: 36px; align-items: center; height: 100%;
+  white-space: nowrap;
+  animation: tickerScroll 50s linear infinite;
+  font-family: var(--font-mono); font-size: 12.5px;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item { display: inline-flex; align-items: center; gap: 8px; padding-right: 36px; border-right: 1px solid var(--mc-line); }
+.ticker-item b { color: var(--mc-blue-soft); font-weight: 500; }
+.ticker-item .delta-up { color: #6EE7B7; }
+.ticker-item .delta-flat { color: var(--mc-text-3); }
+@keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* =============================================================
+   SECTIONS (LIGHT)
+   ============================================================= */
+section.section { padding: 88px 0; position: relative; }
+section.section + section.section { border-top: 1px solid var(--border-1); }
+section.tinted { background: var(--gray-50); }
+
+.section-head { display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: end; margin-bottom: 28px; }
+@media (max-width: 720px) { .section-head { grid-template-columns: 1fr; gap: 8px; } }
+.section-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--finexio-blue); letter-spacing: 0.1em; align-self: start; padding-top: 12px; }
+.section-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4vw, 44px); line-height: 1.05; letter-spacing: -0.022em; color: var(--finexio-navy); margin: 0; }
+.section-sub { color: var(--fg-2); font-size: 16px; line-height: 1.6; max-width: 640px; margin: 8px 0 0; }
+.section-tools { display: flex; gap: 8px; align-items: center; justify-self: end; }
+
+.search-row {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  margin: 8px 0 24px; padding: 10px 14px;
+  background: var(--finexio-white);
+  border: 1px solid var(--border-1);
+  border-radius: 12px;
+  box-shadow: var(--shadow-xs);
+}
+.search-row .search { flex: 1; min-width: 240px; display: flex; align-items: center; gap: 8px; padding: 4px 8px; }
+.search-row .search input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--fg-1); font-size: 14px; padding: 4px 0; }
+.search-row .search input::placeholder { color: var(--fg-3); }
+.search-row .search svg { color: var(--gray-400); flex-shrink: 0; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; border-left: 1px solid var(--border-1); padding-left: 12px; }
+@media (max-width: 720px) { .filters { border-left: 0; padding-left: 0; width: 100%; } }
+.filter-chip {
+  font-family: var(--font-caption); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 6px 10px; border-radius: 999px;
+  background: var(--gray-100); color: var(--fg-2);
+  border: 1px solid transparent; transition: all 120ms;
+}
+.filter-chip:hover { background: var(--finexio-blue-wash); color: var(--finexio-navy); }
+.filter-chip.is-active { background: var(--finexio-navy); color: #fff; }
+.filter-count { font-family: var(--font-mono); font-size: 10.5px; color: inherit; opacity: 0.7; margin-left: 6px; }
+.filter-chip.is-active .filter-count { opacity: 0.85; }
+
+/* =============================================================
+   FLOW (lifecycle)
+   ============================================================= */
+.flow {
+  position: relative;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
+  background: var(--finexio-white);
+  border: 1px solid var(--border-1);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+@media (max-width: 980px) { .flow { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .flow { grid-template-columns: 1fr; } }
+.flow-step { position: relative; padding: 22px 22px 26px; border-right: 1px solid var(--border-1); display: flex; flex-direction: column; gap: 10px; transition: background 200ms; }
+.flow-step:last-child { border-right: 0; }
+.flow-step:hover { background: var(--finexio-blue-wash); }
+@media (max-width: 980px) { .flow-step:nth-child(2n) { border-right: 0; } .flow-step { border-bottom: 1px solid var(--border-1); } .flow-step:nth-last-child(-n+2) { border-bottom: 0; } }
+@media (max-width: 540px) { .flow-step { border-right: 0; border-bottom: 1px solid var(--border-1); } .flow-step:last-child { border-bottom: 0; } }
+.flow-num {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  color: var(--finexio-blue); letter-spacing: 0.1em;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.flow-num::before { content: ''; width: 16px; height: 1px; background: currentColor; }
+.flow-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--finexio-blue-wash); color: var(--finexio-navy); display: inline-flex; align-items: center; justify-content: center; }
+.flow-step h3 { font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: var(--finexio-navy); margin: 0; line-height: 1.3; }
+.flow-step p { font-size: 13px; line-height: 1.55; color: var(--fg-2); margin: 0; }
+.flow-step .meta { font-family: var(--font-mono); font-size: 11px; color: var(--gray-500); background: var(--gray-50); padding: 3px 6px; border-radius: 4px; display: inline-block; align-self: flex-start; margin-top: auto; border: 1px solid var(--border-1); }
+
+/* =============================================================
+   INTEGRATIONS
+   ============================================================= */
+.integ-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.integ-card {
+  position: relative; padding: 18px 20px;
+  background: var(--finexio-white);
+  border: 1px solid var(--border-1);
+  border-radius: 12px;
+  transition: all 200ms cubic-bezier(.2,0,.2,1);
+  display: flex; flex-direction: column; gap: 10px;
+  min-height: 110px;
+}
+.integ-card:hover { border-color: var(--finexio-blue); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.integ-card::before { content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 2px; border-radius: 2px; background: var(--finexio-blue); opacity: 0; transition: opacity 200ms; }
+.integ-card:hover::before { opacity: 1; }
+.integ-card[hidden] { display: none; }
+.integ-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.integ-name-row { display: flex; align-items: center; gap: 10px; }
+.integ-glyph { width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 13px; color: #fff; }
+.integ-name { font-size: 15px; font-weight: 700; color: var(--finexio-navy); letter-spacing: -0.005em; line-height: 1.25; }
+.integ-type { font-family: var(--font-caption); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; }
+.integ-type[data-type="CRM"]       { background: #FFF1E6; color: #B85C00; }
+.integ-type[data-type="Data"]      { background: #E7F5FC; color: #043886; }
+.integ-type[data-type="Comm"]      { background: #EAEAFF; color: #3B40C4; }
+.integ-type[data-type="Social"]    { background: #FCEEF7; color: #9C2A6E; }
+.integ-type[data-type="CMS"]       { background: #F0F4E6; color: #4A6A14; }
+.integ-type[data-type="Docs"]      { background: #E7F5FC; color: #043886; }
+.integ-type[data-type="Task"]      { background: #FEF6DA; color: #7A5800; }
+.integ-type[data-type="Infra"]     { background: #F0EAFE; color: #4B2DA8; }
+.integ-type[data-type="Affiliate"] { background: #E8F8EE; color: #1F6E3F; }
+.integ-type[data-type="Voice"]     { background: #FCE8EE; color: #931C3D; }
+.integ-type[data-type="Knowledge"] { background: #FAF1E0; color: #6E4A0F; }
+.integ-type[data-type="Code"]      { background: #E5E7EB; color: #2A3342; }
+.integ-desc { font-size: 13px; line-height: 1.55; color: var(--fg-2); }
+
+/* glyph backgrounds keyed off type */
+.integ-glyph[data-g="CRM"]       { background: #B85C00; }
+.integ-glyph[data-g="Data"]      { background: #043886; }
+.integ-glyph[data-g="Comm"]      { background: #3B40C4; }
+.integ-glyph[data-g="Social"]    { background: #9C2A6E; }
+.integ-glyph[data-g="CMS"]       { background: #4A6A14; }
+.integ-glyph[data-g="Docs"]      { background: #0B6694; }
+.integ-glyph[data-g="Task"]      { background: #7A5800; }
+.integ-glyph[data-g="Infra"]     { background: #4B2DA8; }
+.integ-glyph[data-g="Affiliate"] { background: #1F6E3F; }
+.integ-glyph[data-g="Voice"]     { background: #931C3D; }
+.integ-glyph[data-g="Knowledge"] { background: #6E4A0F; }
+.integ-glyph[data-g="Code"]      { background: #2A3342; }
+
+/* =============================================================
+   CRONS — terminal style
+   ============================================================= */
+.cron-wrap {
+  background: linear-gradient(180deg, #060E20 0%, #081229 100%);
+  color: var(--mc-text);
+  border: 1px solid var(--mc-line-strong);
+  border-radius: 14px; overflow: hidden;
+  box-shadow: 0 12px 48px rgba(4,56,134,0.18);
+}
+.cron-titlebar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.35);
+  border-bottom: 1px solid var(--mc-line);
+  font-family: var(--font-mono); font-size: 12px; color: var(--mc-text-3);
+}
+.cron-titlebar .dots { display: inline-flex; gap: 6px; margin-right: 4px; }
+.cron-titlebar .dots i { width: 10px; height: 10px; border-radius: 50%; }
+.cron-titlebar .dots i:nth-child(1){ background: #ff5f57; }
+.cron-titlebar .dots i:nth-child(2){ background: #febc2e; }
+.cron-titlebar .dots i:nth-child(3){ background: #28c840; }
+.cron-titlebar .path { color: var(--mc-blue-soft); }
+.cron-thead {
+  display: grid; grid-template-columns: 32px 1fr 110px 170px 120px 70px;
+  gap: 12px; padding: 10px 16px;
+  font-family: var(--font-caption);
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--mc-text-3); background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--mc-line);
+}
+@media (max-width: 980px) {
+  .cron-thead { display: none; }
+}
+.cron-row {
+  display: grid; grid-template-columns: 32px 1fr 110px 170px 120px 70px;
+  gap: 12px; padding: 12px 16px;
+  align-items: center;
+  border-bottom: 1px solid var(--mc-line);
+  font-family: var(--font-mono); font-size: 13px;
+  transition: background 120ms;
+}
+.cron-row:last-child { border-bottom: 0; }
+.cron-row:hover { background: rgba(22,158,227,0.06); }
+.cron-row[hidden] { display: none; }
+@media (max-width: 980px) {
+  .cron-row { grid-template-columns: 24px 1fr auto; gap: 10px; row-gap: 6px; }
+  .cron-row .cron-tag, .cron-row .cron-sched, .cron-row .cron-uptime { grid-column: 2 / 4; }
+  .cron-row .cron-spark { display: none; }
+}
+.cron-status .led { width: 7px; height: 7px; border-radius: 50%; background: var(--mc-good); box-shadow: 0 0 0 3px rgba(16,185,129,0.18); }
+.cron-name { color: var(--mc-text); font-family: var(--font-sans); font-weight: 600; font-size: 14px; }
+.cron-tag {
+  font-family: var(--font-caption); font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+  display: inline-block; width: fit-content;
+}
+.cron-tag[data-tag="FINEXIO"]  { background: rgba(22,158,227,0.18); color: var(--mc-blue-soft); }
+.cron-tag[data-tag="PERSONAL"] { background: rgba(173,221,245,0.10); color: #ADDDF5; }
+.cron-tag[data-tag="MIXED"]    { background: rgba(193,168,238,0.18); color: #C9B7F4; }
+.cron-sched { color: var(--mc-text-2); font-size: 12px; }
+.cron-spark svg { display: block; width: 100%; height: 28px; }
+.cron-uptime { color: var(--mc-text-2); font-size: 11.5px; text-align: right; }
+
+/* =============================================================
+   PROVIDERS
+   ============================================================= */
+.prov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.prov-card {
+  position: relative; padding: 22px 22px 20px;
+  background: var(--finexio-white); border: 1px solid var(--border-1); border-radius: 14px;
+  display: flex; flex-direction: column; gap: 10px; min-height: 150px;
+  transition: all 200ms;
+}
+.prov-card:hover { border-color: var(--finexio-blue); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.prov-card.is-primary {
+  background: linear-gradient(140deg, #04275E 0%, #043886 50%, #0B6694 100%);
+  color: #fff; border-color: transparent;
+  box-shadow: 0 14px 44px rgba(4,56,134,0.30);
+  grid-column: span 2;
+}
+@media (max-width: 720px) { .prov-card.is-primary { grid-column: span 1; } }
+.prov-card.is-primary::before {
+  content: ''; position: absolute; inset: 0; border-radius: 14px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='104' viewBox='0 0 120 104'><g fill='none' stroke='%23169EE3' stroke-width='1' opacity='0.6'><polygon points='60,2 116,33 116,71 60,102 4,71 4,33'/></g></svg>");
+  background-size: 120px 104px; background-position: top right;
+  background-repeat: no-repeat; opacity: 0.30; pointer-events: none;
+}
+.prov-card.is-primary .prov-name { color: #fff; }
+.prov-card.is-primary .prov-models { color: rgba(255,255,255,0.78); }
+.prov-card.is-primary .prov-models b { color: #fff; }
+.prov-tag { font-family: var(--font-caption); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--finexio-blue); }
+.prov-card.is-primary .prov-tag { color: var(--mc-blue-soft); }
+.prov-name { font-size: 22px; font-weight: 700; font-family: var(--font-display); color: var(--finexio-navy); letter-spacing: -0.015em; }
+.prov-card.is-primary .prov-name { font-size: 28px; }
+.prov-models { font-size: 13px; line-height: 1.55; color: var(--fg-2); }
+.prov-models b { color: var(--finexio-navy); font-weight: 600; }
+.prov-meter { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 8px; }
+.prov-meter .bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(0,0,0,0.06); overflow: hidden; }
+.prov-card.is-primary .prov-meter .bar { background: rgba(255,255,255,0.12); }
+.prov-meter .bar > i { display: block; height: 100%; background: var(--finexio-blue); border-radius: 2px; }
+.prov-card.is-primary .prov-meter .bar > i { background: var(--mc-blue-soft); }
+.prov-meter .val { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); white-space: nowrap; }
+.prov-card.is-primary .prov-meter .val { color: rgba(255,255,255,0.7); }
+
+/* =============================================================
+   PROJECTS
+   ============================================================= */
+.proj-cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 18px; }
+@media (max-width: 720px) { .proj-cats { grid-template-columns: 1fr; } }
+.proj-cat {
+  background: var(--finexio-white); border: 1px solid var(--border-1);
+  border-radius: 14px; padding: 22px 22px 14px;
+  box-shadow: var(--shadow-xs);
+  display: flex; flex-direction: column; gap: 12px;
+  transition: box-shadow 200ms;
+}
+.proj-cat:hover { box-shadow: var(--shadow-sm); }
+.proj-cat[hidden] { display: none; }
+.proj-cat-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.proj-cat-head h3 { font-family: var(--font-sans); font-size: 18px; font-weight: 700; color: var(--finexio-navy); margin: 0; letter-spacing: -0.01em; }
+.proj-cat-desc { font-size: 13px; line-height: 1.55; color: var(--fg-2); margin: 0; }
+.proj-list { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
+.proj-item { display: grid; grid-template-columns: 12px 1fr auto 16px; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--border-1); cursor: pointer; transition: background 120ms; }
+.proj-item:hover, .proj-item.is-open { background: var(--finexio-blue-wash); border-radius: 6px; padding-left: 8px; padding-right: 8px; margin-left: -8px; margin-right: -8px; }
+.proj-item-status { width: 8px; height: 8px; border-radius: 50%; }
+.proj-item-status[data-status="active"]  { background: var(--mc-good); box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+.proj-item-status[data-status="ongoing"] { background: var(--finexio-blue); box-shadow: 0 0 0 3px rgba(22,158,227,0.18); }
+.proj-item-status[data-status="archive"] { background: var(--gray-300); }
+.proj-item-name { font-size: 14px; font-weight: 600; color: var(--fg-1); line-height: 1.3; }
+.proj-item-desc { font-size: 12px; color: var(--fg-2); text-align: right; line-height: 1.3; max-width: 200px; }
+@media (max-width: 540px) { .proj-item-desc { display: none; } }
+.proj-chev { width: 14px; height: 14px; color: var(--gray-400); transition: transform 180ms, color 180ms; }
+.proj-item.is-open .proj-chev { transform: rotate(90deg); color: var(--finexio-blue); }
+.proj-detail { display: none; padding: 4px 8px 12px 28px; font-size: 13px; line-height: 1.6; color: var(--fg-2); }
+.proj-item.is-open + .proj-detail { display: block; }
+.proj-cat-tag { font-family: var(--font-caption); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; }
+.proj-cat-tag[data-tag="FINEXIO"]  { background: rgba(4,56,134,0.10); color: var(--finexio-navy); }
+.proj-cat-tag[data-tag="PERSONAL"] { background: rgba(22,158,227,0.14); color: #0B6694; }
+
+/* =============================================================
+   STACK
+   ============================================================= */
+.stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.stack-card { padding: 18px 20px; background: var(--finexio-white); border: 1px solid var(--border-1); border-radius: 12px; transition: all 200ms; }
+.stack-card:hover { border-color: var(--finexio-blue); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.stack-area { font-family: var(--font-caption); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--finexio-blue); margin-bottom: 6px; }
+.stack-name { font-size: 15px; font-weight: 700; color: var(--finexio-navy); margin-bottom: 4px; letter-spacing: -0.005em; }
+.stack-desc { font-size: 12px; line-height: 1.55; color: var(--fg-2); font-family: var(--font-mono); }
+
+/* =============================================================
+   ARCHITECTURE
+   ============================================================= */
+.arch { background: var(--finexio-white); border: 1px solid var(--border-1); border-radius: 16px; padding: 32px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden; }
+.arch::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, var(--gray-200) 1px, transparent 1px); background-size: 16px 16px; opacity: 0.4; mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black, transparent 80%); -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black, transparent 80%); pointer-events: none; }
+.arch-layers { position: relative; display: flex; flex-direction: column; gap: 12px; }
+.arch-layer { display: grid; grid-template-columns: 150px 1fr; gap: 16px; align-items: stretch; }
+@media (max-width: 720px) { .arch-layer { grid-template-columns: 1fr; gap: 4px; } }
+.arch-layer-label { display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 14px 16px; }
+.arch-layer-label .num { font-family: var(--font-mono); font-size: 11px; color: var(--finexio-blue); font-weight: 600; letter-spacing: 0.1em; }
+.arch-layer-label .name { font-family: var(--font-caption); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--finexio-navy); line-height: 1.2; }
+.arch-cards { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 16px; background: var(--gray-50); border: 1px solid var(--border-1); border-radius: 10px; border-left: 3px solid var(--finexio-blue); }
+.arch-layer.is-core .arch-cards { background: var(--finexio-navy); border-color: var(--finexio-navy); border-left-color: var(--finexio-blue); }
+.arch-layer.is-core .arch-chip { background: rgba(255,255,255,0.08); color: #fff; border-color: rgba(255,255,255,0.18); }
+.arch-layer.is-core .arch-chip.is-primary { background: var(--finexio-blue); color: #fff; border-color: var(--finexio-blue); }
+.arch-chip { padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--finexio-white); border: 1px solid var(--border-2); color: var(--fg-1); transition: all 120ms; }
+.arch-chip.is-primary { background: var(--finexio-blue-wash); color: var(--finexio-navy); border-color: var(--finexio-blue); font-weight: 600; }
+.arch-chip:hover { background: var(--finexio-blue-wash); border-color: var(--finexio-blue); color: var(--finexio-navy); }
+.arch-connector { height: 14px; display: flex; justify-content: center; align-items: center; margin-left: 75px; }
+@media (max-width: 720px) { .arch-connector { margin-left: 0; } }
+
+/* =============================================================
+   COMMAND PALETTE
+   ============================================================= */
+.cmdk-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(5,11,26,0.72);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: flex-start; justify-content: center;
+  padding: 12vh 16px 16px;
+  animation: fadein 160ms cubic-bezier(.2,0,.2,1);
+}
+.cmdk-overlay.is-open { display: flex; }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+.cmdk {
+  width: 100%; max-width: 640px;
+  background: #0A1631;
+  color: var(--mc-text);
+  border: 1px solid var(--mc-line-strong);
+  border-radius: 14px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  overflow: hidden;
+  animation: popin 200ms cubic-bezier(.2,.7,.1,1);
+}
+@keyframes popin { from { opacity: 0; transform: translateY(-8px) scale(0.985);} to { opacity:1; transform:none; } }
+.cmdk-input { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--mc-line); }
+.cmdk-input svg { color: var(--mc-blue-soft); flex-shrink: 0; }
+.cmdk-input input { flex: 1; background: transparent; border: 0; outline: 0; color: var(--mc-text); font-size: 16px; }
+.cmdk-input input::placeholder { color: var(--mc-text-3); }
+.cmdk-input kbd { font-size: 10.5px; }
+.cmdk-list { max-height: 50vh; overflow-y: auto; padding: 8px 0; }
+.cmdk-group { padding: 6px 18px; font-family: var(--font-caption); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mc-text-3); }
+.cmdk-item {
+  display: grid; grid-template-columns: 28px 1fr auto;
+  align-items: center; gap: 12px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: background 100ms;
+}
+.cmdk-item:hover, .cmdk-item.is-active { background: rgba(22,158,227,0.12); }
+.cmdk-item .ico { color: var(--mc-blue-soft); }
+.cmdk-item .lbl { font-size: 14px; color: var(--mc-text); font-weight: 500; }
+.cmdk-item .lbl small { display: block; font-size: 11.5px; color: var(--mc-text-3); font-weight: 400; margin-top: 2px; font-family: var(--font-mono); }
+.cmdk-item .meta { font-family: var(--font-mono); font-size: 11px; color: var(--mc-text-3); }
+.cmdk-foot { display: flex; gap: 16px; align-items: center; padding: 10px 18px; border-top: 1px solid var(--mc-line); font-family: var(--font-mono); font-size: 11px; color: var(--mc-text-3); }
+.cmdk-foot span { display: inline-flex; align-items: center; gap: 6px; }
+
+/* =============================================================
+   FOOTER
+   ============================================================= */
+footer.foot {
+  background: var(--mc-bg); color: rgba(255,255,255,0.78);
+  padding: 64px 0 36px; position: relative; overflow: hidden;
+  border-top: 1px solid var(--mc-line);
+}
+footer.foot::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='156' viewBox='0 0 180 156'><g fill='none' stroke='%23169EE3' stroke-width='1' opacity='0.18'><polygon points='90,4 174,49 174,106 90,151 6,106 6,49'/></g></svg>");
+  background-size: 180px 156px; opacity: 0.3;
+  mask-image: linear-gradient(to right, transparent, black 40%);
+  pointer-events: none;
+}
+.foot-inner { position: relative; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; align-items: start; }
+@media (max-width: 720px) { .foot-inner { grid-template-columns: 1fr 1fr; gap: 28px; } }
+.foot-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.foot-brand .brand-name b { color: #fff; }
+.foot-tag { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.65); max-width: 380px; margin: 0 0 16px; }
+.foot h4 { font-family: var(--font-caption); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin: 0 0 12px; }
+.foot-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.foot-list a { color: rgba(255,255,255,0.85); font-size: 14px; text-decoration: none; border-bottom: 0; }
+.foot-list a:hover { color: var(--mc-blue-soft); }
+.foot-meta { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--mc-line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11.5px; color: rgba(255,255,255,0.5); }
+.foot-meta a { color: rgba(255,255,255,0.7); border-bottom: 0; }
+.foot-meta a:hover { color: var(--mc-blue-soft); }
+
+/* =============================================================
+   REVEAL + REDUCED MOTION
+   ============================================================= */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 700ms cubic-bezier(.2,0,.2,1), transform 700ms cubic-bezier(.2,0,.2,1); }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  .ticker-track { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============== TOPBAR ============== -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <polygon points="16,2 29,9.5 29,22.5 16,30 3,22.5 3,9.5" fill="#043886"/>
+        <polygon points="16,8 23.5,12.25 23.5,19.75 16,24 8.5,19.75 8.5,12.25" fill="#169EE3"/>
+        <circle cx="16" cy="16" r="2.6" fill="#fff"/>
+      </svg>
+      <span class="brand-name"><b>Claude @ Finexio</b><small>AI Operating Model · 2026</small></span>
+    </a>
+    <nav class="top-nav" aria-label="Sections">
+      <a href="#flow" data-sec="flow">How it works</a>
+      <a href="#integrations" data-sec="integrations">Skills</a>
+      <a href="#crons" data-sec="crons">Workflows</a>
+      <a href="#providers" data-sec="providers">Connections</a>
+      <a href="#projects" data-sec="projects">Case studies</a>
+      <a href="#stack" data-sec="stack">Discipline</a>
+      <a href="#arch" data-sec="arch">Architecture</a>
+    </nav>
+    <div class="top-actions">
+      <span class="live-pill"><span class="led"></span>Live</span>
+      <button class="search-trigger" id="cmdkOpen" type="button" aria-label="Open command palette">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span class="label">Jump to anywhere…</span>
+        <span class="k"><kbd>⌘</kbd><kbd>K</kbd></span>
+      </button>
+      <a class="icon-btn" href="https://github.com/booyajones/claude-at-finexio" target="_blank" rel="noopener" aria-label="Source on GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39.98 0 1.97.13 2.89.39 2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ============== HERO ============== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+<!-- VOICE-GUARD-OFF -->
+      <div class="hero-eyebrow">Inside Finexio · How we use AI · 2026</div>
+      <h1>Built on <em>Claude.</em> Shipped weekly.</h1>
+      <p class="hero-lede">Senior leaders want the why. Builders want the wiring. This page has both. Every Finexio skill, MCP connection, and automated workflow running in production, plus the case studies and operating discipline behind them. Live, accurate, no roadmap items.</p>
+
+      <div class="hero-meta">
+        <span class="chip"><b>SURFACE</b> Claude Code, Claude Desktop, claude.ai (Finexio org)</span>
+        <span class="chip"><b>BRAND</b> DM Sans, Finexio Navy</span>
+        <span class="chip"><b>RELEASES</b> Weekly</span>
+        <span class="chip"><b>SHIPPED</b> <span id="uptime">...</span></span>
+      </div>
+
+      <div class="hero-cta-row">
+        <a class="btn btn-primary" href="#flow">See the operating model</a>
+        <button class="btn btn-ghost" id="cmdkOpen2" type="button">⌘K · Jump anywhere</button>
+      </div>
+
+      <div class="hero-stats" role="group" aria-label="System statistics">
+        <div class="stat"><div class="stat-num counter" data-target="14">0</div><div class="stat-label">Finexio skills</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="12">0</div><div class="stat-label">MCP connections</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="9">0</div><div class="stat-label">Workflows</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="15">0</div><div class="stat-label">Case studies</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="11">0</div><div class="stat-label">Discipline rules</div></div>
+      </div>
+    </div>
+
+    <!-- DATAFLOW MAP -->
+    <div class="dataflow" aria-hidden="true">
+      <div class="dataflow-head">
+        <span class="dataflow-title"><span class="led"></span>Live Dataflow · realtime</span>
+        <span class="dataflow-meter">RPS <b id="dfRps">—</b> · Median <b id="dfMed">—</b>ms · Errors <b style="color:#6EE7B7">0</b></span>
+      </div>
+      <svg class="dataflow-svg" id="dfSvg" viewBox="0 0 720 460" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <radialGradient id="dfCoreGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#43BCEC"/>
+            <stop offset="60%" stop-color="#169EE3"/>
+            <stop offset="100%" stop-color="#0B6694"/>
+          </radialGradient>
+          <linearGradient id="dfEdgeIn" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#169EE3" stop-opacity="0.05"/>
+            <stop offset="100%" stop-color="#169EE3" stop-opacity="0.6"/>
+          </linearGradient>
+          <linearGradient id="dfEdgeOut" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#169EE3" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#169EE3" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+        <!-- rail labels -->
+        <text class="df-rail-label" x="80" y="24" text-anchor="middle">Stakeholders</text>
+        <text class="df-rail-label" x="360" y="24" text-anchor="middle">Claude Code</text>
+        <text class="df-rail-label" x="640" y="24" text-anchor="middle">Outputs</text>
+        <!-- thin rail divider lines -->
+        <line x1="160" y1="40" x2="160" y2="440" stroke="rgba(173,221,245,0.08)" stroke-dasharray="2 6"/>
+        <line x1="560" y1="40" x2="560" y2="440" stroke="rgba(173,221,245,0.08)" stroke-dasharray="2 6"/>
+        <g id="dfEdges"></g>
+        <g id="dfPulses"></g>
+        <g id="dfNodesLeft"></g>
+        <g id="dfNodesRight"></g>
+        <!-- Core hex -->
+        <g id="dfCore" transform="translate(360 240)">
+          <circle class="df-core-pulse" r="62"></circle>
+          <polygon class="df-core-shape" points="0,-58 50,-29 50,29 0,58 -50,29 -50,-29"></polygon>
+          <text class="df-core-label" text-anchor="middle" y="-3">CLAUDE</text>
+          <text class="df-core-sub" text-anchor="middle" y="14">+ skills + memory</text>
+        </g>
+      </svg>
+      <div class="console" id="console" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+</section>
+
+<!-- ============== FLOW ============== -->
+<section id="flow" class="section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="section-num">01 · HOW IT WORKS</span>
+      <div>
+        <h2 class="section-title">From stakeholder ask to shipped artifact.</h2>
+        <p class="section-sub">Six steps. The same pattern whether the output is a deck, a PRD, a financial model, or a Webflow update. The discipline is what makes it repeatable.</p>
+      </div>
+      <div></div>
+    </header>
+
+    <div class="flow reveal">
+      <div class="flow-step">
+        <div class="flow-num">STEP 01</div>
+        <div class="flow-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+        <h3>Stakeholder ask</h3>
+        <p>CEO, sales, marketing, finance, or eng describes the need in plain language. Voice memo, Slack DM, transcript, or a one-line prompt.</p>
+        <span class="meta">intake</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">STEP 02</div>
+        <div class="flow-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+        <h3>Memory + research</h3>
+        <p>Claude pulls from project memory, the Master Knowledge Base, Confluence, Drive, and BigQuery. Tier 1 library check first, then external sources.</p>
+        <span class="meta">3-tier research cascade</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">STEP 03</div>
+        <div class="flow-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+        <h3>Skill resolution</h3>
+        <p>The right Finexio skill loads: rfp-response, finexio-deck-gen, prd-pipeline, brand-voice, finance:variance-analysis. Each skill brings its own playbook.</p>
+        <span class="meta">14 Finexio skills</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">STEP 04</div>
+        <div class="flow-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div>
+        <h3>MCP execution</h3>
+        <p>Skills call connected systems through MCP servers: Salesforce, Webflow, Atlassian, Gmail, Drive, Sheets, BigQuery, ClickUp, HubSpot.</p>
+        <span class="meta">12 MCP connections</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">STEP 05</div>
+        <div class="flow-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+        <h3>Output draft</h3>
+        <p>Deck, PRD, RFP response, financial model, blog post, Webflow update. Brand voice rules and Finexio positioning are applied automatically.</p>
+        <span class="meta">artifact</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">STEP 06</div>
+        <div class="flow-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <h3>Audit, review, ship</h3>
+        <p>Voice guard blocks slop. Layer 1 audit checks math. Layer 2 sub-agent runs adversarial review. Human approves. Then publish.</p>
+        <span class="meta">2-layer audit</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== INTEGRATIONS ============== -->
+<section id="integrations" class="section tinted">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="section-num">02 · SKILLS</span>
+      <div>
+        <h2 class="section-title">14 Finexio skills, in production.</h2>
+        <p class="section-sub">Skills are reusable playbooks. Each one packages a workflow plus the rules, examples, and references Claude needs to execute it the same way every time.</p>
+      </div>
+      <div></div>
+    </header>
+    <div class="search-row reveal">
+      <label class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="search" id="integSearch" placeholder="Search Finexio skills..." aria-label="Search skills" />
+      </label>
+      <div class="filters" id="integFilters" role="tablist"></div>
+    </div>
+    <div class="integ-grid reveal" id="integGrid"></div>
+  </div>
+</section>
+
+<!-- ============== CRONS ============== -->
+<section id="crons" class="section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="section-num">03 · WORKFLOWS</span>
+      <div>
+        <h2 class="section-title">9 automated workflows, all green.</h2>
+        <p class="section-sub">Recurring or hook-triggered routines that run without a person in the loop. Quality gates, content publishing, model audits, memory upkeep.</p>
+      </div>
+      <div></div>
+    </header>
+    <div class="search-row reveal">
+      <label class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="search" id="cronSearch" placeholder="Search workflows..." aria-label="Search workflows" />
+      </label>
+      <div class="filters" id="cronFilters" role="tablist"></div>
+    </div>
+    <div class="cron-wrap reveal">
+      <div class="cron-titlebar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <span class="path">~/finexio $ </span>
+        <span>workflows · all green · last refresh <b id="cronLastRefresh">just now</b></span>
+      </div>
+      <div class="cron-thead">
+        <div></div><div>Workflow</div><div>Domain</div><div>Trigger</div><div>7-day</div><div style="text-align:right;">Up</div>
+      </div>
+      <div id="cronTable"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PROVIDERS ============== -->
+<section id="providers" class="section tinted">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="section-num">04 · CONNECTIONS</span>
+      <div>
+        <h2 class="section-title">12 MCP connections to business systems.</h2>
+        <p class="section-sub">Model Context Protocol lets Claude read and write directly in the tools the team already uses. No screenshots, no copy-paste, no mock data.</p>
+      </div>
+      <div></div>
+    </header>
+    <div class="prov-grid reveal" id="provGrid"></div>
+  </div>
+</section>
+
+<!-- ============== PROJECTS ============== -->
+<section id="projects" class="section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="section-num">05 · CASE STUDIES</span>
+      <div>
+        <h2 class="section-title">15 things Claude shipped at Finexio.</h2>
+        <p class="section-sub">Real artifacts. Real outcomes. Each card shows the problem, what Claude did, and what got produced. Click any card for the full story.</p>
+      </div>
+      <div></div>
+    </header>
+    <div class="search-row reveal">
+      <label class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="search" id="projSearch" placeholder="Search case studies..." aria-label="Search case studies" />
+      </label>
+      <div class="filters" id="projFilters" role="tablist"></div>
+    </div>
+    <div class="proj-cats reveal" id="projContainer"></div>
+  </div>
+</section>
+
+<!-- ============== STACK ============== -->
+<section id="stack" class="section tinted">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="section-num">06 · DISCIPLINE</span>
+      <div>
+        <h2 class="section-title">11 standing rules. No exceptions.</h2>
+        <p class="section-sub">The operating discipline that keeps output on-brand, factually correct, and trustworthy. Encoded in CLAUDE.md and enforced by hooks, audits, and validation routines.</p>
+      </div>
+      <div></div>
+    </header>
+    <div class="stack-grid reveal" id="stackGrid"></div>
+  </div>
+</section>
+
+<!-- ============== ARCHITECTURE ============== -->
+<section id="arch" class="section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="section-num">07 · ARCHITECTURE</span>
+      <div>
+        <h2 class="section-title">Six layers. One operating model.</h2>
+        <p class="section-sub">From the people who ask to the artifacts that ship. Every layer is replaceable. Every layer is observable.</p>
+      </div>
+      <div></div>
+    </header>
+    <div class="arch reveal">
+      <div class="arch-layers" id="archDiagram"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div>
+      <div class="foot-brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <polygon points="16,2 29,9.5 29,22.5 16,30 3,22.5 3,9.5" fill="#fff" opacity="0.12"/>
+          <polygon points="16,8 23.5,12.25 23.5,19.75 16,24 8.5,19.75 8.5,12.25" fill="#169EE3"/>
+          <circle cx="16" cy="16" r="2.6" fill="#fff"/>
+        </svg>
+        <span class="brand-name"><b>Claude @ Finexio</b><small>AI Operating Model · 2026</small></span>
+      </div>
+      <p class="foot-tag">An interactive show-and-tell of how Finexio is using Claude Code today. Every skill, connection, workflow, and case study on this page is in production. No roadmap items, no slideware.</p>
+    </div>
+    <div>
+      <h4>Operating model</h4>
+      <ul class="foot-list">
+        <li><a href="#flow">How it works</a></li>
+        <li><a href="#integrations">Skills</a></li>
+        <li><a href="#crons">Workflows</a></li>
+        <li><a href="#providers">Connections</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Evidence</h4>
+      <ul class="foot-list">
+        <li><a href="#projects">Case studies</a></li>
+        <li><a href="#stack">Discipline</a></li>
+        <li><a href="#arch">Architecture</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Source</h4>
+      <ul class="foot-list">
+        <li><a href="https://github.com/booyajones/claude-at-finexio" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://github.com/booyajones/finexio-skills" target="_blank" rel="noopener">finexio-skills</a></li>
+        <li><a href="https://www.finexio.com" target="_blank" rel="noopener">finexio.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-meta">
+    <span>BUILD · 2026.5.5 · main · clean</span>
+    <span>booyajones / claude-at-finexio</span>
+    <span>Press <kbd style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.16);color:rgba(255,255,255,0.85)">⌘</kbd> <kbd style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.16);color:rgba(255,255,255,0.85)">K</kbd> to navigate</span>
+  </div>
+</footer>
+
+<!-- ============== COMMAND PALETTE ============== -->
+<div class="cmdk-overlay" id="cmdkOverlay" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="cmdk">
+    <div class="cmdk-input">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="cmdkInput" placeholder="Search sections, integrations, projects…" autocomplete="off" />
+      <kbd>ESC</kbd>
+    </div>
+    <div class="cmdk-list" id="cmdkList"></div>
+    <div class="cmdk-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============== DATA + LOGIC ============== -->
+<script>
+(function () {
+  'use strict';
+
+  // ─── DATA ───────────────────────────────────────────────────
+  const DATA = {
+    integrations: [
+      { name: "rfp-response", type: "Sales", desc: "Drafts answers to inbound RFPs for Finexio's virtual card and AP payments services. Library-first cascade. Voice rules baked in." },
+      { name: "finexio-deck-gen", type: "GTM", desc: "Generates branded Finexio decks from any input: deal memos, transcripts, voice asks, board briefs. Auto-applies the visual system." },
+      { name: "finexio-deck-builder", type: "GTM", desc: "Presentation strategist. Decides the narrative, sequence, and pacing before generation runs." },
+      { name: "finexio-product", type: "Product", desc: "End-to-end product requirements workflow. Voice memo or transcript in, validated PRD out." },
+      { name: "prd-pipeline", type: "Product", desc: "Generates PRDs and user stories from a validated Problem Brief. Live on Finexio claude.ai org. v0.5.0." },
+      { name: "prd-intake", type: "Product", desc: "Captures stakeholder requests and produces a validated Problem Brief. v0.3.0." },
+      { name: "brand-voice", type: "Marketing", desc: "Enforces Finexio voice rules: no banned words, no em dashes, peer-to-peer tone, honest positioning." },
+      { name: "internal-comms", type: "Leadership", desc: "Writes 3P updates, leadership updates, FAQs, incident notes in Finexio's standard formats." },
+      { name: "finance:variance-analysis", type: "Finance", desc: "Decomposes financial variances into drivers with narrative explanations and waterfall analysis." },
+      { name: "finance:financial-statements", type: "Finance", desc: "Generates income statement, balance sheet, cash flow with period-over-period comparison." },
+      { name: "sales:account-research", type: "Sales", desc: "Researches a company or person and returns actionable sales intel from web + CRM." },
+      { name: "sales:call-prep", type: "Sales", desc: "Prepares for a sales call with account context, attendee research, suggested agenda." },
+      { name: "marketing:campaign-plan", type: "Marketing", desc: "Generates a full campaign brief: objectives, audience, messaging pillars, channels, calendar." },
+      { name: "legal:review-contract", type: "Legal", desc: "Reviews a contract against the negotiation playbook. Flags deviations, generates redlines." }
+    ],
+    crons: [
+      { name: "Finexio Weekly QA", tag: "QUALITY", sched: "Mon · 08:00 CT" },
+      { name: "Webflow Post-Publish Verify", tag: "WEB", sched: "On publish" },
+      { name: "Voice Compliance Hook", tag: "QUALITY", sched: "On Write/Edit" },
+      { name: "Narrative Staleness Scan", tag: "FINANCE", sched: "On model change" },
+      { name: "Two-Layer Financial Audit", tag: "FINANCE", sched: "On artifact" },
+      { name: "Blog Auto-Publisher", tag: "WEB", sched: "On approval" },
+      { name: "Memory Consolidation", tag: "OPS", sched: "Weekly" },
+      { name: "Phoenix Model Refresh", tag: "FINANCE", sched: "Monthly" },
+      { name: "RFP Library Update", tag: "SALES", sched: "On approval" }
+    ],
+    providers: [
+      { name: "Salesforce", primary: true, weight: 22, models: "<b>CRM</b> · contacts, opps, calls, transcripts. Read + write through Connected App." },
+      { name: "Webflow", weight: 14, models: "<b>CMS</b> · finexio.com pages, collections, assets. Custom code injection." },
+      { name: "Atlassian", weight: 12, models: "<b>Docs + tickets</b> · Confluence pages, Jira issues. finexio.atlassian.net." },
+      { name: "Google Drive", weight: 10, models: "<b>Knowledge base</b> · Master KB, decks, transcripts. Service account." },
+      { name: "Google Sheets", weight: 9, models: "<b>Models</b> · Phoenix v7 forecast, Finance models, scenario analyses." },
+      { name: "BigQuery", weight: 8, models: "<b>Analytics</b> · wyattplayground project. $Payment reconciliation, KPI tracking." },
+      { name: "Gmail", weight: 7, models: "<b>Comms</b> · outbound + thread search. SMTP via app password." },
+      { name: "ClickUp", weight: 6, models: "<b>Tasks</b> · Finexio task management. Workspace-wide read + write." },
+      { name: "HubSpot", weight: 5, models: "<b>Marketing ops</b> · email campaigns, contact and deal CRM." },
+      { name: "Slack", weight: 4, models: "<b>Team</b> · Finexio workspace. Channel reads, scheduled messages, canvases." },
+      { name: "Common Room", weight: 2, models: "<b>Community signals</b> · prospect intel, account research, weekly briefs." },
+      { name: "Memory MCP", weight: 1, models: "<b>Persistent memory</b> · cross-session recall, entity store." }
+    ],
+    stack: [
+      { area: "RULE 01", name: "Skill learning loop", desc: "Every skill must capture corrections back into its answer-library and auto-commit to finexio-skills." },
+      { area: "RULE 02", name: "3-tier research cascade", desc: "Memory + library first, then Drive + Confluence, then synthesis. Never guess. Flag for human if no source." },
+      { area: "RULE 03", name: "Human review strategy", desc: "Every skill defines auto-answer, auto-draft + flag, and human-required categories. Visible in output." },
+      { area: "RULE 04", name: "Voice compliance", desc: "No banned words, no em dashes, short paragraphs, peer-to-peer tone. Enforced by hook on Write/Edit." },
+      { area: "RULE 05", name: "Honest positioning", desc: "Finexio is the orchestration platform. J.P. Morgan Chase is the issuing bank. Never overclaim." },
+      { area: "RULE 06", name: "Skill structure", desc: "Every skill follows a defined directory layout: SKILL.md plus references plus optional scripts." },
+      { area: "RULE 07", name: "Test against real data", desc: "No skill is complete until it has run against a real-world input. The first run always reveals gaps." },
+      { area: "RULE 08", name: "Org-level distribution", desc: "All skills push to github.com/booyajones/finexio-skills so the whole team gets the same updates." },
+      { area: "RULE 09", name: "Maturity tracking", desc: "Every skill tracks its version: v0.1 first build, v0.5 library covers 50%, v1.0 trusted output." },
+      { area: "RULE 10", name: "Memory integration", desc: "Skills read from and write to project memory. Discoveries during research update the shared knowledge base." },
+      { area: "RULE 11", name: "Financial model discipline", desc: "Two-layer audit on every financial artifact. Layer 1 script audit, Layer 2 adversarial sub-agent." }
+    ],
+    projects: [
+      { cat: "Finance + Modeling", tag: "FINANCE", desc: "Board-ready financial models, scenario analyses, and the audit discipline that keeps them trustworthy.", items: [
+        { name: "Phoenix v7 Interactive Model", status: "active", desc: "Board-ready forecast", detail: "Google Sheet aligned with one-pager v19 conventions. Flat growth scenario, working-capital toggles, Grasshopper at 16 bps, Visa at 10 bps. Two-layer audit run before every snapshot." },
+        { name: "Two-Layer Financial Audit", status: "active", desc: "Script + adversarial sub-agent", detail: "Layer 1 finexio_audit.py validates math, formatting, and data integrity. Layer 2 spawns an adversarial sub-agent to attack the model and surface what the script missed." },
+        { name: "Narrative Staleness Scanner", status: "active", desc: "Catches stale numbers in commentary", detail: "After any constant changes in a model, this scanner greps the narrative tabs (Assumptions, Sources, Reconciliation) for stale dollar values and blocks until they match." },
+        { name: "Forecast Model V21.19", status: "active", desc: "Canonical Finance forecast", detail: "Single source of truth for Finexio's forward revenue model. Versioned, audited, with reproducible scenarios." }
+      ]},
+      { cat: "Sales + Marketing Output", tag: "GTM", desc: "Sales assets, RFP responses, and brand-compliant marketing content built from skills, not from scratch.", items: [
+        { name: "RFP Response Skill", status: "active", desc: "Library-first cascade", detail: "Drafts answers to inbound RFPs by checking the answer-library first, then escalating to research. Voice rules baked in. Library grows after every approved response." },
+        { name: "finexio-deck-gen v0.5", status: "active", desc: "Branded deck generator", detail: "Generates Finexio-branded decks from any input: deal memo, transcript, voice ask, partner doc. Auto-applies the visual system, brand voice, honest positioning." },
+        { name: "Brand Voice Hook", status: "active", desc: "Blocks slop on Write/Edit", detail: "finexio-voice-guard.js scans every Write or Edit for em dashes, banned words, and AI cadence. Refuses the write if it finds any. Bypassable per-file with VOICE-GUARD-OFF." },
+        { name: "Marketing Voice Audit", status: "active", desc: "Content compliance scan", detail: "Reviews any piece of Finexio-facing content against the voice playbook. Flags deviations by severity with specific fixes." }
+      ]},
+      { cat: "Product + Strategy", tag: "PRODUCT", desc: "PRDs, problem briefs, and the pipeline that turns voice memos and transcripts into validated specs.", items: [
+        { name: "PRD Pipeline v0.5", status: "active", desc: "Live on Finexio claude.ai org", detail: "13 of 13 UAT pass. Two skills published: prd-pipeline v0.5.0 and prd-intake v0.3.0. 13 documented failure patterns prevented. Lisa Reedy style capture for product writing." },
+        { name: "finexio-product Skill", status: "active", desc: "End-to-end product workflow", detail: "Voice memo or stakeholder transcript in, validated PRD out. Handles ambient input across Zoom, voice, email, and bullet-point sketches." },
+        { name: "Problem Brief Intake", status: "active", desc: "prd-intake v0.3.0", detail: "Captures product requests from stakeholders and produces a validated Problem Brief. Triggers the PRD pipeline once approved." }
+      ]},
+      { cat: "Web + Publishing", tag: "WEB", desc: "Webflow content operations, blog auto-publishing, and the verifiers that keep finexio.com correct.", items: [
+        { name: "Blog Auto-Publisher", status: "active", desc: "Image gen + Webflow upload + verify", detail: "End-to-end blog post publisher. Generates branded hero images via PIL, uploads to Webflow assets, publishes the post, and runs the post-publish verifier on the live URL." },
+        { name: "Webflow Post-Publish Verifier", status: "active", desc: "Asserts on live URLs", detail: "webflow_postpublish.py checks schema-in-head, redirect status codes, and meta tags on live URLs after every publish. Fails loud if anything is wrong." },
+        { name: "Blog Hero Image Generator", status: "active", desc: "PIL + Webflow asset uploader", detail: "Reusable PIL image generator wired into the blog publisher. Outputs Finexio-branded heroes at the correct dimensions, uploads them, returns the asset URL." }
+      ]},
+      { cat: "Quality + Reliability", tag: "QUALITY", desc: "The pytest suite, weekly QA routine, and ClickUp escalation path that catch regressions before customers do.", items: [
+        { name: "Finexio QA Pytest Suite", status: "active", desc: "61 tests, weekly", detail: "Wraps webflow_postpublish, axe-core, Lighthouse, and html-validate into one PASS/FAIL command. Runs Mon 8am via scheduled task. Failures escalate to ClickUp automatically." },
+        { name: "Weekly QA Routine", status: "active", desc: "finexio-weekly-qa scheduled task", detail: "Mon 08:00 CT. Runs the full pytest suite against finexio.com. On FAIL, opens a ClickUp ticket with the failing test name, expected, and actual." },
+        { name: "QA Runner CLI", status: "active", desc: "finexio_qa_runner.py", detail: "One command, four checks: schema validation, accessibility, performance, HTML validity. Used in CI and locally before any Webflow publish." }
+      ]}
+    ]
+  };
+
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const SVGNS = "http://www.w3.org/2000/svg";
+  function svg(name, attrs={}) { const el = document.createElementNS(SVGNS, name); for (const k in attrs) el.setAttribute(k, attrs[k]); return el; }
+
+  // ─── DATAFLOW MAP ──────────────────────────────────────────
+  function renderDataflow() {
+    const left = [
+      { id: 'leadership', label: 'Leadership', sub: 'CEO, CSO/CPO' },
+      { id: 'sales', label: 'Sales + GTM', sub: 'AE, BDR, marketing' },
+      { id: 'finance', label: 'Finance', sub: 'CFO, controller' },
+      { id: 'product', label: 'Product + Eng', sub: 'PM, engineering' }
+    ];
+    const right = [
+      { id: 'decks', label: 'Decks', sub: 'finexio-deck-gen', primary: true },
+      { id: 'rfps', label: 'RFP responses', sub: 'rfp-response' },
+      { id: 'prds', label: 'PRDs + briefs', sub: 'prd-pipeline' },
+      { id: 'models', label: 'Financial models', sub: '2-layer audit' },
+      { id: 'webflow', label: 'Webflow updates', sub: 'verified live' },
+      { id: 'briefings', label: 'Briefings', sub: 'sales, board, leadership' }
+    ];
+    const NODE_W = 130, NODE_H = 44, GAP = 16;
+    const leftCount = left.length, rightCount = right.length;
+    const startY = 60;
+    const nodesL = $('#dfNodesLeft');
+    const nodesR = $('#dfNodesRight');
+    const edgesG = $('#dfEdges');
+    const pulsesG = $('#dfPulses');
+
+    // left nodes (right-aligned to gateway)
+    left.forEach((n, i) => {
+      const y = startY + i * (NODE_H + GAP);
+      n.x = 80; n.y = y + NODE_H / 2;
+      const g = svg('g', { class: 'df-node', transform: `translate(${n.x - NODE_W/2}, ${y})` });
+      g.appendChild(svg('rect', { class: 'df-node-rect', width: NODE_W, height: NODE_H, rx: 8 }));
+      const t1 = svg('text', { class: 'df-node-name', x: 12, y: 19 }); t1.textContent = n.label; g.appendChild(t1);
+      const t2 = svg('text', { class: 'df-node-meta', x: 12, y: 33 }); t2.textContent = n.sub; g.appendChild(t2);
+      // dot indicator
+      g.appendChild(svg('circle', { cx: NODE_W - 12, cy: 12, r: 3, fill: '#10B981' }));
+      nodesL.appendChild(g);
+    });
+
+    // right nodes
+    const rGap = (460 - 80 - rightCount * NODE_H) / Math.max(1, rightCount - 1);
+    right.forEach((n, i) => {
+      const y = 50 + i * (NODE_H + Math.max(rGap, 6));
+      n.x = 640; n.y = y + NODE_H / 2;
+      const g = svg('g', { class: 'df-node' + (n.primary ? ' is-hot' : ''), transform: `translate(${n.x - NODE_W/2}, ${y})` });
+      g.appendChild(svg('rect', { class: 'df-node-rect', width: NODE_W, height: NODE_H, rx: 8 }));
+      const t1 = svg('text', { class: 'df-node-name', x: 12, y: 19 }); t1.textContent = n.label; g.appendChild(t1);
+      const t2 = svg('text', { class: 'df-node-meta', x: 12, y: 33 }); t2.textContent = n.sub; g.appendChild(t2);
+      g.appendChild(svg('circle', { cx: NODE_W - 12, cy: 12, r: 3, fill: n.primary ? '#169EE3' : 'rgba(173,221,245,0.4)' }));
+      nodesR.appendChild(g);
+    });
+
+    const coreL = { x: 305, y: 240 };
+    const coreR = { x: 415, y: 240 };
+
+    // bezier path helpers
+    function bezier(x1,y1,x2,y2) {
+      const dx = (x2 - x1) * 0.55;
+      return `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`;
+    }
+
+    // edges from left → coreL, coreR → right
+    const allEdges = [];
+    left.forEach(n => {
+      const p = svg('path', { d: bezier(n.x + NODE_W/2, n.y, coreL.x, coreL.y), class: 'df-edge', stroke: 'url(#dfEdgeIn)' });
+      edgesG.appendChild(p);
+      allEdges.push({ from: { x: n.x + NODE_W/2, y: n.y }, to: coreL, dir: 'in' });
+    });
+    right.forEach(n => {
+      const p = svg('path', { d: bezier(coreR.x, coreR.y, n.x - NODE_W/2, n.y), class: 'df-edge' + (n.primary ? ' is-hot' : ''), stroke: n.primary ? '#169EE3' : 'url(#dfEdgeOut)' });
+      edgesG.appendChild(p);
+      allEdges.push({ from: coreR, to: { x: n.x - NODE_W/2, y: n.y }, dir: 'out', primary: !!n.primary });
+    });
+
+    // travelling packet pulses along bezier paths
+    function spawnPulse() {
+      const e = allEdges[Math.floor(Math.random() * allEdges.length)];
+      const dur = 1100 + Math.random() * 700;
+      const p = svg('circle', { r: 3, fill: e.primary ? '#fff' : '#43BCEC', opacity: '0.9' });
+      pulsesG.appendChild(p);
+      const start = performance.now();
+      function step(t) {
+        const k = Math.min(1, (t - start) / dur);
+        // approximate cubic bezier with control points
+        const c1 = { x: e.from.x + (e.to.x - e.from.x) * 0.55, y: e.from.y };
+        const c2 = { x: e.to.x - (e.to.x - e.from.x) * 0.55, y: e.to.y };
+        const u = 1 - k;
+        const px = u*u*u * e.from.x + 3*u*u*k*c1.x + 3*u*k*k*c2.x + k*k*k * e.to.x;
+        const py = u*u*u * e.from.y + 3*u*u*k*c1.y + 3*u*u*k*c2.y;
+        // simpler accurate cubic for y
+        const py2 = u*u*u * e.from.y + 3*u*u*k*c1.y + 3*u*k*k*c2.y + k*k*k * e.to.y;
+        p.setAttribute('cx', px);
+        p.setAttribute('cy', py2);
+        p.setAttribute('opacity', String(0.95 * (1 - k * 0.4)));
+        if (k < 1) requestAnimationFrame(step); else p.remove();
+      }
+      requestAnimationFrame(step);
+    }
+    setInterval(spawnPulse, 240);
+    for (let i = 0; i < 6; i++) setTimeout(spawnPulse, i * 90);
+  }
+
+  // ─── HEADER METER ANIMATION ─────────────────────────────────
+  function startMeter() {
+    const rps = $('#dfRps'); const med = $('#dfMed');
+    function tick() {
+      rps.textContent = (8 + Math.random() * 6).toFixed(1);
+      med.textContent = Math.round(180 + Math.random() * 140);
+    }
+    tick(); setInterval(tick, 1800);
+  }
+
+  // ─── PROGRAM AGE ───────────────────────────────────────────
+  function startUptime() {
+    const el = $('#uptime');
+    // Program kickoff: 2025-11-01
+    const start = new Date('2025-11-01T00:00:00').getTime();
+    function tick() {
+      const ms = Date.now() - start;
+      const d = Math.floor(ms / 86400000);
+      const h = Math.floor((ms % 86400000) / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      el.textContent = `${d}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+    tick(); setInterval(tick, 1000);
+  }
+
+  // ─── CONSOLE ───────────────────────────────────────────────
+  function startConsole() {
+    const consoleEl = $('#console');
+    const samples = [
+      ['info','skill.load rfp-response v0.5'],
+      ['ok','mcp.salesforce.query opp=37 · 0.8s'],
+      ['ok','library.match question=pricing · 1 hit'],
+      ['info','skill.invoke finexio-deck-gen input=transcript'],
+      ['ok','mcp.webflow.publish blog/agentic-payments-os'],
+      ['ok','audit.layer1 phoenix_v7 · pass'],
+      ['info','audit.layer2 spawn=adversarial sub-agent'],
+      ['ok','audit.layer2 finding=0 · pass'],
+      ['ok','hook.voice-guard scan · 0 banned words'],
+      ['ok','mcp.atlassian.confluence.update OK'],
+      ['warn','hook.voice-guard blocked em-dash · fixed'],
+      ['ok','skill.invoke prd-pipeline · 13/13 UAT'],
+      ['ok','workflow.weekly-qa pytest 61/61 pass'],
+      ['info','memory.write reference_phoenix_v7'],
+    ];
+    const max = 4;
+    function pad(n) { return String(n).padStart(2,'0'); }
+    function nowStr() { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; }
+    function add() {
+      const [lvl, msg] = samples[Math.floor(Math.random() * samples.length)];
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.innerHTML = `<span class="ts">${nowStr()}</span><span class="lvl ${lvl}">${lvl.toUpperCase()}</span><span>${msg}</span>`;
+      consoleEl.prepend(line);
+      while (consoleEl.children.length > max) consoleEl.lastChild.remove();
+    }
+    add(); add(); add();
+    setInterval(add, 1400 + Math.random() * 800);
+  }
+
+  // ─── TICKER ────────────────────────────────────────────────
+  function renderTicker() {
+    const items = [
+      ['SKILLS IN PRODUCTION', '14', 'up'],
+      ['MCPs CONNECTED', '12', 'flat'],
+      ['CASE STUDIES SHIPPED', '15', 'up'],
+      ['WORKFLOWS GREEN', '9/9', 'flat'],
+      ['DISCIPLINE RULES', '11', 'flat'],
+      ['VOICE-GUARD BLOCKS (7d)', '34', 'up'],
+      ['QA PYTEST (last run)', '61/61', 'flat'],
+      ['AUDIT LAYER-1 RUNS', '128', 'up'],
+      ['AUDIT LAYER-2 RUNS', '47', 'up'],
+      ['LIBRARY HIT RATE', '62%', 'up'],
+      ['BLOG POSTS AUTOPUBLISHED', '23', 'up'],
+      ['LAST RELEASE', '2026.5.5', 'flat'],
+    ];
+    const html = items.map(([k,v,d]) => `<span class="ticker-item"><b>${k}</b> ${v} <span class="delta-${d}">${d==='up'?'▲':'•'}</span></span>`).join('');
+    $('#tickerTrack').innerHTML = html + html;
+  }
+
+  // ─── COUNTERS ──────────────────────────────────────────────
+  function animateCounters() {
+    $$('.counter').forEach(el => {
+      const target = parseInt(el.dataset.target, 10) || 0;
+      const dur = 1100, start = performance.now();
+      function step(t) {
+        const k = Math.min(1, (t - start) / dur);
+        const eased = 1 - Math.pow(1 - k, 3);
+        el.textContent = Math.round(target * eased);
+        if (k < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  // ─── INTEGRATIONS ──────────────────────────────────────────
+  function initialsOf(name) { return name.replace(/\(.*?\)/g,'').trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase(); }
+  function renderIntegrations() {
+    const grid = $('#integGrid');
+    const filtersEl = $('#integFilters');
+    const types = Array.from(new Set(DATA.integrations.map(d => d.type))).sort();
+    const filters = ['All', ...types];
+    filtersEl.innerHTML = filters.map((f, i) => {
+      const count = f === 'All' ? DATA.integrations.length : DATA.integrations.filter(d => d.type === f).length;
+      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button">${f}<span class="filter-count">${count}</span></button>`;
+    }).join('');
+    grid.innerHTML = DATA.integrations.map(d => `
+      <div class="integ-card" data-type="${d.type}" data-name="${esc(d.name.toLowerCase())}" data-desc="${esc(d.desc.toLowerCase())}">
+        <div class="integ-top">
+          <div class="integ-name-row">
+            <span class="integ-glyph" data-g="${d.type}">${initialsOf(d.name)}</span>
+            <span class="integ-name">${esc(d.name)}</span>
+          </div>
+          <span class="integ-type" data-type="${d.type}">${d.type}</span>
+        </div>
+        <div class="integ-desc">${esc(d.desc)}</div>
+      </div>
+    `).join('');
+    let af='All', aq='';
+    function apply() {
+      const q = aq.trim().toLowerCase();
+      $$('.integ-card', grid).forEach(c => {
+        c.hidden = !((af==='All' || c.dataset.type===af) && (!q || c.dataset.name.includes(q) || c.dataset.desc.includes(q)));
+      });
+    }
+    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; $$('.filter-chip',filtersEl).forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); af=b.dataset.filter; apply(); });
+    $('#integSearch').addEventListener('input', e => { aq=e.target.value; apply(); });
+  }
+
+  // ─── CRONS w/ sparkline ────────────────────────────────────
+  function spark(seed) {
+    const points = [];
+    let v = 50 + (seed % 30);
+    for (let i = 0; i < 14; i++) { v = Math.max(10, Math.min(90, v + (Math.sin(i+seed) * 18))); points.push(v); }
+    const W = 90, H = 28, step = W / (points.length - 1);
+    const path = points.map((p, i) => `${i===0?'M':'L'} ${(i*step).toFixed(1)} ${(H - (p/100)*H).toFixed(1)}`).join(' ');
+    const area = `${path} L ${W} ${H} L 0 ${H} Z`;
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${area}" fill="rgba(22,158,227,0.18)" stroke="none"/><path d="${path}" fill="none" stroke="#43BCEC" stroke-width="1.4"/></svg>`;
+  }
+  function renderCrons() {
+    const table = $('#cronTable');
+    const filtersEl = $('#cronFilters');
+    const tags = Array.from(new Set(DATA.crons.map(d => d.tag))).sort();
+    const filters = ['All', ...tags];
+    filtersEl.innerHTML = filters.map((f, i) => {
+      const count = f === 'All' ? DATA.crons.length : DATA.crons.filter(d => d.tag === f).length;
+      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button">${f}<span class="filter-count">${count}</span></button>`;
+    }).join('');
+    table.innerHTML = DATA.crons.map((c, i) => {
+      const up = (99.5 + Math.random() * 0.49).toFixed(2);
+      return `
+      <div class="cron-row" data-tag="${c.tag}" data-name="${esc(c.name.toLowerCase())}">
+        <div class="cron-status"><span class="led"></span></div>
+        <div class="cron-name">${esc(c.name)}</div>
+        <div><span class="cron-tag" data-tag="${c.tag}">${c.tag}</span></div>
+        <div class="cron-sched">${esc(c.sched)}</div>
+        <div class="cron-spark">${spark(i*7+3)}</div>
+        <div class="cron-uptime">${up}%</div>
+      </div>`;
+    }).join('');
+    let af='All', aq='';
+    function apply() { const q=aq.trim().toLowerCase(); $$('.cron-row',table).forEach(r => { r.hidden = !((af==='All'||r.dataset.tag===af) && (!q||r.dataset.name.includes(q))); }); }
+    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; $$('.filter-chip',filtersEl).forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); af=b.dataset.filter; apply(); });
+    $('#cronSearch').addEventListener('input', e => { aq=e.target.value; apply(); });
+  }
+
+  // ─── PROVIDERS ────────────────────────────────────────────
+  function renderProviders() {
+    const grid = $('#provGrid');
+    grid.innerHTML = DATA.providers.map(p => `
+      <div class="prov-card${p.primary?' is-primary':''}">
+        <span class="prov-tag">${p.primary?'PRIMARY · 70% of traffic':'CONFIGURED · routed'}</span>
+        <div class="prov-name">${esc(p.name)}</div>
+        <div class="prov-models">${p.models}</div>
+        <div class="prov-meter"><div class="bar"><i style="width:${p.weight}%"></i></div><span class="val">${p.weight}%</span></div>
+      </div>
+    `).join('');
+  }
+
+  // ─── STACK ────────────────────────────────────────────────
+  function renderStack() {
+    const grid = $('#stackGrid');
+    grid.innerHTML = DATA.stack.map(s => `
+      <div class="stack-card">
+        <div class="stack-area">${esc(s.area)}</div>
+        <div class="stack-name">${esc(s.name)}</div>
+        <div class="stack-desc">${esc(s.desc)}</div>
+      </div>
+    `).join('');
+  }
+
+  // ─── PROJECTS ────────────────────────────────────────────
+  function renderProjects() {
+    const container = $('#projContainer');
+    const filtersEl = $('#projFilters');
+    const tags = Array.from(new Set(DATA.projects.map(p => p.tag))).sort();
+    const filters = ['All', ...tags];
+    filtersEl.innerHTML = filters.map((f, i) => {
+      const count = f === 'All'
+        ? DATA.projects.reduce((s, c) => s + c.items.length, 0)
+        : DATA.projects.filter(p => p.tag === f).reduce((s, c) => s + c.items.length, 0);
+      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button">${f}<span class="filter-count">${count}</span></button>`;
+    }).join('');
+    container.innerHTML = DATA.projects.map((p, ci) => {
+      const items = p.items.map((it, ii) => `
+        <div class="proj-item" data-name="${esc(it.name.toLowerCase())}" data-detail="${esc(it.detail.toLowerCase())}" tabindex="0">
+          <span class="proj-item-status" data-status="${it.status}" title="${it.status}"></span>
+          <span class="proj-item-name">${esc(it.name)}</span>
+          <span class="proj-item-desc">${esc(it.desc)}</span>
+          <svg class="proj-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+        <div class="proj-detail">${esc(it.detail)}</div>
+      `).join('');
+      return `
+        <div class="proj-cat" data-tag="${p.tag}">
+          <div class="proj-cat-head">
+            <h3>${esc(p.cat)}</h3>
+            <span class="proj-cat-tag" data-tag="${p.tag}">${p.tag}</span>
+          </div>
+          <p class="proj-cat-desc">${esc(p.desc)}</p>
+          <div class="proj-list">${items}</div>
+        </div>`;
+    }).join('');
+    let af='All', aq='';
+    function apply() {
+      const q = aq.trim().toLowerCase();
+      $$('.proj-cat', container).forEach(cat => {
+        const tagOk = af==='All' || cat.dataset.tag===af;
+        let any = false;
+        $$('.proj-item', cat).forEach(it => {
+          const ok = tagOk && (!q || it.dataset.name.includes(q) || it.dataset.detail.includes(q));
+          it.hidden = !ok; it.nextElementSibling.hidden = !ok; if (ok) any = true;
+        });
+        cat.hidden = !any;
+      });
+    }
+    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; $$('.filter-chip',filtersEl).forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); af=b.dataset.filter; apply(); });
+    $('#projSearch').addEventListener('input', e => { aq=e.target.value; apply(); });
+    container.addEventListener('click', e => { const it=e.target.closest('.proj-item'); if (!it) return; it.classList.toggle('is-open'); });
+    container.addEventListener('keydown', e => { if (e.key!=='Enter' && e.key!==' ') return; const it=e.target.closest('.proj-item'); if (!it) return; e.preventDefault(); it.classList.toggle('is-open'); });
+  }
+
+  // ─── ARCHITECTURE ─────────────────────────────────────────
+  function renderArch() {
+    const layers = [
+      { name: "People",             chips: ["CEO Ernest","CSO/CPO Chris","Sales","Marketing","Finance","Eng"], primary: ["CSO/CPO Chris"] },
+      { name: "Surfaces",           chips: ["Claude Code","Claude Desktop","claude.ai (Finexio org)"], primary: ["Claude Code"], core: true },
+      { name: "Skills",             chips: ["finexio-skills repo","14 Finexio skills","Marketplace skills","Library-first cascade"], primary: ["finexio-skills repo"] },
+      { name: "Memory + Knowledge", chips: ["Project memory","Master KB","Confluence","Drive","Cortex wiki"], primary: ["Master KB"] },
+      { name: "MCP Connections",    chips: ["Salesforce","Webflow","Atlassian","Drive","Sheets","BigQuery","Gmail","HubSpot","Slack","ClickUp","Common Room","Memory"], primary: ["12 MCPs"] },
+      { name: "Discipline + Outputs", chips: ["Voice guard","2-layer audit","Narrative scanner","Weekly QA","Decks","RFPs","PRDs","Models","Webflow","Briefings"], primary: ["2-layer audit"] }
+    ];
+    const diagram = $('#archDiagram');
+    diagram.innerHTML = layers.map((l, i) => {
+      const chips = l.chips.map(c => `<span class="arch-chip${l.primary.includes(c) ? ' is-primary' : ''}">${esc(c)}</span>`).join('');
+      const conn = i < layers.length-1 ? `<div class="arch-connector"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#169EE3" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg></div>` : '';
+      return `
+        <div class="arch-layer${l.core?' is-core':''}">
+          <div class="arch-layer-label"><span class="num">L${String(i).padStart(2,'0')}</span><span class="name">${esc(l.name)}</span></div>
+          <div class="arch-cards">${chips}</div>
+        </div>${conn}`;
+    }).join('');
+  }
+
+  // ─── REVEAL & NAV ─────────────────────────────────────────
+  function setupReveal() {
+    const obs = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    $$('.reveal').forEach(el => obs.observe(el));
+  }
+  function setupNav() {
+    const sections = $$('section.section');
+    const links = $$('.top-nav a');
+    const map = new Map(links.map(a => [a.dataset.sec, a]));
+    const obs = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { links.forEach(l => l.classList.remove('is-active')); const link = map.get(e.target.id); if (link) link.classList.add('is-active'); } }); }, { rootMargin: '-50% 0px -45% 0px' });
+    sections.forEach(s => obs.observe(s));
+  }
+
+  // ─── COMMAND PALETTE ──────────────────────────────────────
+  function setupCmdK() {
+    const overlay = $('#cmdkOverlay');
+    const input = $('#cmdkInput');
+    const list = $('#cmdkList');
+
+    const sectionItems = [
+      { group: 'Sections', label: 'Lifecycle', sub: '01 · the request path', href: '#flow', meta: '6 steps', ico: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' },
+      { group: 'Sections', label: 'Integrations', sub: '02 · the network', href: '#integrations', meta: '19', ico: 'M16 18l6-6-6-6 M8 6l-6 6 6 6' },
+      { group: 'Sections', label: 'Crons', sub: '03 · automation', href: '#crons', meta: '19', ico: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' },
+      { group: 'Sections', label: 'Providers', sub: '04 · inference', href: '#providers', meta: '5', ico: 'M3 18v-6a9 9 0 0 1 18 0v6 M21 19a2 2 0 0 1-2 2h-1v-6h3v4z' },
+      { group: 'Sections', label: 'Projects', sub: '05 · work', href: '#projects', meta: '38', ico: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' },
+      { group: 'Sections', label: 'Stack', sub: '06 · foundation', href: '#stack', meta: '11', ico: 'M12 2L2 7l10 5 10-5z M2 17l10 5 10-5 M2 12l10 5 10-5' },
+      { group: 'Sections', label: 'Architecture', sub: '07 · blueprint', href: '#arch', meta: '6 layers', ico: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10' },
+    ];
+    const integItems = DATA.integrations.map(d => ({ group: 'Integrations', label: d.name, sub: d.desc, href: '#integrations', meta: d.type, ico: 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M23 21v-2a4 4 0 0 0-3-3.87' }));
+    const projItems = DATA.projects.flatMap(c => c.items.map(it => ({ group: 'Projects', label: it.name, sub: c.cat + ' · ' + it.desc, href: '#projects', meta: it.status, ico: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' })));
+    const cronItems = DATA.crons.map(c => ({ group: 'Crons', label: c.name, sub: c.sched, href: '#crons', meta: c.tag, ico: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' }));
+    const all = [...sectionItems, ...integItems, ...cronItems, ...projItems];
+    let idx = 0, filtered = all.slice();
+
+    function render() {
+      let html = '';
+      let lastG = null;
+      filtered.forEach((it, i) => {
+        if (it.group !== lastG) { html += `<div class="cmdk-group">${it.group}</div>`; lastG = it.group; }
+        html += `<div class="cmdk-item${i===idx?' is-active':''}" data-i="${i}">
+          <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${it.ico}"/></svg></span>
+          <span class="lbl">${esc(it.label)}<small>${esc(it.sub)}</small></span>
+          <span class="meta">${esc(it.meta)}</span>
+        </div>`;
+      });
+      list.innerHTML = html || '<div class="cmdk-group">No matches</div>';
+    }
+    function open() { overlay.classList.add('is-open'); input.value=''; filtered = all.slice(); idx=0; render(); setTimeout(()=>input.focus(), 30); }
+    function close() { overlay.classList.remove('is-open'); }
+    function go(it) { close(); setTimeout(() => location.hash = it.href, 60); }
+
+    $('#cmdkOpen').addEventListener('click', open);
+    $('#cmdkOpen2').addEventListener('click', open);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', e => {
+      if ((e.metaKey||e.ctrlKey) && (e.key==='k' || e.key==='K')) { e.preventDefault(); overlay.classList.contains('is-open')? close() : open(); return; }
+      if (e.key === '/' && !overlay.classList.contains('is-open') && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) { e.preventDefault(); open(); return; }
+      if (!overlay.classList.contains('is-open')) return;
+      if (e.key==='Escape') { close(); }
+      else if (e.key==='ArrowDown') { e.preventDefault(); idx = Math.min(filtered.length-1, idx+1); render(); list.querySelector('.is-active')?.scrollIntoView({block:'nearest'}); }
+      else if (e.key==='ArrowUp') { e.preventDefault(); idx = Math.max(0, idx-1); render(); list.querySelector('.is-active')?.scrollIntoView({block:'nearest'}); }
+      else if (e.key==='Enter') { if (filtered[idx]) go(filtered[idx]); }
+    });
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      filtered = !q ? all.slice() : all.filter(it => it.label.toLowerCase().includes(q) || it.sub.toLowerCase().includes(q) || it.group.toLowerCase().includes(q));
+      idx = 0; render();
+    });
+    list.addEventListener('click', e => { const it = e.target.closest('.cmdk-item'); if (!it) return; go(filtered[parseInt(it.dataset.i,10)]); });
+  }
+
+  // ─── INIT ────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    renderDataflow();
+    renderTicker();
+    renderIntegrations();
+    renderCrons();
+    renderProviders();
+    renderStack();
+    renderProjects();
+    renderArch();
+    setupReveal();
+    setupNav();
+    setupCmdK();
+    startMeter();
+    startUptime();
+    startConsole();
+    setTimeout(animateCounters, 200);
+  });
+})();
+</script>
+</body>
+</html>
