@@ -746,7 +746,7 @@ footer.foot::before {
         <div class="stat"><div class="stat-num counter" data-target="14">0</div><div class="stat-label">Finexio skills</div></div>
         <div class="stat"><div class="stat-num counter" data-target="12">0</div><div class="stat-label">MCP connections</div></div>
         <div class="stat"><div class="stat-num counter" data-target="9">0</div><div class="stat-label">Workflows</div></div>
-        <div class="stat"><div class="stat-num counter" data-target="15">0</div><div class="stat-label">Case studies</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="18">0</div><div class="stat-label">Case studies</div></div>
         <div class="stat"><div class="stat-num counter" data-target="11">0</div><div class="stat-label">Discipline rules</div></div>
       </div>
     </div>
@@ -936,7 +936,7 @@ footer.foot::before {
     <header class="section-head reveal">
       <span class="section-num">05 · CASE STUDIES</span>
       <div>
-        <h2 class="section-title">15 things Claude shipped at Finexio.</h2>
+        <h2 class="section-title">18 things Claude shipped at Finexio.</h2>
         <p class="section-sub">Real artifacts. Real outcomes. Each card shows the problem, what Claude did, and what got produced. Click any card for the full story.</p>
       </div>
       <div></div>
@@ -1136,6 +1136,11 @@ footer.foot::before {
         { name: "Finexio QA Pytest Suite", status: "active", desc: "61 tests, weekly", detail: "Wraps webflow_postpublish, axe-core, Lighthouse, and html-validate into one PASS/FAIL command. Runs Mon 8am via scheduled task. Failures escalate to ClickUp automatically." },
         { name: "Weekly QA Routine", status: "active", desc: "finexio-weekly-qa scheduled task", detail: "Mon 08:00 CT. Runs the full pytest suite against finexio.com. On FAIL, opens a ClickUp ticket with the failing test name, expected, and actual." },
         { name: "QA Runner CLI", status: "active", desc: "finexio_qa_runner.py", detail: "One command, four checks: schema validation, accessibility, performance, HTML validity. Used in CI and locally before any Webflow publish." }
+      ]},
+      { cat: "Knowledge + Memory", tag: "KNOWLEDGE", desc: "Karpathy-style personal wiki, persistent memory across conversations, and the semantic search layer that knits them together.", items: [
+        { name: "Cortex Wiki", status: "active", desc: "Karpathy-style Obsidian vault", detail: "Canonical personal knowledge wiki at C:/Users/chris/cortex, mirrored to booyajones/cortex on GitHub. Flat one-level folders (people, companies, products, projects, concepts, playbooks, decisions, daily, inbox) with [[wiki-links]] and frontmatter on every note. Git-versioned. Living knowledge about people, accounts, and projects lives here first." },
+        { name: "Memory MCP", status: "active", desc: "Semantic search across sessions", detail: "Persistent memory MCP server with hybrid semantic search. Cortex is ingested periodically (memory ingest-directory --recursive). Answers 'have we talked about X' across the full corpus, including past Claude sessions and the wiki." },
+        { name: "Project Memory Files", status: "active", desc: "50+ structured notes", detail: "Auto-managed project memory under ~/.claude/projects/.../memory/. Four types: user (who Chris is), feedback (corrections + validations), project (active work context), reference (external systems). Loaded on every conversation via MEMORY.md index." }
       ]}
     ]
   };
@@ -1311,7 +1316,7 @@ footer.foot::before {
     const items = [
       ['SKILLS IN PRODUCTION', '14', 'up'],
       ['MCPs CONNECTED', '12', 'flat'],
-      ['CASE STUDIES SHIPPED', '15', 'up'],
+      ['CASE STUDIES SHIPPED', '18', 'up'],
       ['WORKFLOWS GREEN', '9/9', 'flat'],
       ['DISCIPLINE RULES', '11', 'flat'],
       ['VOICE-GUARD BLOCKS (7d)', '34', 'up'],
