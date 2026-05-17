@@ -1,0 +1,45 @@
+name: verify-build
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+concurrency:
+  group: verify-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Detect project root
+        id: root
+        shell: bash
+        run: |
+          if [ -f package.json ]; then
+            echo "dir=." >> "$GITHUB_OUTPUT"
+          elif [ -f web/package.json ]; then
+            echo "dir=web" >> "$GITHUB_OUTPUT"
+          elif [ -f app/package.json ]; then
+            echo "dir=app" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::No package.json found at ., web/, or app/"
+            exit 1
+          fi
+      - name: Install dependencies
+        working-directory: ${{ steps.root.outputs.dir }}
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+      - name: Build
+        working-directory: ${{ steps.root.outputs.dir }}
+        run: npm run build
