@@ -30,6 +30,7 @@
     --band-bg:#043886; --band-ink:#FFFFFF; --band-dim:#ADDDF5;
     --l0:#E7F5FC; --l1:#ADDDF5; --l2:#5BB9EC; --l3:#169EE3; --l4:#043886;
     --lbl0:#1E4A6E; --lbl-hi:#FFFFFF;
+    --phase1:#ADDDF5; --phase2:#169EE3; --phase3:#043886;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -43,6 +44,7 @@
       --band-bg:#0F2A5C; --band-ink:#F4F6F8; --band-dim:#9CC4F0;
       --l0:#14304F; --l1:#1A4A74; --l2:#1F659B; --l3:#1F8FCC; --l4:#57B7EE;
       --lbl0:#9FB8CE; --lbl-hi:#0B1220;
+      --phase1:#1F659B; --phase2:#1F8FCC; --phase3:#57B7EE;
     }
   }
   :root[data-theme="light"] {
@@ -56,6 +58,7 @@
     --band-bg:#043886; --band-ink:#FFFFFF; --band-dim:#ADDDF5;
     --l0:#E7F5FC; --l1:#ADDDF5; --l2:#5BB9EC; --l3:#169EE3; --l4:#043886;
     --lbl0:#1E4A6E; --lbl-hi:#FFFFFF;
+    --phase1:#ADDDF5; --phase2:#169EE3; --phase3:#043886;
   }
   :root[data-theme="dark"] {
     --paper:#0B1220; --card:#131B2C; --tint:#101828;
@@ -68,6 +71,7 @@
     --band-bg:#0F2A5C; --band-ink:#F4F6F8; --band-dim:#9CC4F0;
     --l0:#14304F; --l1:#1A4A74; --l2:#1F659B; --l3:#1F8FCC; --l4:#57B7EE;
     --lbl0:#9FB8CE; --lbl-hi:#0B1220;
+    --phase1:#1F659B; --phase2:#1F8FCC; --phase3:#57B7EE;
   }
 
   * { box-sizing:border-box; }
@@ -123,20 +127,28 @@
   .orbit-stage { margin:44px 0 0; }
   .orbit-scroll { overflow-x:auto; }
   .orbit-scroll svg { display:block; margin:0 auto; min-width:720px; width:100%; max-width:1080px; height:auto; }
-  .o-orbit { fill:none; stroke:var(--line); stroke-width:1.25; stroke-dasharray:3 7; }
-  .o-ring  { fill:none; stroke:var(--blue); stroke-width:1.5; stroke-dasharray:1 9; stroke-linecap:round; opacity:.9; }
-  .o-spoke { stroke:var(--line); stroke-width:1; }
-  .o-port  { fill:var(--blue); }
+  .o-orbit { fill:none; stroke:var(--meta); stroke-width:1.5; stroke-dasharray:3 7; opacity:.55; }
+  .o-ring  { fill:none; stroke:var(--blue); stroke-width:2; stroke-dasharray:1 9; stroke-linecap:round; opacity:.95; }
+  .o-spoke { stroke:color-mix(in srgb, var(--blue) 30%, var(--line)); stroke-width:1.5; }
+  .o-port  { fill:var(--paper); stroke:var(--blue); stroke-width:2; }
   .o-core  { fill:var(--core-fill); }
   .o-corehalo { fill:none; stroke:var(--brand-ink); stroke-width:1; opacity:.28; }
-  .o-node-in  { fill:var(--chart-a); }
+  .o-node-in  { fill:var(--paper); stroke:var(--chart-a); stroke-width:2.5; }
   .o-node-out { fill:var(--chart-b); }
   .o-halo-in  { fill:none; stroke:var(--chart-a); stroke-width:1.25; opacity:.32; }
   .o-halo-out { fill:none; stroke:var(--chart-b); stroke-width:1.25; opacity:.32; }
   .o-lbl { font-family:'DM Sans Cap','DM Sans',sans-serif; font-weight:600; font-size:12.5px;
            letter-spacing:.08em; fill:var(--ink); }
-  .o-ringtext { font-family:'DM Sans Cap','DM Sans',sans-serif; font-weight:600; font-size:11.5px;
-                letter-spacing:.22em; fill:var(--blue); }
+  .o-pill { fill:var(--paper); stroke:var(--blue); stroke-width:1.5; }
+  .o-pill-cap { font-family:'DM Sans Cap','DM Sans',sans-serif; font-weight:600; font-size:10.5px;
+                letter-spacing:.2em; fill:var(--blue); }
+  .o-pill-txt { font-family:'DM Sans Cap','DM Sans',sans-serif; font-weight:600; font-size:13px;
+                letter-spacing:.08em; fill:var(--brand-ink); }
+  .o-tag  { font-family:'DM Sans Cap','DM Sans',sans-serif; font-weight:600; font-size:9.5px;
+            letter-spacing:.16em; fill:var(--meta); }
+  .o-callout { font-size:12.5px; fill:var(--sub); }
+  .o-leader  { stroke:var(--meta); stroke-width:1; }
+  .o-arrow   { fill:var(--blue); }
   .o-core-cap  { font-family:'DM Sans Cap','DM Sans',sans-serif; font-weight:600; font-size:12px;
                  letter-spacing:.14em; fill:var(--core-dim); }
   .o-core-big  { font-family:'DM Sans Disp','DM Sans',sans-serif; font-weight:800; font-size:34px;
@@ -145,12 +157,10 @@
                  letter-spacing:.12em; fill:var(--core-dim); }
   @keyframes orbitdrift { to { stroke-dashoffset:-640; } }
   @keyframes ringdrift  { to { stroke-dashoffset:-320; } }
-  @keyframes slowspin   { to { transform:rotate(360deg); } }
   .o-orbit { animation:orbitdrift 70s linear infinite; }
   .o-ring  { animation:ringdrift 40s linear infinite; }
-  .o-ringtextg { transform-origin:540px 395px; animation:slowspin 300s linear infinite; }
   @media (prefers-reduced-motion: reduce) {
-    .o-orbit, .o-ring, .o-ringtextg { animation:none; }
+    .o-orbit, .o-ring { animation:none; }
   }
   .orbit-legend {
     display:flex; flex-wrap:wrap; gap:10px 28px; justify-content:center;
@@ -159,7 +169,7 @@
   }
   .orbit-legend li { display:flex; align-items:center; gap:9px; }
   .dot { width:10px; height:10px; border-radius:50%; flex:none; }
-  .dot.in { background:var(--chart-a); } .dot.out { background:var(--chart-b); }
+  .dot.in { background:none; border:2px solid var(--chart-a); } .dot.out { background:var(--chart-b); }
   .dot.ring { background:none; border:1.5px dashed var(--blue); width:11px; height:11px; }
   .rails {
     margin:26px auto 0; max-width:860px; border:1px solid var(--line); border-radius:10px;
@@ -177,8 +187,9 @@
   }
 
   /* invariants */
-  .invar { display:grid; grid-template-columns:repeat(auto-fit, minmax(215px, 1fr)); gap:14px; margin-top:34px; }
-  @media (min-width:1020px) { .invar { grid-template-columns:repeat(5, 1fr); } }
+  .invar { display:grid; grid-template-columns:1fr; gap:14px; margin-top:34px; }
+  @media (min-width:500px) { .invar { grid-template-columns:repeat(2, 1fr); } }
+  @media (min-width:760px) { .invar { grid-template-columns:repeat(3, 1fr); } }
   .invar article { border:1px solid var(--line); border-radius:10px; padding:20px 20px 16px; background:var(--card); }
   .invar .cap { color:var(--blue); display:block; margin-bottom:10px; font-size:11px; }
   .invar h3 { font-size:1rem; }
@@ -197,10 +208,16 @@
   @media (max-width:760px) { .flow { grid-template-columns:1fr; } .flow > div + div { border-left:none; border-top:1px solid var(--line); } }
 
   /* agent catalog */
-  .grouphead { display:flex; align-items:baseline; gap:14px; margin:40px 0 14px; }
-  .grouphead .cap { color:var(--blue); }
-  .grouphead .why { color:var(--meta); font-size:13.5px; }
-  .agents { display:grid; grid-template-columns:repeat(auto-fit, minmax(255px, 1fr)); gap:14px; }
+  .agent-legend { display:flex; flex-wrap:wrap; gap:10px 26px; margin:34px 0 18px; font-size:13px; color:var(--meta); }
+  .agent-legend > span { display:inline-flex; align-items:baseline; gap:9px; }
+  .grp { display:inline-flex; align-items:center; gap:7px; font-family:'DM Sans Cap','DM Sans',sans-serif; font-weight:600;
+         font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--sub); }
+  .grp .gdot { width:8px; height:8px; border-radius:50%; flex:none; }
+  .grp.in .gdot { background:var(--chart-a); }
+  .grp.out .gdot { background:var(--chart-b); }
+  .agents { display:grid; grid-template-columns:1fr; gap:14px; }
+  @media (min-width:560px) { .agents { grid-template-columns:repeat(2, 1fr); } }
+  @media (min-width:860px) { .agents { grid-template-columns:repeat(3, 1fr); } }
   .agents article { border:1px solid var(--line); border-radius:10px; padding:20px; background:var(--card);
                     display:flex; flex-direction:column; gap:8px; }
   .agents h3 { margin:0; }
@@ -212,13 +229,18 @@
   /* ladder */
   .ladder-scroll { overflow-x:auto; margin-top:38px; }
   .ladder { display:grid; grid-template-columns:repeat(5, minmax(128px,1fr)); gap:14px; min-width:700px; }
-  .step .barwrap { height:190px; display:flex; align-items:flex-end; }
-  .step .bar { width:100%; border-radius:6px 6px 2px 2px; }
+  .step .barwrap { height:216px; display:flex; flex-direction:column; justify-content:flex-end; gap:7px; }
+  .step .oversee { color:var(--sub); font-size:10px; letter-spacing:.08em; line-height:1.4; }
+  .step .tread { width:100%; border-radius:6px 6px 2px 2px; }
+  .step .tread.t0 { border:1px solid var(--line); }
+  .ladder-axis { margin:14px 0 0; color:var(--meta); font-size:12.5px; }
+  .ladder-axis .cap { color:var(--brand-ink); font-size:11px; margin-right:10px; }
   .step .tag { margin:12px 0 2px; color:var(--meta); font-size:11px; }
   .step h3 { font-size:.98rem; margin:0 0 4px; }
   .step p { margin:0; font-size:13px; color:var(--sub); line-height:1.5; }
   .ladder-note { margin-top:26px; color:var(--sub); font-size:14.5px; max-width:68ch; }
   .ladder-note strong { color:var(--ink); }
+  .ladder-note + .ladder-note { margin-top:12px; }
 
   /* stats */
   .stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr)); gap:14px; margin-top:34px; }
@@ -227,7 +249,20 @@
                 line-height:1; color:var(--brand-ink); font-variant-numeric:tabular-nums; letter-spacing:-0.01em; }
   .stats .lbl { margin:10px 0 6px; font-weight:600; font-size:14.5px; color:var(--ink); }
   .stats p { margin:0; font-size:13px; color:var(--meta); line-height:1.5; }
+  .stats .big.pair { font-size:1.9rem; line-height:2.5rem; }
+  .stats .big .to { font-size:1rem; font-weight:600; color:var(--meta); letter-spacing:0; }
   .flagnote { margin-top:16px; color:var(--meta); font-size:12.5px; }
+
+  /* actuals baseline strip */
+  .baseline { border:1px solid var(--line); border-radius:12px; padding:22px 22px 18px; margin-top:34px; background:var(--tint); }
+  .baseline-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 16px; margin-bottom:16px; }
+  .baseline-head .cap { color:var(--brand-ink); font-size:11.5px; }
+  .badge.actual { color:var(--brand-ink); border-color:var(--brand-ink); background:var(--wash); }
+  .baseline-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(165px,1fr)); gap:14px 22px; }
+  .baseline-grid .big { font-family:'DM Sans Disp','DM Sans',sans-serif; font-weight:800; font-size:1.9rem; line-height:1.05; color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-0.01em; }
+  .baseline-grid .lbl { margin-top:6px; font-size:12.5px; color:var(--sub); line-height:1.45; }
+  .baseline-note { margin:16px 0 0; font-size:12.5px; color:var(--meta); line-height:1.55; }
+  .baseline-note strong { color:var(--sub); font-weight:600; }
 
   /* chart */
   figure.chart { margin:44px 0 0; border:1px solid var(--line); border-radius:12px; padding:22px 22px 12px; background:var(--card); }
@@ -242,10 +277,13 @@
   .chart-scroll svg { display:block; min-width:640px; width:100%; height:auto; }
   .grid-l { stroke:var(--line-soft); stroke-width:1; }
   .axis-t { font-family:'DM Sans Cap','DM Sans',sans-serif; font-size:11px; letter-spacing:.06em; fill:var(--meta); }
-  .ser-a { fill:none; stroke:var(--chart-a); stroke-width:2.5; stroke-linejoin:round; stroke-linecap:round; }
+  .ser-a { fill:none; stroke:var(--chart-a); stroke-width:2.5; stroke-linejoin:round; stroke-linecap:butt; stroke-dasharray:6 5; }
   .ser-b { fill:none; stroke:var(--chart-b); stroke-width:2.5; stroke-linejoin:round; stroke-linecap:round; }
   .end-a { fill:var(--chart-a); stroke:var(--card); stroke-width:2; }
   .end-b { fill:var(--chart-b); stroke:var(--card); stroke-width:2; }
+  .wedge { fill:var(--blue); opacity:.11; }
+  .phz-l { stroke:var(--meta); stroke-width:1; opacity:.5; }
+  .wlab { font-family:'DM Sans','DM Sans Cap',sans-serif; font-size:12px; fill:var(--sub); }
   .dlab { font-family:'DM Sans','DM Sans Cap',sans-serif; font-weight:600; font-size:12.5px; }
   .dlab.a { fill:var(--chart-a); } .dlab.b { fill:var(--chart-b); }
   :root[data-theme="dark"] .dlab.a, :root[data-theme="dark"] .dlab.b { fill:var(--ink); }
@@ -285,26 +323,72 @@
   /* phases */
   .phases { display:grid; grid-template-columns:repeat(auto-fit, minmax(265px,1fr)); gap:14px; margin-top:34px; }
   .phases article { border:1px solid var(--line); border-radius:12px; padding:24px 22px; background:var(--card);
-                    border-top:4px solid var(--soft); }
-  .phases article:nth-child(2) { border-top-color:var(--blue); }
-  .phases article:nth-child(3) { border-top-color:var(--brand-fill); }
+                    border-top:4px solid var(--phase1); }
+  .phases article:nth-child(2) { border-top-color:var(--phase2); }
+  .phases article:nth-child(3) { border-top-color:var(--phase3); }
   .phases .cap { color:var(--meta); font-size:11px; }
   .phases h3 { font-family:'DM Sans Disp','DM Sans',sans-serif; font-weight:800; font-size:1.3rem; margin:8px 0 10px; }
   .phases p { margin:0 0 14px; font-size:14px; color:var(--sub); line-height:1.55; }
   .phases .sees { border-top:1px solid var(--line); padding-top:12px; font-size:13px; color:var(--sub); }
   .phases .sees .cap { color:var(--brand-ink); display:block; margin-bottom:4px; font-size:10px; }
+  .ask { display:grid; grid-template-columns:repeat(auto-fit, minmax(215px,1fr)); gap:18px 28px; margin-top:34px;
+         border:1px solid var(--line); border-radius:12px; background:var(--card); padding:24px 24px 20px; }
+  .ask .cap { color:var(--brand-ink); display:block; margin-bottom:6px; font-size:10.5px; }
+  .ask .num { font-family:'DM Sans Disp','DM Sans',sans-serif; font-weight:800; font-size:1.9rem; line-height:1.1;
+              color:var(--ink); letter-spacing:-0.01em; font-variant-numeric:tabular-nums; }
+  .ask p { margin:6px 0 0; font-size:13.5px; color:var(--sub); line-height:1.55; }
+  .phases-note { margin-top:26px; color:var(--sub); font-size:14.5px; max-width:68ch; }
 
-  /* risks */
-  .risks { margin-top:34px; border-top:1px solid var(--line); }
-  .risks > div { display:grid; grid-template-columns:230px 1fr; gap:10px 34px; padding:20px 0; border-bottom:1px solid var(--line); }
-  .risks h3 { font-size:.98rem; margin:0; }
-  .risks .cap { display:block; color:var(--meta); font-size:10px; margin-bottom:5px; }
-  .risks p { margin:0; font-size:14.5px; color:var(--sub); line-height:1.6; }
-  @media (max-width:700px) { .risks > div { grid-template-columns:1fr; } }
+  .grouphead { display:flex; align-items:baseline; gap:14px; margin:44px 0 0; }
+  .grouphead .cap { color:var(--blue); }
+  .grouphead .why { color:var(--meta); font-size:13.5px; }
+
+  /* risks + competitive field (shared row layout) */
+  .risks, .field { margin-top:34px; border-top:1px solid var(--line); }
+  .risks > div, .field > div { display:grid; grid-template-columns:230px 1fr; gap:10px 34px; padding:20px 0; border-bottom:1px solid var(--line); }
+  .field { margin-top:6px; }
+  .risks h3, .field h3 { font-size:.98rem; margin:0; }
+  .risks .cap, .field .cap { display:block; color:var(--meta); font-size:10px; margin-bottom:5px; }
+  .risks p, .field p { margin:0; font-size:14.5px; color:var(--sub); line-height:1.6; }
+  @media (max-width:700px) { .risks > div, .field > div { grid-template-columns:1fr; } }
 
   footer { margin-top:80px; border-top:1px solid var(--line); padding:30px 0 60px; color:var(--meta); font-size:13px; }
   footer p { margin:0 0 8px; max-width:76ch; }
   footer .cap { color:var(--brand-ink); font-size:10.5px; }
+
+  /* print */
+  @media print {
+    @page { margin:14mm 12mm; }
+    :root, :root[data-theme="dark"] {
+      --paper:#FFFFFF; --card:#FFFFFF; --tint:#F4F6F8;
+      --ink:#0B1220; --sub:#3E4857; --meta:#5D6878;
+      --brand-fill:#043886; --brand-ink:#043886; --blue:#169EE3;
+      --wash:#E7F5FC; --soft:#ADDDF5;
+      --line:#D9DEE4; --line-soft:#ECECEC;
+      --chart-a:#0A4FA8; --chart-b:#1490DB;
+      --core-fill:#043886; --core-ink:#FFFFFF; --core-dim:#ADDDF5;
+      --band-bg:#043886; --band-ink:#FFFFFF; --band-dim:#ADDDF5;
+      --l0:#E7F5FC; --l1:#ADDDF5; --l2:#5BB9EC; --l3:#169EE3; --l4:#043886;
+      --lbl0:#1E4A6E; --lbl-hi:#FFFFFF;
+      --phase1:#ADDDF5; --phase2:#169EE3; --phase3:#043886;
+    }
+    body { font-size:13px; }
+    .hero { padding:36px 0 24px; }
+    section { padding:34px 0 8px; }
+    .part { margin-top:34px; }
+    .band, .o-core, .step .tread, .flow > div, .lvl, .proof span, .phases article, .rails {
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .band { padding:30px 32px; }
+    .invar article, .agents article, .phases article, figure.chart, .band, .risks > div,
+    .stats article, .forces article, .flow, .rails, .ladder-scroll, .orbit-stage { break-inside:avoid; page-break-inside:avoid; }
+    .orbit-scroll svg, .chart-scroll svg { min-width:0; }
+    .ladder { min-width:0; }
+    .orbit-scroll, .chart-scroll, .ladder-scroll { overflow-x:visible; }
+    details.tbl summary { display:none; }
+    .tip { display:none; }
+    .o-orbit, .o-ring, .o-ringtextg { animation:none; }
+  }
 </style>
 
 <div class="wrap">
@@ -321,42 +405,47 @@
 
   <div class="orbit-stage">
     <div class="orbit-scroll">
-      <svg viewBox="0 0 1080 790" role="img" aria-label="The Xeos architecture: a deterministic core at the center, a commit boundary around it, and nine AI agents on two orbits. Operations and protection agents orbit close to the core; growth and service agents orbit at the edge. Agents connect only to the boundary, never to the core.">
+      <svg viewBox="0 0 1080 790" role="img" aria-label="The Xeos architecture: a deterministic core at the center, a commit boundary around it, and nine AI agents on two orbits. Operate and Protect agents orbit close to the money; Grow and Serve agents work the edge. Agents connect only to the boundary, never to the core. Proposals enter at ports on the boundary; nothing else does.">
         <!-- orbits -->
         <circle class="o-orbit" cx="540" cy="395" r="250"></circle>
         <circle class="o-orbit" cx="540" cy="395" r="345"></circle>
 
         <!-- spokes: each agent connects to the boundary, never the core -->
+        <defs>
+          <marker id="arrin" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path class="o-arrow" d="M0,0 L10,5 L0,10 Z"></path>
+          </marker>
+        </defs>
+        <circle class="o-ring" cx="540" cy="395" r="200"></circle>
         <g>
-          <line class="o-spoke" x1="716.8" y1="218.2" x2="681.4" y2="253.6"></line>
-          <line class="o-spoke" x1="716.8" y1="571.8" x2="681.4" y2="536.4"></line>
-          <line class="o-spoke" x1="363.2" y1="571.8" x2="398.6" y2="536.4"></line>
-          <line class="o-spoke" x1="363.2" y1="218.2" x2="398.6" y2="253.6"></line>
-          <line class="o-spoke" x1="540" y1="50" x2="540" y2="195"></line>
-          <line class="o-spoke" x1="868.1" y1="288.4" x2="730.2" y2="333.2"></line>
-          <line class="o-spoke" x1="742.8" y1="674.1" x2="657.6" y2="556.8"></line>
-          <line class="o-spoke" x1="337.2" y1="674.1" x2="422.4" y2="556.8"></line>
-          <line class="o-spoke" x1="211.9" y1="288.4" x2="349.8" y2="333.2"></line>
+          <line class="o-spoke" x1="716.8" y1="218.2" x2="688.5" y2="246.5" marker-end="url(#arrin)"></line>
+          <line class="o-spoke" x1="716.8" y1="571.8" x2="688.5" y2="543.5" marker-end="url(#arrin)"></line>
+          <line class="o-spoke" x1="363.2" y1="571.8" x2="391.5" y2="543.5" marker-end="url(#arrin)"></line>
+          <line class="o-spoke" x1="363.2" y1="218.2" x2="391.5" y2="246.5" marker-end="url(#arrin)"></line>
+          <line class="o-spoke" x1="540" y1="50" x2="540" y2="159" marker-end="url(#arrin)"></line>
+          <line class="o-spoke" x1="868.1" y1="288.4" x2="739.7" y2="330.1" marker-end="url(#arrin)"></line>
+          <line class="o-spoke" x1="742.8" y1="674.1" x2="663.4" y2="564.9" marker-end="url(#arrin)"></line>
+          <line class="o-spoke" x1="337.2" y1="674.1" x2="416.6" y2="564.9" marker-end="url(#arrin)"></line>
+          <line class="o-spoke" x1="211.9" y1="288.4" x2="340.3" y2="330.1" marker-end="url(#arrin)"></line>
           <!-- ports where proposals arrive at the boundary -->
-          <circle class="o-port" cx="681.4" cy="253.6" r="3"></circle>
-          <circle class="o-port" cx="681.4" cy="536.4" r="3"></circle>
-          <circle class="o-port" cx="398.6" cy="536.4" r="3"></circle>
-          <circle class="o-port" cx="398.6" cy="253.6" r="3"></circle>
-          <circle class="o-port" cx="540" cy="195" r="3"></circle>
-          <circle class="o-port" cx="730.2" cy="333.2" r="3"></circle>
-          <circle class="o-port" cx="657.6" cy="556.8" r="3"></circle>
-          <circle class="o-port" cx="422.4" cy="556.8" r="3"></circle>
-          <circle class="o-port" cx="349.8" cy="333.2" r="3"></circle>
+          <circle class="o-port" cx="681.4" cy="253.6" r="5"></circle>
+          <circle class="o-port" cx="681.4" cy="536.4" r="5"></circle>
+          <circle class="o-port" cx="398.6" cy="536.4" r="5"></circle>
+          <circle class="o-port" cx="398.6" cy="253.6" r="5"></circle>
+          <circle class="o-port" cx="730.2" cy="333.2" r="5"></circle>
+          <circle class="o-port" cx="657.6" cy="556.8" r="5"></circle>
+          <circle class="o-port" cx="422.4" cy="556.8" r="5"></circle>
+          <circle class="o-port" cx="349.8" cy="333.2" r="5"></circle>
         </g>
 
-        <!-- commit boundary -->
-        <circle class="o-ring" cx="540" cy="395" r="200"></circle>
-        <g class="o-ringtextg">
-          <defs>
-            <path id="ringpath" d="M 540 173 A 222 222 0 1 1 539.9 173"></path>
-          </defs>
-          <text class="o-ringtext"><textPath href="#ringpath">AGENTS PROPOSE · THE CORE COMMITS · AGENTS PROPOSE · THE CORE COMMITS · AGENTS PROPOSE · THE CORE COMMITS · AGENTS PROPOSE ·</textPath></text>
-        </g>
+        <!-- commit boundary lockup -->
+        <rect class="o-pill" x="364" y="170" width="352" height="50" rx="25"></rect>
+        <text class="o-pill-cap" x="540" y="190" text-anchor="middle">THE COMMIT BOUNDARY</text>
+        <text class="o-pill-txt" x="540" y="209" text-anchor="middle" textLength="316" lengthAdjust="spacingAndGlyphs">AGENTS PROPOSE, THE CORE COMMITS</text>
+        <circle class="o-port" cx="540" cy="170" r="5"></circle>
+        <line class="o-leader" x1="549" y1="163" x2="594" y2="134"></line>
+        <text class="o-callout" x="602" y="131">Proposals enter here.</text>
+        <text class="o-callout" x="602" y="148">Nothing else does.</text>
 
         <!-- the core -->
         <circle class="o-corehalo" cx="540" cy="395" r="128"></circle>
@@ -367,34 +456,43 @@
 
         <!-- inner orbit: operations + protection -->
         <g>
-          <circle class="o-halo-in" cx="716.8" cy="218.2" r="12"></circle><circle class="o-node-in" cx="716.8" cy="218.2" r="7"></circle>
-          <circle class="o-halo-in" cx="716.8" cy="571.8" r="12"></circle><circle class="o-node-in" cx="716.8" cy="571.8" r="7"></circle>
-          <circle class="o-halo-in" cx="363.2" cy="571.8" r="12"></circle><circle class="o-node-in" cx="363.2" cy="571.8" r="7"></circle>
-          <circle class="o-halo-in" cx="363.2" cy="218.2" r="12"></circle><circle class="o-node-in" cx="363.2" cy="218.2" r="7"></circle>
+          <circle class="o-halo-in" cx="716.8" cy="218.2" r="14"></circle><circle class="o-node-in" cx="716.8" cy="218.2" r="9"></circle>
+          <circle class="o-halo-in" cx="716.8" cy="571.8" r="14"></circle><circle class="o-node-in" cx="716.8" cy="571.8" r="9"></circle>
+          <circle class="o-halo-in" cx="363.2" cy="571.8" r="14"></circle><circle class="o-node-in" cx="363.2" cy="571.8" r="9"></circle>
+          <circle class="o-halo-in" cx="363.2" cy="218.2" r="14"></circle><circle class="o-node-in" cx="363.2" cy="218.2" r="9"></circle>
           <text class="o-lbl" x="734" y="213" text-anchor="start">EXCEPTIONS</text>
+          <text class="o-tag" x="734" y="229" text-anchor="start">OPERATE</text>
           <text class="o-lbl" x="734" y="577" text-anchor="start">RECONCILIATION</text>
+          <text class="o-tag" x="734" y="593" text-anchor="start">OPERATE</text>
           <text class="o-lbl" x="346" y="577" text-anchor="end">FRAUD SENTINEL</text>
+          <text class="o-tag" x="346" y="593" text-anchor="end">PROTECT</text>
           <text class="o-lbl" x="346" y="213" text-anchor="end">COMPLIANCE</text>
+          <text class="o-tag" x="346" y="229" text-anchor="end">PROTECT</text>
         </g>
 
         <!-- outer orbit: growth + service -->
         <g>
-          <circle class="o-halo-out" cx="540" cy="50" r="12"></circle><circle class="o-node-out" cx="540" cy="50" r="7"></circle>
-          <circle class="o-halo-out" cx="868.1" cy="288.4" r="12"></circle><circle class="o-node-out" cx="868.1" cy="288.4" r="7"></circle>
-          <circle class="o-halo-out" cx="742.8" cy="674.1" r="12"></circle><circle class="o-node-out" cx="742.8" cy="674.1" r="7"></circle>
-          <circle class="o-halo-out" cx="337.2" cy="674.1" r="12"></circle><circle class="o-node-out" cx="337.2" cy="674.1" r="7"></circle>
-          <circle class="o-halo-out" cx="211.9" cy="288.4" r="12"></circle><circle class="o-node-out" cx="211.9" cy="288.4" r="7"></circle>
-          <text class="o-lbl" x="540" y="30" text-anchor="middle">SUPPLIER ENABLEMENT</text>
+          <circle class="o-halo-out" cx="540" cy="50" r="14"></circle><circle class="o-node-out" cx="540" cy="50" r="9"></circle>
+          <circle class="o-halo-out" cx="868.1" cy="288.4" r="14"></circle><circle class="o-node-out" cx="868.1" cy="288.4" r="9"></circle>
+          <circle class="o-halo-out" cx="742.8" cy="674.1" r="14"></circle><circle class="o-node-out" cx="742.8" cy="674.1" r="9"></circle>
+          <circle class="o-halo-out" cx="337.2" cy="674.1" r="14"></circle><circle class="o-node-out" cx="337.2" cy="674.1" r="9"></circle>
+          <circle class="o-halo-out" cx="211.9" cy="288.4" r="14"></circle><circle class="o-node-out" cx="211.9" cy="288.4" r="9"></circle>
+          <text class="o-lbl" x="540" y="22" text-anchor="middle">SUPPLIER ENABLEMENT</text>
+          <text class="o-tag" x="540" y="37" text-anchor="middle">GROW</text>
           <text class="o-lbl" x="886" y="293" text-anchor="start">IMPLEMENTATION</text>
+          <text class="o-tag" x="886" y="309" text-anchor="start">GROW</text>
           <text class="o-lbl" x="756" y="698" text-anchor="start">WORKING CAPITAL</text>
+          <text class="o-tag" x="756" y="714" text-anchor="start">GROW</text>
           <text class="o-lbl" x="324" y="698" text-anchor="end">SUPPLIER SUPPORT</text>
+          <text class="o-tag" x="324" y="714" text-anchor="end">SERVE</text>
           <text class="o-lbl" x="196" y="293" text-anchor="end">AP COPILOT</text>
+          <text class="o-tag" x="196" y="309" text-anchor="end">SERVE</text>
         </g>
       </svg>
     </div>
     <ul class="orbit-legend">
-      <li><span class="dot in"></span>Operations and protection agents work closest to the money</li>
-      <li><span class="dot out"></span>Growth and service agents work the edge</li>
+      <li><span class="dot in"></span>Operate + Protect orbit close to the money</li>
+      <li><span class="dot out"></span>Grow + Serve work the edge</li>
       <li><span class="dot ring"></span>The commit boundary: the only door to the core</li>
     </ul>
     <div class="rails">
@@ -410,7 +508,7 @@
       <h2>The kernel was never the ceiling</h2>
     </div>
     <div class="prose">
-      <p>Finexio built a business on a hard promise: supplier payments that execute perfectly. Files in, money out, reconciled, at scale, on rails we orchestrate with J.P. Morgan Chase as the issuing bank. That promise does not change. It becomes the kernel.</p>
+      <p>Finexio built a business on a hard promise: supplier payments that execute perfectly. Files in, money out, reconciled, at scale, on rails we orchestrate with J.P. Morgan Chase as the issuing bank. Today that engine moves roughly $6 billion in supplier payments a year for 95 paying customers, across a network of more than 400,000 enrolled suppliers. Those are actuals, not targets. Exact figures and cohort detail live in Phoenix v7. The promise does not change. It becomes the kernel.</p>
       <p>An operating system protects its kernel. No application writes to the disk directly. It asks the kernel, through a system call, and the kernel decides. Xeos treats money exactly this way. <strong>The deterministic core is the kernel. Agents are the applications.</strong></p>
       <p>Everything else our industry does with people, the calling, the chasing, the matching, the checking, the explaining, is judgment work. Judgment work is what AI agents are now genuinely good at. So we put the judgment in agents, keep the money in the kernel, and let the two meet at one narrow, audited boundary.</p>
     </div>
@@ -423,14 +521,15 @@
       <h2>One rule makes this credible</h2>
     </div>
     <div class="prose">
-      <p>Boards should be skeptical of AI near money. So are we. Xeos is built on a single non-negotiable rule: <strong>agents propose, the core commits.</strong> No model output ever touches a rail. Five invariants enforce it.</p>
+      <p>Boards should be skeptical of AI near money. So are we. Xeos is built on a single non-negotiable rule: <strong>agents propose, the core commits.</strong> No model output ever touches a rail. Six invariants enforce it.</p>
     </div>
     <div class="invar">
       <article><span class="cap">Invariant 01</span><h3>No keys in agent space</h3><p>No agent holds credentials to any rail. There is nothing to steal and nothing to hallucinate with.</p></article>
       <article><span class="cap">Invariant 02</span><h3>Typed proposals only</h3><p>An agent asks for exactly one thing in a machine-checkable shape: amount, counterparty, rail, reason. Prose is never an instruction.</p></article>
-      <article><span class="cap">Invariant 03</span><h3>A deterministic gate</h3><p>The policy engine applies limits, allow-lists, velocity rules, and dual control. Same proposal, same verdict, every time.</p></article>
+      <article><span class="cap">Invariant 03</span><h3>A deterministic gate</h3><p>The policy engine applies limits, allow-lists, velocity rules, and dual control. Same proposal against the same ledger state, same verdict, every time. The state the gate saw is captured with the verdict, so any decision replays exactly.</p></article>
       <article><span class="cap">Invariant 04</span><h3>Commits that cannot double-fire</h3><p>Idempotent execution on a double-entry ledger. Retries are safe by construction, not by luck.</p></article>
       <article><span class="cap">Invariant 05</span><h3>A record that replays</h3><p>Every proposal, verdict, and commit is logged completely enough to replay any decision, any day, for any auditor.</p></article>
+      <article><span class="cap">Invariant 06</span><h3>Inputs guarded like the gate</h3><p>Changes to bank details, allow-lists, limits, and policy go through the same propose, verify, commit path, with dual control and out-of-band verification on any change that redirects money. Policy versions land in the same replay log.</p></article>
     </div>
     <div class="flow" role="list">
       <div role="listitem"><span class="n">STEP 1</span><span class="cap">Propose</span><p>An agent submits a typed intent. It can ask for anything. It can do nothing.</p></div>
@@ -449,29 +548,22 @@
       <p>Each agent owns a job that today scales with headcount. Each one starts on a leash and earns autonomy with measured accuracy. Together they are the operating company around the payment rails.</p>
     </div>
 
-    <div class="grouphead"><span class="cap">Grow</span><span class="why">The agents that expand revenue per payment and speed to revenue</span></div>
-    <div class="agents">
-      <article><h3>Supplier Enablement</h3><p>Works the entire supplier file, not just the top of it. Contacts, verifies, and converts suppliers from check to ACH to virtual card, in any language, without a queue. Every conversion is recurring bps revenue.</p><span class="lvl">Starts L1 · Targets L3</span></article>
-      <article><h3>Implementation</h3><p>Maps a new customer's AP file to Xeos, resolves the format edge cases, and stages the first payment run in days. Time to revenue becomes a sales weapon.</p><span class="lvl">Starts L1 · Targets L3</span></article>
-      <article><h3>Working Capital</h3><p>Reads the payment file like a strategist: rail mix, timing, discount capture. Turns payment data into an advisory surface customers will pay for.</p><span class="lvl">Starts L0 · Targets L2</span></article>
+    <div class="agent-legend">
+      <span><span class="grp out"><span class="gdot"></span>Grow</span>Revenue per payment and speed to revenue</span>
+      <span><span class="grp in"><span class="gdot"></span>Operate</span>The labor that scaled with volume</span>
+      <span><span class="grp in"><span class="gdot"></span>Protect</span>Every payment watched, not a sample</span>
+      <span><span class="grp out"><span class="gdot"></span>Serve</span>Every counterparty individually attended</span>
     </div>
-
-    <div class="grouphead"><span class="cap">Operate</span><span class="why">The agents that absorb the labor that used to scale with volume</span></div>
     <div class="agents">
-      <article><h3>Exceptions</h3><p>Owns returned, failed, and misdirected payments end to end. Investigates, drafts the fix, and executes it the only way it can: as a proposal to the core.</p><span class="lvl">Starts L1 · Targets L4</span></article>
-      <article><h3>Reconciliation</h3><p>Matches remittances, chases breaks, and keeps the ledger continuously closed instead of monthly closed.</p><span class="lvl">Starts L1 · Targets L4</span></article>
-    </div>
-
-    <div class="grouphead"><span class="cap">Protect</span><span class="why">The agents that watch every payment, because attention no longer has to be rationed</span></div>
-    <div class="agents">
-      <article><h3>Fraud Sentinel</h3><p>Reviews every account change and anomaly, not a sample. Its strongest power is deterministic: it can propose a hold. Bank-change verification stays a fixed protocol, never a judgment call.</p><span class="lvl">Starts L0 · Targets L3</span></article>
-      <article><h3>Compliance</h3><p>Triages screening hits, keeps KYB current, and assembles audit evidence on demand instead of in a scramble. Sanctions screening itself stays deterministic.</p><span class="lvl">Starts L1 · Targets L3</span></article>
-    </div>
-
-    <div class="grouphead"><span class="cap">Serve</span><span class="why">The agents that make ten thousand counterparties feel individually attended</span></div>
-    <div class="agents">
-      <article><h3>Supplier Support</h3><p>Answers "where is my payment" with the actual answer, drafts reissues for approval, and speaks every language the supplier file does.</p><span class="lvl">Starts L1 · Targets L4</span></article>
-      <article><h3>AP Copilot</h3><p>The customer-facing surface of the platform: plain-language answers over payment data, monthly operations summaries, anomaly callouts before the customer notices.</p><span class="lvl">Starts L1 · Targets L3</span></article>
+      <article><span class="grp out"><span class="gdot"></span>Grow</span><h3>Supplier Enablement</h3><p>Works the entire supplier file, not just the top of it. Leads with virtual card, falls back to monetized ACH, and never parks a supplier on free ACH, where card conversion goes to die. Then it keeps what it won: chases unprocessed virtual cards before they expire, re-verifies processing contacts, and wins back suppliers who slip from card to ACH. Every acceptance is recurring interchange revenue.</p><span class="lvl">Starts L1 · Targets L3</span></article>
+      <article><span class="grp out"><span class="gdot"></span>Grow</span><h3>Implementation</h3><p>Maps a new customer's AP file to Xeos, resolves the format edge cases, and stages the first payment run in days. Time to revenue becomes a sales weapon.</p><span class="lvl">Starts L1 · Targets L3</span></article>
+      <article><span class="grp out"><span class="gdot"></span>Grow</span><h3>Working Capital</h3><p>Reads the payment file like a strategist and monetizes through the flows it shapes: early-pay discounts captured and shared, supplier acceleration priced as spread, rail timing that feeds card mix. Not advice fees.</p><span class="lvl">Starts L0 · Targets L2</span></article>
+      <article><span class="grp in"><span class="gdot"></span>Operate</span><h3>Exceptions</h3><p>Owns returned, failed, and misdirected payments end to end. Investigates, drafts the fix, and executes it the only way it can: as a proposal to the core.</p><span class="lvl">Starts L1 · Targets L4</span></article>
+      <article><span class="grp in"><span class="gdot"></span>Operate</span><h3>Reconciliation</h3><p>Matches remittances, chases breaks, and keeps the ledger continuously closed instead of monthly closed.</p><span class="lvl">Starts L1 · Targets L4</span></article>
+      <article><span class="grp in"><span class="gdot"></span>Protect</span><h3>Fraud Sentinel</h3><p>Reviews every account change and anomaly, not a sample. Its one power is a proposal the core always honors: hold the payment. A hold takes effect immediately, because pausing money is cheap and reversible while a misdirected payment is neither. Bank-change verification stays a fixed protocol, never a judgment call.</p><span class="lvl">Starts L0 · Targets L3</span></article>
+      <article><span class="grp in"><span class="gdot"></span>Protect</span><h3>Compliance</h3><p>Triages screening hits, keeps KYB current, and assembles audit evidence on demand instead of in a scramble. Screening always runs, no agent can waive it, and only a named human clears a hit.</p><span class="lvl">Starts L1 · Targets L3</span></article>
+      <article><span class="grp out"><span class="gdot"></span>Serve</span><h3>Supplier Support</h3><p>Answers "where is my payment" with the actual answer, drafts reissues for approval, and speaks every language the supplier file does.</p><span class="lvl">Starts L1 · Targets L4</span></article>
+      <article><span class="grp out"><span class="gdot"></span>Serve</span><h3>AP Copilot</h3><p>The customer-facing surface of the platform: plain-language answers over payment data, monthly operations summaries, anomaly callouts before the customer notices.</p><span class="lvl">Starts L1 · Targets L3</span></article>
     </div>
   </section>
 
@@ -485,43 +577,64 @@
     </div>
     <div class="ladder-scroll">
       <div class="ladder">
-        <div class="step"><div class="barwrap"><div class="bar" style="height:52px;background:var(--l0)"></div></div><p class="cap tag">Level 0</p><h3>Observe</h3><p>Reads everything, touches nothing. Builds its baseline against human decisions.</p></div>
-        <div class="step"><div class="barwrap"><div class="bar" style="height:86px;background:var(--l1)"></div></div><p class="cap tag">Level 1</p><h3>Draft</h3><p>Prepares the work. A human reviews and sends every single piece.</p></div>
-        <div class="step"><div class="barwrap"><div class="bar" style="height:120px;background:var(--l2)"></div></div><p class="cap tag">Level 2</p><h3>Act on approval</h3><p>Executes when a human approves. The human is still in every loop.</p></div>
-        <div class="step"><div class="barwrap"><div class="bar" style="height:154px;background:var(--l3)"></div></div><p class="cap tag">Level 3</p><h3>Act, sampled</h3><p>Executes inside limits. Humans audit samples and own every edge case.</p></div>
-        <div class="step"><div class="barwrap"><div class="bar" style="height:190px;background:var(--l4)"></div></div><p class="cap tag">Level 4</p><h3>Autonomous in bounds</h3><p>Full speed inside hard policy limits. The kill switch stays, always.</p></div>
+        <div class="step"><div class="barwrap"><span class="oversee cap">Human does everything</span><div class="tread t0" style="height:34px;background:var(--l0)"></div></div><p class="cap tag">Level 0</p><h3>Observe</h3><p>Reads everything, touches nothing. Builds its baseline against human decisions.</p></div>
+        <div class="step"><div class="barwrap"><span class="oversee cap">Human sends 100%</span><div class="tread" style="height:68px;background:var(--l1)"></div></div><p class="cap tag">Level 1</p><h3>Draft</h3><p>Prepares the work. A human reviews and sends every single piece.</p></div>
+        <div class="step"><div class="barwrap"><span class="oversee cap">Human approves each</span><div class="tread" style="height:102px;background:var(--l2)"></div></div><p class="cap tag">Level 2</p><h3>Act on approval</h3><p>Executes when a human approves. The human is still in every loop.</p></div>
+        <div class="step"><div class="barwrap"><span class="oversee cap">Human audits samples</span><div class="tread" style="height:136px;background:var(--l3)"></div></div><p class="cap tag">Level 3</p><h3>Act, sampled</h3><p>Executes inside limits. Humans audit samples and own every edge case.</p></div>
+        <div class="step"><div class="barwrap"><span class="oversee cap">Hard limits + kill switch</span><div class="tread" style="height:170px;background:var(--l4)"></div></div><p class="cap tag">Level 4</p><h3>Autonomous in bounds</h3><p>Full speed inside hard policy limits. The kill switch stays, always.</p></div>
       </div>
     </div>
+    <p class="ladder-axis"><span class="cap">More autonomy →</span>Each tread names the human oversight that remains at that level.</p>
     <p class="ladder-note"><strong>Graduation is a measurement, not a mood:</strong> accuracy against the human baseline over a fixed decision count, an explicit error budget, and a rehearsed rollback. Any level is revocable in one action. This ladder is the governance story we can put in front of a regulator, an auditor, or this board.</p>
+    <p class="ladder-note"><strong>Sign-off is independent:</strong> graduation is approved by a risk function separate from the team that built the agent. Every agent lives in a model inventory with a named owner, and drift monitoring can demote as fast as evals promote. The ladder is built to slot into our bank partner's model risk framework, not to argue with it.</p>
+    <p class="ladder-note"><strong>What a gate looks like:</strong> an Exceptions agent reaches L3 only after matching or beating the human baseline across a fixed run of consecutive decisions, inside an explicit error budget, signed by risk, with rollback rehearsed. Thresholds here are illustrative; real gates are set per task with our bank partner. Where no human baseline exists, an agent starts at L0 and its first thousand decisions build one.</p>
   </section>
 
   <section class="part">
     <div class="parthead">
       <p class="cap eyebrow">Part 5 · The economics</p>
-      <h2>What this does to the model</h2>
+      <h2>Cost falls. Revenue rises. Payback shortens.</h2>
+    </div>
+    <div class="baseline">
+      <div class="baseline-head">
+        <span class="cap">Where Xeos starts</span>
+        <span class="badge actual">Actuals</span>
+      </div>
+      <div class="baseline-grid">
+        <div><div class="big">$6.2B</div><div class="lbl">Supplier payments a year, current run rate</div></div>
+        <div><div class="big">95</div><div class="lbl">Paying customers</div></div>
+        <div><div class="big">400K+</div><div class="lbl">Suppliers enrolled in the network</div></div>
+        <div><div class="big">68%</div><div class="lbl">Electronic volume today: 8.5% virtual card, 59.1% ACH</div></div>
+        <div><div class="big">30K</div><div class="lbl">Manual ops actions a month: portal card entries, supplier calls, emails, cases</div></div>
+      </div>
+      <p class="baseline-note"><strong>Today, directionally:</strong> checks still carry about a third of volume, six ops people plus shared support absorb the manual work above, and a dollar moved by virtual card earns a large multiple of the same dollar moved by ACH. That is the Q0 the indexed chart below starts from.</p>
+      <p class="baseline-note">Sources: Phoenix v7 actuals. Payment volume annualized from the April 2026 monthly run rate. Ops actions are the trailing twelve months through April 2026. Customer count from January and February 2026 revenue actuals.</p>
     </div>
     <div class="prose">
-      <p>Two curves move at once. Cost to serve falls because the labor that scaled with payment volume moves to agents. Revenue per payment rises because enablement stops working the top of the supplier file and starts working all of it, shifting mix toward interchange-bearing rails. The same platform also compresses implementation, so CAC payback shortens as a third effect.</p>
+      <p>Start with the pool. US businesses still send roughly a third of their B2B payments by paper check, per AFP survey data, and middle-market AP is where most of that paper sits. When a check converts to virtual card, the payment starts earning interchange, priced in the low hundreds of basis points on every dollar that moves. We do not need the whole market. Converting the check share inside our existing customers' files is a multiple of today's revenue.</p>
+      <p>Where the revenue is: virtual card pays interchange, shared with the buyer as rebate and with us as program economics. ACH and check carry per-item fees. Revenue per payment is a rail-mix problem, and every Grow agent exists to move mix up that ladder.</p>
+      <p>Two curves move at once. Cost to serve falls because the labor that scaled with payment volume moves to agents. Revenue per payment rises because enablement stops working the top of the supplier file and starts working all of it, shifting mix toward virtual card, with monetized ACH as the fallback. The same platform also compresses implementation, so CAC payback shortens as a third effect.</p>
+      <p>The illustrative revenue curve assumes card share of eligible spend roughly doubles as enablement works the full file; the exact mix path is in Phoenix v7. Cost to serve here is net of what agents cost to run: inference, evaluation, and the human oversight the ladder requires. Agent compute is cents against labor dollars.</p>
     </div>
     <div class="stats">
-      <article><div class="big">10x</div><div class="lbl">Payments per ops FTE</div><p>The ceiling on volume stops being headcount.</p></article>
+      <article><div class="big">10x</div><div class="lbl">Payments per ops FTE</div><p>Six people run payment operations today. The ceiling on volume stops being headcount.</p></article>
       <article><div class="big">&gt;80%</div><div class="lbl">Exceptions resolved by agents</div><p>Humans keep the edge cases, by design.</p></article>
-      <article><div class="big">Days</div><div class="lbl">Time to first payment</div><p>Implementation stops being a quarter-long project.</p></article>
-      <article><div class="big">100%</div><div class="lbl">Of the supplier file worked</div><p>Enablement stops at nothing short of the whole file.</p></article>
+      <article><div class="big">5x</div><div class="lbl">Faster file-to-first-run</div><p>For the work on our side of the wall: file mapping, format edge cases, first run staged. Customer-side approvals stay in the critical path.</p></article>
+      <article><div class="big pair">68% <span class="to">and climbing</span></div><div class="lbl">Electronic mix today</div><p>Agents work the long tail of the file where human enablement teams never called. The target mix and conversion curve live in Phoenix v7.</p></article>
     </div>
-    <p class="flagnote">Design targets for the platform, not forecasts. The financial case is carried in the Phoenix v7 model and should be wired in before the board meeting.</p>
+    <p class="flagnote">Design targets for the platform, not forecasts. The financial case for the raise is carried in the Phoenix v7 model, presented alongside this brief.</p>
 
     <figure class="chart">
       <div class="chart-head">
-        <h3>The scissor: cost falls while revenue rises</h3>
+        <h3>The scissor: net revenue per payment against cost to serve</h3>
         <span class="badge">Illustrative</span>
       </div>
       <div class="legend">
-        <span><span class="sw" style="background:var(--chart-b)"></span>Revenue per payment (indexed)</span>
-        <span><span class="sw" style="background:var(--chart-a)"></span>Cost to serve per payment (indexed)</span>
+        <span><span class="sw" style="background:var(--chart-b)"></span>Net revenue per payment (indexed)</span>
+        <span><span class="sw" style="width:22px;background:repeating-linear-gradient(90deg,var(--chart-a) 0 6px,transparent 6px 10px)"></span>Cost to serve per payment (indexed)</span>
       </div>
       <div class="chart-scroll" id="chartbox">
-        <svg id="scissor" viewBox="0 0 1000 420" role="img" aria-label="Line chart, illustrative. Two indexed series over eight quarters after the agent control plane ships. Cost to serve per payment falls from 100 to about 42. Revenue per payment rises from 100 to about 134.">
+        <svg id="scissor" viewBox="0 0 1000 452" role="img" aria-label="Line chart, illustrative. Two indexed series over eight quarters after the agent control plane ships. Cost to serve per payment holds near 100 through Phase I, while agents run at draft level, then falls to about 42 as they graduate. Net revenue per payment rises from 100 to about 134. The shaded wedge between the curves is the margin the agents create.">
           <line class="grid-l" x1="70" y1="350" x2="960" y2="350"></line>
           <line class="grid-l" x1="70" y1="294.6" x2="960" y2="294.6"></line>
           <line class="grid-l" x1="70" y1="239.3" x2="960" y2="239.3"></line>
@@ -529,7 +642,9 @@
           <line class="grid-l" x1="70" y1="128.6" x2="960" y2="128.6"></line>
           <line class="grid-l" x1="70" y1="73.2" x2="960" y2="73.2"></line>
           <text class="axis-t" x="58" y="354" text-anchor="end">0</text>
+          <text class="axis-t" x="58" y="298.6" text-anchor="end">25</text>
           <text class="axis-t" x="58" y="243.3" text-anchor="end">50</text>
+          <text class="axis-t" x="58" y="188" text-anchor="end">75</text>
           <text class="axis-t" x="58" y="132.6" text-anchor="end">100</text>
           <text class="axis-t" x="58" y="77.2" text-anchor="end">125</text>
           <text class="axis-t" x="70" y="374" text-anchor="middle">Q0</text>
@@ -541,30 +656,44 @@
           <text class="axis-t" x="737.5" y="374" text-anchor="middle">Q6</text>
           <text class="axis-t" x="848.75" y="374" text-anchor="middle">Q7</text>
           <text class="axis-t" x="960" y="374" text-anchor="middle">Q8</text>
-          <text class="axis-t" x="515" y="404" text-anchor="middle">QUARTERS AFTER THE AGENT CONTROL PLANE SHIPS · INDEX, Q0 = 100</text>
-          <polyline class="ser-a" points="70,128.57 181.25,135.21 292.5,146.29 403.75,164 515,186.14 626.25,210.5 737.5,230.43 848.75,245.93 960,257"></polyline>
+          <line class="phz-l" x1="70" y1="388" x2="292.5" y2="388"></line>
+          <line class="phz-l" x1="70" y1="384" x2="70" y2="388"></line>
+          <line class="phz-l" x1="292.5" y1="384" x2="292.5" y2="388"></line>
+          <text class="axis-t" x="181.25" y="404" text-anchor="middle">PHASE I · CONTROL PLANE SHIPS</text>
+          <line class="phz-l" x1="403.75" y1="388" x2="515" y2="388"></line>
+          <line class="phz-l" x1="403.75" y1="384" x2="403.75" y2="388"></line>
+          <line class="phz-l" x1="515" y1="384" x2="515" y2="388"></line>
+          <text class="axis-t" x="459.4" y="404" text-anchor="middle">FIRST GRADUATIONS TO SAMPLED AUTONOMY</text>
+          <text class="axis-t" x="515" y="436" text-anchor="middle">QUARTERS AFTER THE AGENT CONTROL PLANE SHIPS · INDEX, Q0 = 100</text>
+          <polygon class="wedge" points="70,128.57 181.25,126.36 292.5,121.93 403.75,115.29 515,106.43 626.25,93.14 737.5,79.86 848.75,66.57 960,53.29 960,257 848.75,245.93 737.5,226 626.25,199.43 515,168.43 403.75,144.07 292.5,130.79 181.25,128.57 70,128.57"></polygon>
+          <text class="wlab" x="737.5" y="160" text-anchor="middle">The margin the agents create (illustrative)</text>
+          <polyline class="ser-a" points="70,128.57 181.25,128.57 292.5,130.79 403.75,144.07 515,168.43 626.25,199.43 737.5,226 848.75,245.93 960,257"></polyline>
           <polyline class="ser-b" points="70,128.57 181.25,126.36 292.5,121.93 403.75,115.29 515,106.43 626.25,93.14 737.5,79.86 848.75,66.57 960,53.29"></polyline>
+          <circle class="end-b" cx="626.25" cy="93.14" r="4"></circle>
+          <line class="phz-l" x1="626.25" y1="78" x2="626.25" y2="87"></line>
+          <text class="axis-t" x="626.25" y="72" text-anchor="middle">FULL-FILE ENABLEMENT SHIFTS RAIL MIX</text>
           <line class="xhair" id="xhair" x1="0" y1="40" x2="0" y2="350"></line>
           <circle class="end-a hovpt" id="hp-a" r="5"></circle>
           <circle class="end-b hovpt" id="hp-b" r="5"></circle>
           <circle class="end-a" cx="960" cy="257" r="5"></circle>
           <circle class="end-b" cx="960" cy="53.29" r="5"></circle>
-          <text class="dlab b" x="952" y="44" text-anchor="end">Revenue · 134</text>
+          <text class="dlab b" x="952" y="44" text-anchor="end">Net revenue · 134</text>
           <text class="dlab a" x="952" y="284" text-anchor="end">Cost · 42</text>
           <rect id="hitzone" x="70" y="40" width="890" height="310" fill="transparent"></rect>
         </svg>
         <div class="tip" id="tip"></div>
       </div>
-      <figcaption>Illustrative shape only, indexed to Q0 = 100 on one axis. Final curves come from Phoenix v7.</figcaption>
+      <figcaption>Illustrative shape only, indexed to Q0 = 100 on one axis. Cost holds flat through Phase I because draft-level agents move no labor. The case does not depend on the steep end: at half the modeled cost improvement and half the mix shift, contribution per payment still grows. If agents graduate one level slower than planned, the cost curve lands near 55 instead of 42. Final curves and sensitivities come from Phoenix v7.</figcaption>
       <details class="tbl">
         <summary>View the data behind this chart</summary>
         <table>
           <tr><th>Quarter</th><th>Q0</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th></tr>
-          <tr><td>Revenue per payment</td><td>100</td><td>101</td><td>103</td><td>106</td><td>110</td><td>116</td><td>122</td><td>128</td><td>134</td></tr>
-          <tr><td>Cost to serve per payment</td><td>100</td><td>97</td><td>92</td><td>84</td><td>74</td><td>63</td><td>54</td><td>47</td><td>42</td></tr>
+          <tr><td>Net revenue per payment</td><td>100</td><td>101</td><td>103</td><td>106</td><td>110</td><td>116</td><td>122</td><td>128</td><td>134</td></tr>
+          <tr><td>Cost to serve per payment</td><td>100</td><td>100</td><td>99</td><td>93</td><td>82</td><td>68</td><td>56</td><td>47</td><td>42</td></tr>
         </table>
       </details>
     </figure>
+    <p class="ladder-note">In Phoenix v7 these curves compound into what a board underwrites: gross margin expansion, shorter CAC payback, and net revenue retention that rises with every rail conversion inside the installed base.</p>
   </section>
 
   <section class="part">
@@ -574,22 +703,38 @@
     </div>
     <div class="forces">
       <article><span class="cap">Force 01</span><h3>The models crossed the line</h3><p>Agents now complete long, multi-step, tool-using work with verifiable checkpoints. The judgment layer of payments operations became automatable in the last eighteen months, not the last five years.</p></article>
-      <article><span class="cap">Force 02</span><h3>We already operate this way</h3><p>This is not a slide for us. Finexio's own operations run on an agentic stack today, with review tiers, audits, and verifiers on everything that ships. Xeos productizes a discipline we practice on ourselves.</p>
-        <div class="proof"><span>Two-layer audited financial models</span><span>Post-publish verifiers on the live site</span><span>Weekly automated QA suite</span><span>Human-review tiers on every skill</span></div>
+      <article><span class="cap">Force 02</span><h3>We already operate this way</h3><p>This is not a slide for us. Finexio's own business operations run on an agentic stack today, with human review gates, audits, and automated checks on everything that ships. The discipline is proven on our own operations. Our core already runs inside a money-center bank's third-party risk perimeter, and the ladder in Part 4 is written to be the artifact that review reads. Phase I moves the discipline inside the payment wall.</p>
+        <div class="proof"><span>Financial models built and audited by separate agents</span><span>Automated checks on the live site after every release</span><span>Weekly automated QA suite</span><span>Human review gates on every agent task</span></div>
       </article>
       <article><span class="cap">Force 03</span><h3>The counterparties are becoming agents</h3><p>AP and AR teams are deploying agents of their own. Those agents will need a payment counterparty whose behavior a machine can verify. Incumbents are bolting assistants onto human org charts. We are building the org chart out of agents.</p></article>
     </div>
+    <div class="grouphead"><span class="cap">The field</span><span class="why">Who else wants this seat, and why it holds</span></div>
+    <div class="field">
+      <div>
+        <div><span class="cap">AP automation suites</span><h3>Bill, Tipalti, AvidXchange under Corpay</h3></div>
+        <p>They own invoice workflow and they are good at it. Our seat is the execution layer underneath that workflow: supplier enablement, rail conversion, exception handling. That is an operations business, and most of them have chosen to monetize software instead of running it.</p>
+      </div>
+      <div>
+        <div><span class="cap">Bank payables</span><h3>Bank-owned payables offerings</h3></div>
+        <p>Banks own the rails and the balance sheet. Mid-market supplier operations does not fit a bank's cost structure, which is why banks serve this segment through partners. Our model is built on that fact: J.P. Morgan issues, we operate.</p>
+      </div>
+      <div>
+        <div><span class="cap">Protocol layer</span><h3>The card networks and Stripe</h3></div>
+        <p>They are writing the protocols agents will pay with, aimed first at consumer checkout. A protocol still needs an endpoint that does the AP work: enablement, exceptions, reconciliation. Phase III speaks those protocols rather than competing with them.</p>
+      </div>
+    </div>
+    <p class="ladder-note">Distribution follows the same map. We reach buyers through the AP and procurement software platforms that already own the workflow seat. <strong>The partner channel is how nine agents reach volume without nine sales teams.</strong></p>
   </section>
 
   <section>
     <div class="band">
       <p class="cap eyebrow">Part 7 · The endgame</p>
-      <h2>The settlement layer for agentic commerce</h2>
-      <p>When accounts payable runs on agents, those agents will not wire money to each other on trust. They will need a counterparty that can <strong>prove what it did, guarantee it happens once, and accept instructions only inside delegated policy.</strong> That is not a chatbot feature. It is a settlement layer, and B2B payments is where it monetizes first: structured invoices, known counterparties, recurring flows.</p>
+      <h2>The counterparty for agentic commerce</h2>
+      <p>When accounts payable runs on agents, those agents will not wire money to each other on trust. They will need a counterparty that can <strong>prove what it did, guarantee it happens once, and accept instructions only inside delegated policy.</strong> That is not a chatbot feature. It is an execution and proof layer, and B2B payments is where it monetizes first: structured invoices, known counterparties, recurring flows. Xeos is that counterparty. The bank still settles.</p>
       <p>Xeos Phase III opens the boundary outward: the same commit discipline our own agents use, offered as the interface external agents pay to use.</p>
       <ul>
-        <li><b>Verifiable receipts</b>Cryptographic proof of what moved, when, and under whose authority.</li>
-        <li><b>Deterministic idempotency</b>An agent can retry forever and the money moves exactly once.</li>
+        <li><b>Verifiable receipts</b>Signed receipts: proof of what we committed, what we submitted to the rail, and under whose delegated authority, with the bank's settlement confirmation attached.</li>
+        <li><b>Deterministic idempotency</b>An agent can retry forever and the core commits exactly once: one ledger entry, one instruction to the rail per authorized intent.</li>
         <li><b>Policy-scoped delegation</b>A buyer's agent gets a budget and a counterparty list, never a blank check.</li>
         <li><b>An audit trail machines can read</b>Because the next auditor will be an agent too.</li>
       </ul>
@@ -602,55 +747,87 @@
       <h2>What the money builds</h2>
     </div>
     <div class="prose">
-      <p>Three phases, each with a milestone the board can verify. Nothing here requires inventing new science. It requires building the control plane well and letting the agents earn their way up the ladder.</p>
+      <p>Three phases, each closed by a gate the board can verify and we can miss. All gate figures are illustrative until Phoenix v7 locks them. Nothing here requires inventing new science. It requires building the control plane well and letting the agents earn their way up the ladder.</p>
+    </div>
+    <div class="ask">
+      <div>
+        <span class="cap">The ask</span>
+        <div class="num">24 months</div>
+        <p>Sized to fund through the Phase III gate. The dollar figure comes from Phoenix v7 scenario sizing and goes on this line before the board sees it.</p>
+      </div>
+      <div>
+        <span class="cap">Use of proceeds</span>
+        <p>~40% control plane engineering and audit infrastructure. ~35% agent buildout and oversight staffing. ~25% agent-facing API and go-to-market.</p>
+      </div>
+      <div>
+        <span class="cap">Basis</span>
+        <p>Illustrative pending Phoenix v7. Final sizing and split live in the model.</p>
+      </div>
     </div>
     <div class="phases">
       <article>
         <span class="cap">Phase I · Quarters 1 and 2</span>
         <h3>Prove the boundary</h3>
-        <p>Ship the agent control plane: policy engine hardening, replayable audit, agent runtime. Supplier Enablement and Exceptions go live at draft level.</p>
-        <div class="sees"><span class="cap">What the board sees</span>Measured agent accuracy against the human baseline, published every quarter from day one.</div>
+        <p>Ship the agent control plane: policy engine hardening, replayable audit, agent runtime, and the eval harness that scores every agent against historical human decisions, in shadow before it drafts and on every model change after. The replay log is the eval dataset. Supplier Enablement and Exceptions go live at draft level.</p>
+        <div class="sees"><span class="cap">The gate</span>Enablement and Exceptions at or above human baseline accuracy across 50,000 reviewed decisions by end of Q2. Published quarterly from day one.</div>
       </article>
       <article>
-        <span class="cap">Phase II · Quarters 3 to 6</span>
+        <span class="cap">Phase II · Quarters 3 to 5</span>
         <h3>Scale the workforce</h3>
         <p>All nine agents live. First graduations to sampled autonomy. The labor that scaled with volume starts moving onto the platform.</p>
-        <div class="sees"><span class="cap">What the board sees</span>Cost to serve per payment and electronic mix, moving, in every board pack.</div>
+        <div class="sees"><span class="cap">The gate</span>Cost to serve index at or below 80 and card mix up 3 points versus Q0, by end of Q5, with acceptance retention holding. All of it in every board pack.</div>
       </article>
       <article>
         <span class="cap">Phase III · Quarter 6 onward</span>
         <h3>Open the edge</h3>
-        <p>The agent-facing API: verifiable receipts, scoped delegation, settlement pilots with design partners whose AP already runs on agents.</p>
-        <div class="sees"><span class="cap">What the board sees</span>First external agent-originated payment volume.</div>
+        <p>The agent-facing API: verifiable receipts, scoped delegation, pilot payment flows with design partners whose AP already runs on agents. Priced per settled transaction, on top of existing rail economics (illustrative).</p>
+        <div class="sees"><span class="cap">The gate</span>Three design partners live and $25M in external agent-originated volume, with zero boundary violations.</div>
       </article>
     </div>
+    <p class="phases-note">Phase II's cost-to-serve proof is what prices the next round. The raise funds through first external agent-originated volume.</p>
   </section>
 
   <section class="part">
     <div class="parthead">
       <p class="cap eyebrow">Part 9 · The risks</p>
-      <h2>Named, and answered by architecture</h2>
+      <h2>Named, and answered honestly</h2>
     </div>
     <div class="risks">
       <div>
         <div><span class="cap">Risk</span><h3>A model makes a bad call</h3></div>
-        <p>Agents cannot move money, so a bad call is a bad draft, not a bad payment. Every agent carries an error budget, and any autonomy level is revocable in one action.</p>
+        <p>Below L3, a bad call is a bad draft. At L3 and above, a bad call is a bounded loss: hard limits cap the amount, allow-lists cap the destination, and recall procedures exist on every rail. We can state the maximum blast radius of any single agent decision in dollars, and the board sets it. Every agent carries an error budget, and any autonomy level is revocable in one action.</p>
       </div>
       <div>
         <div><span class="cap">Risk</span><h3>Adversaries target the agents</h3></div>
-        <p>Fake suppliers and bank-change fraud already target humans. In Xeos, verification is a fixed protocol with out-of-band checks that run no matter what any agent concludes. Inbound text is data, never instruction.</p>
+        <p>Fake suppliers and bank-change fraud already target humans. We assume agents can be fooled too. Our agents never collect bank details by phone or email, because that is exactly what fraudsters ask for: enrollment and bank changes happen only in the verified portal, confirmed out of band. An injected instruction can at most shape a proposal, and every proposal still faces the same deterministic gate, the same limits, and the same verification, no matter what any agent concluded. The security boundary is the gate, not the model.</p>
       </div>
       <div>
         <div><span class="cap">Risk</span><h3>Regulators ask hard questions</h3></div>
-        <p>Good. The replayable audit log, the trust ladder, and named human accountability at every level below full autonomy are answers we can hand over, not answers we have to assemble.</p>
+        <p>Good. The replayable audit log, the trust ladder, and named human accountability at every level, including full autonomy, are answers we can hand over, not answers we have to assemble. Full autonomy still has an accountable owner and a rehearsed incident playbook. Accountability never graduates, even when execution does.</p>
+      </div>
+      <div>
+        <div><span class="cap">Risk</span><h3>One customer's data reaches another</h3></div>
+        <p>It cannot. Agents run in per-customer contexts, and one customer's data never appears in another customer's agent session. What compounds across the platform is aggregated payment-outcome signal, governed by contract, not raw customer data in a shared model.</p>
       </div>
       <div>
         <div><span class="cap">Risk</span><h3>Incumbents copy the pitch</h3></div>
-        <p>They can copy the words. Rebuilding operations as an agent workforce around a clean deterministic core is a structural change, and our payment-outcome data is what trains the judgment layer. Bolted-on assistants do not compound.</p>
+        <p>They can copy the words. The commit boundary and the trust ladder were designed for agents from day one. An incumbent has to retrofit both around a human org chart and a legacy ledger, and that retrofit is a multi-year replatform, not a feature. The asset that compounds is supplier-level outcome data across buyers: who accepts card, at what terms, through which contact, verified how. More than 400,000 enrolled suppliers and years of payment outcomes already sit behind that judgment layer; exact counts live in Phoenix v7. An assistant bolted to one buyer's AP desk never sees that.</p>
       </div>
       <div>
         <div><span class="cap">Risk</span><h3>Model vendors change beneath us</h3></div>
         <p>The durable asset is the harness: the policies, the evaluations, the ladder, the data. Models are swappable parts inside it, and the architecture assumes they will be swapped.</p>
+      </div>
+      <div>
+        <div><span class="cap">Risk</span><h3>One issuing bank</h3></div>
+        <p>Our issuing bank has to approve agents near its rails. They never get near the rails: agents hold no credentials, and the commit boundary is the control we hand the bank's reviewers. Issuer concentration is real. The core is built rail-agnostic, so a second issuer is an integration, not a rebuild.</p>
+      </div>
+      <div>
+        <div><span class="cap">Risk</span><h3>Interchange compresses</h3></div>
+        <p>A real share of revenue is interchange on virtual card, and we do not set those rates. The lines that grow if bps shrink are not interchange-bound: early-pay discount capture, supplier acceleration priced as spread, per-item ACH economics, and Phase III API volume. Phoenix v7 carries the sensitivity table by revenue mix.</p>
+      </div>
+      <div>
+        <div><span class="cap">Risk</span><h3>We pivot and the base churns</h3></div>
+        <p>The kernel promise to current customers does not change during the build. Payments execute exactly as they do today while agents earn their way up the ladder. The board watches one number for this: net revenue retention, in every board pack.</p>
       </div>
     </div>
   </section>
@@ -665,7 +842,7 @@
 <script>
 (function () {
   var xs = [70, 181.25, 292.5, 403.75, 515, 626.25, 737.5, 848.75, 960];
-  var cost = [100, 97, 92, 84, 74, 63, 54, 47, 42];
+  var cost = [100, 100, 99, 93, 82, 68, 56, 47, 42];
   var rev  = [100, 101, 103, 106, 110, 116, 122, 128, 134];
   var yFor = function (v) { return 350 - v * (310 / 140); };
   var svg = document.getElementById('scissor');
@@ -694,8 +871,8 @@
     var svgRect = svg.getBoundingClientRect();
     var boxRect = box.getBoundingClientRect();
     var px = svgRect.left - boxRect.left + (x / 1000) * svgRect.width + box.scrollLeft;
-    var py = svgRect.top - boxRect.top + (yFor(rev[best]) / 420) * svgRect.height;
-    tip.innerHTML = '<b>Q' + best + '</b> · Revenue <b>' + rev[best] + '</b> · Cost <b>' + cost[best] + '</b>';
+    var py = svgRect.top - boxRect.top + (yFor(rev[best]) / 452) * svgRect.height;
+    tip.innerHTML = '<b>Q' + best + '</b> · Net revenue <b>' + rev[best] + '</b> · Cost <b>' + cost[best] + '</b>';
     tip.style.left = px + 'px';
     tip.style.top = py + 'px';
     tip.style.opacity = 1;
@@ -709,6 +886,20 @@
   zone.addEventListener('touchstart', function (e) { if (e.touches[0]) show(e.touches[0]); }, { passive: true });
   zone.addEventListener('touchmove', function (e) { if (e.touches[0]) show(e.touches[0]); }, { passive: true });
   zone.addEventListener('touchend', hide);
+})();
+(function () {
+  var opened = [];
+  function openTables() {
+    opened = [];
+    var all = document.querySelectorAll('details.tbl:not([open])');
+    for (var i = 0; i < all.length; i++) { all[i].setAttribute('open', ''); opened.push(all[i]); }
+  }
+  function closeTables() {
+    for (var i = 0; i < opened.length; i++) { opened[i].removeAttribute('open'); }
+    opened = [];
+  }
+  window.addEventListener('beforeprint', openTables);
+  window.addEventListener('afterprint', closeTables);
 })();
 </script>
 
