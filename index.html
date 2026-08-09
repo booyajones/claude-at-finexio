@@ -6,6 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Claude @ Finexio · How we use AI</title>
 <meta name="description" content="An interactive look at how Finexio uses Claude Code: skills, MCP connections, automated workflows, case studies, and the operating discipline that makes them ship." />
+<meta name="theme-color" content="#050B1A" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Claude @ Finexio · How we use AI" />
+<meta property="og:description" content="An interactive look at how Finexio uses Claude Code: skills, MCP connections, automated workflows, case studies, and the operating discipline that makes them ship." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Claude @ Finexio · How we use AI" />
+<meta name="twitter:description" content="An interactive look at how Finexio uses Claude Code: skills, MCP connections, automated workflows, case studies, and the operating discipline that makes them ship." />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><polygon points='16,2 29,9.5 29,22.5 16,30 3,22.5 3,9.5' fill='%23043886'/><polygon points='16,8 23.5,12.25 23.5,19.75 16,24 8.5,19.75 8.5,12.25' fill='%23169EE3'/><circle cx='16' cy='16' r='2.6' fill='white'/></svg>" />
 <link rel="stylesheet" href="css/finexio-tokens.css" />
 <style>
@@ -70,14 +77,16 @@ kbd {
 .top-nav { display: flex; align-items: center; gap: 2px; flex: 1; margin-left: 8px; }
 .top-nav a {
   font-family: var(--font-caption);
-  font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
   text-transform: uppercase; color: var(--mc-text-2);
-  padding: 7px 11px; border-radius: 6px; border-bottom: 0;
+  padding: 7px 9px; border-radius: 6px; border-bottom: 0;
+  white-space: nowrap;
   transition: color 120ms, background 120ms;
 }
 .top-nav a:hover { color: var(--mc-text); background: rgba(255,255,255,0.05); border-bottom: 0; }
 .top-nav a.is-active { color: var(--mc-blue-soft); background: rgba(22,158,227,0.10); }
-@media (max-width: 1080px) { .top-nav { display: none; } }
+@media (max-width: 1360px) { .top-nav a { padding: 7px 7px; letter-spacing: 0.03em; } }
+@media (max-width: 1280px) { .top-nav { display: none; } }
 
 .top-actions { display: flex; align-items: center; gap: 10px; }
 .search-trigger {
@@ -202,7 +211,11 @@ kbd {
   border: 1px solid var(--mc-line);
   border-radius: 12px; overflow: hidden;
 }
-@media (max-width: 720px) { .hero-stats { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 720px) {
+  .hero-stats { grid-template-columns: repeat(3, 1fr); }
+  .hero-stats .stat:nth-child(3n) { border-right: 0; }
+  .hero-stats .stat:nth-child(-n+3) { border-bottom: 1px solid var(--mc-line); }
+}
 .hero-stats .stat { padding: 14px 14px; border-right: 1px solid var(--mc-line); }
 .hero-stats .stat:last-child { border-right: 0; }
 .hero-stats .stat-num { font-family: var(--font-display); font-weight: 800; font-size: 30px; color: var(--mc-text); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
@@ -398,33 +411,24 @@ section.tinted { background: var(--gray-50); }
 .integ-glyph { width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 13px; color: #fff; }
 .integ-name { font-size: 15px; font-weight: 700; color: var(--finexio-navy); letter-spacing: -0.005em; line-height: 1.25; }
 .integ-type { font-family: var(--font-caption); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; }
-.integ-type[data-type="CRM"]       { background: #FFF1E6; color: #B85C00; }
-.integ-type[data-type="Data"]      { background: #E7F5FC; color: #043886; }
-.integ-type[data-type="Comm"]      { background: #EAEAFF; color: #3B40C4; }
-.integ-type[data-type="Social"]    { background: #FCEEF7; color: #9C2A6E; }
-.integ-type[data-type="CMS"]       { background: #F0F4E6; color: #4A6A14; }
-.integ-type[data-type="Docs"]      { background: #E7F5FC; color: #043886; }
-.integ-type[data-type="Task"]      { background: #FEF6DA; color: #7A5800; }
-.integ-type[data-type="Infra"]     { background: #F0EAFE; color: #4B2DA8; }
-.integ-type[data-type="Affiliate"] { background: #E8F8EE; color: #1F6E3F; }
-.integ-type[data-type="Voice"]     { background: #FCE8EE; color: #931C3D; }
-.integ-type[data-type="Knowledge"] { background: #FAF1E0; color: #6E4A0F; }
-.integ-type[data-type="Code"]      { background: #E5E7EB; color: #2A3342; }
+.integ-type[data-type="Sales"]      { background: #FFF1E6; color: #B85C00; }
+.integ-type[data-type="GTM"]        { background: #FCEEF7; color: #9C2A6E; }
+.integ-type[data-type="Product"]    { background: #F0EAFE; color: #4B2DA8; }
+.integ-type[data-type="Marketing"]  { background: #EAEAFF; color: #3B40C4; }
+.integ-type[data-type="Leadership"] { background: #E7F5FC; color: #043886; }
+.integ-type[data-type="Finance"]    { background: #E8F8EE; color: #1F6E3F; }
+.integ-type[data-type="Legal"]      { background: #FEF6DA; color: #7A5800; }
 .integ-desc { font-size: 13px; line-height: 1.55; color: var(--fg-2); }
 
 /* glyph backgrounds keyed off type */
-.integ-glyph[data-g="CRM"]       { background: #B85C00; }
-.integ-glyph[data-g="Data"]      { background: #043886; }
-.integ-glyph[data-g="Comm"]      { background: #3B40C4; }
-.integ-glyph[data-g="Social"]    { background: #9C2A6E; }
-.integ-glyph[data-g="CMS"]       { background: #4A6A14; }
-.integ-glyph[data-g="Docs"]      { background: #0B6694; }
-.integ-glyph[data-g="Task"]      { background: #7A5800; }
-.integ-glyph[data-g="Infra"]     { background: #4B2DA8; }
-.integ-glyph[data-g="Affiliate"] { background: #1F6E3F; }
-.integ-glyph[data-g="Voice"]     { background: #931C3D; }
-.integ-glyph[data-g="Knowledge"] { background: #6E4A0F; }
-.integ-glyph[data-g="Code"]      { background: #2A3342; }
+.integ-glyph { background: var(--finexio-navy); }
+.integ-glyph[data-g="Sales"]      { background: #B85C00; }
+.integ-glyph[data-g="GTM"]        { background: #9C2A6E; }
+.integ-glyph[data-g="Product"]    { background: #4B2DA8; }
+.integ-glyph[data-g="Marketing"]  { background: #3B40C4; }
+.integ-glyph[data-g="Leadership"] { background: #043886; }
+.integ-glyph[data-g="Finance"]    { background: #1F6E3F; }
+.integ-glyph[data-g="Legal"]      { background: #7A5800; }
 
 /* =============================================================
    CRONS — terminal style
@@ -483,9 +487,12 @@ section.tinted { background: var(--gray-50); }
   text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
   display: inline-block; width: fit-content;
 }
-.cron-tag[data-tag="FINEXIO"]  { background: rgba(22,158,227,0.18); color: var(--mc-blue-soft); }
-.cron-tag[data-tag="PERSONAL"] { background: rgba(173,221,245,0.10); color: #ADDDF5; }
-.cron-tag[data-tag="MIXED"]    { background: rgba(193,168,238,0.18); color: #C9B7F4; }
+.cron-tag { background: rgba(173,221,245,0.10); color: #ADDDF5; }
+.cron-tag[data-tag="QUALITY"] { background: rgba(22,158,227,0.18); color: var(--mc-blue-soft); }
+.cron-tag[data-tag="WEB"]     { background: rgba(16,185,129,0.16); color: #6EE7B7; }
+.cron-tag[data-tag="FINANCE"] { background: rgba(244,169,64,0.16); color: #FBBF77; }
+.cron-tag[data-tag="OPS"]     { background: rgba(173,221,245,0.10); color: #ADDDF5; }
+.cron-tag[data-tag="SALES"]   { background: rgba(193,168,238,0.18); color: #C9B7F4; }
 .cron-sched { color: var(--mc-text-2); font-size: 12px; }
 .cron-spark svg { display: block; width: 100%; height: 28px; }
 .cron-uptime { color: var(--mc-text-2); font-size: 11.5px; text-align: right; }
@@ -545,6 +552,8 @@ section.tinted { background: var(--gray-50); }
 }
 .proj-cat:hover { box-shadow: var(--shadow-sm); }
 .proj-cat[hidden] { display: none; }
+.proj-item[hidden] { display: none; }
+.proj-item.is-open + .proj-detail[hidden] { display: none; }
 .proj-cat-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .proj-cat-head h3 { font-family: var(--font-sans); font-size: 18px; font-weight: 700; color: var(--finexio-navy); margin: 0; letter-spacing: -0.01em; }
 .proj-cat-desc { font-size: 13px; line-height: 1.55; color: var(--fg-2); margin: 0; }
@@ -563,8 +572,13 @@ section.tinted { background: var(--gray-50); }
 .proj-detail { display: none; padding: 4px 8px 12px 28px; font-size: 13px; line-height: 1.6; color: var(--fg-2); }
 .proj-item.is-open + .proj-detail { display: block; }
 .proj-cat-tag { font-family: var(--font-caption); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; }
-.proj-cat-tag[data-tag="FINEXIO"]  { background: rgba(4,56,134,0.10); color: var(--finexio-navy); }
-.proj-cat-tag[data-tag="PERSONAL"] { background: rgba(22,158,227,0.14); color: #0B6694; }
+.proj-cat-tag { background: rgba(4,56,134,0.10); color: var(--finexio-navy); }
+.proj-cat-tag[data-tag="FINANCE"]   { background: #E8F8EE; color: #1F6E3F; }
+.proj-cat-tag[data-tag="GTM"]       { background: #FCEEF7; color: #9C2A6E; }
+.proj-cat-tag[data-tag="PRODUCT"]   { background: #F0EAFE; color: #4B2DA8; }
+.proj-cat-tag[data-tag="WEB"]       { background: rgba(22,158,227,0.14); color: #0B6694; }
+.proj-cat-tag[data-tag="QUALITY"]   { background: rgba(4,56,134,0.10); color: var(--finexio-navy); }
+.proj-cat-tag[data-tag="KNOWLEDGE"] { background: #FAF1E0; color: #6E4A0F; }
 
 /* =============================================================
    STACK
@@ -603,9 +617,10 @@ section.tinted { background: var(--gray-50); }
 .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 @media (max-width: 1180px) { .memory-grid { grid-template-columns: 1fr 1fr; } .memory-grid > .memory-card.is-wide { grid-column: span 2; } }
 @media (max-width: 720px) { .memory-grid { grid-template-columns: 1fr; } .memory-grid > .memory-card.is-wide { grid-column: auto; } }
-.memory-card { background: #fff; border: 1px solid var(--border-2); border-radius: 14px; padding: 22px 22px 18px; box-shadow: 0 1px 0 rgba(4,56,134,0.04); display: flex; flex-direction: column; gap: 14px; }
+.memory-card { min-width: 0; background: #fff; border: 1px solid var(--border-2); border-radius: 14px; padding: 22px 22px 18px; box-shadow: 0 1px 0 rgba(4,56,134,0.04); display: flex; flex-direction: column; gap: 14px; }
 .memory-card-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.memory-card-title { display: flex; gap: 14px; align-items: center; }
+.memory-card-title { display: flex; gap: 14px; align-items: center; min-width: 0; }
+.memory-card-title > div { min-width: 0; }
 .memory-card-title h3 { margin: 0; font-size: 17px; color: var(--finexio-navy); letter-spacing: -0.2px; }
 .memory-card-meta { font-family: var(--font-caption); font-size: 11px; color: var(--fg-3); letter-spacing: 0.04em; }
 .memory-icon { width: 38px; height: 38px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 700; font-size: 16px; flex-shrink: 0; }
@@ -796,11 +811,11 @@ footer.foot::before {
       </div>
 
       <div class="hero-stats" role="group" aria-label="System statistics">
-        <div class="stat"><div class="stat-num counter" data-target="14">0</div><div class="stat-label">Finexio skills</div></div>
-        <div class="stat"><div class="stat-num counter" data-target="12">0</div><div class="stat-label">MCP connections</div></div>
-        <div class="stat"><div class="stat-num counter" data-target="9">0</div><div class="stat-label">Workflows</div></div>
-        <div class="stat"><div class="stat-num counter" data-target="18">0</div><div class="stat-label">Case studies</div></div>
-        <div class="stat"><div class="stat-num counter" data-target="11">0</div><div class="stat-label">Discipline rules</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="14" data-count="integrations">0</div><div class="stat-label">Finexio skills</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="12" data-count="providers">0</div><div class="stat-label">MCP connections</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="9" data-count="crons">0</div><div class="stat-label">Workflows</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="20" data-count="cases">0</div><div class="stat-label">Case studies</div></div>
+        <div class="stat"><div class="stat-num counter" data-target="11" data-count="stack">0</div><div class="stat-label">Discipline rules</div></div>
       </div>
     </div>
 
@@ -930,7 +945,7 @@ footer.foot::before {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="search" id="integSearch" placeholder="Search Finexio skills..." aria-label="Search skills" />
       </label>
-      <div class="filters" id="integFilters" role="tablist"></div>
+      <div class="filters" id="integFilters"></div>
     </div>
     <div class="integ-grid reveal" id="integGrid"></div>
   </div>
@@ -952,7 +967,7 @@ footer.foot::before {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="search" id="cronSearch" placeholder="Search workflows..." aria-label="Search workflows" />
       </label>
-      <div class="filters" id="cronFilters" role="tablist"></div>
+      <div class="filters" id="cronFilters"></div>
     </div>
     <div class="cron-wrap reveal">
       <div class="cron-titlebar">
@@ -989,7 +1004,7 @@ footer.foot::before {
     <header class="section-head reveal">
       <span class="section-num">05 · CASE STUDIES</span>
       <div>
-        <h2 class="section-title">18 things Claude shipped at Finexio.</h2>
+        <h2 class="section-title">20 things Claude shipped at Finexio.</h2>
         <p class="section-sub">Real artifacts. Real outcomes. Each card shows the problem, what Claude did, and what got produced. Click any card for the full story.</p>
       </div>
       <div></div>
@@ -999,7 +1014,7 @@ footer.foot::before {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="search" id="projSearch" placeholder="Search case studies..." aria-label="Search case studies" />
       </label>
-      <div class="filters" id="projFilters" role="tablist"></div>
+      <div class="filters" id="projFilters"></div>
     </div>
     <div class="proj-cats reveal" id="projContainer"></div>
   </div>
@@ -1056,12 +1071,12 @@ footer.foot::before {
             <span class="memory-icon" data-c="mem">M</span>
             <div>
               <h3>Project Memory Files</h3>
-              <span class="memory-card-meta">Auto-managed · 61 files · loaded via MEMORY.md on every conversation</span>
+              <span class="memory-card-meta">Auto-managed · <span id="memFileCount">55</span> files · loaded via MEMORY.md on every conversation</span>
             </div>
           </div>
           <span class="memory-card-link" data-static="1">~/.claude/memory</span>
         </div>
-        <div class="memory-tabs" id="memTabs" role="tablist"></div>
+        <div class="memory-tabs" id="memTabs"></div>
         <div class="memory-files" id="memFiles"></div>
         <div class="memory-card-foot">
           <span><b style="color:var(--mc-blue-soft)">user</b> who Chris is</span> <span>·</span>
@@ -1101,7 +1116,7 @@ footer.foot::before {
 <section id="arch" class="section tinted">
   <div class="wrap">
     <header class="section-head reveal">
-      <span class="section-num">07 · ARCHITECTURE</span>
+      <span class="section-num">08 · ARCHITECTURE</span>
       <div>
         <h2 class="section-title">Six layers. One operating model.</h2>
         <p class="section-sub">From the people who ask to the artifacts that ship. Every layer is replaceable. Every layer is observable.</p>
@@ -1155,7 +1170,7 @@ footer.foot::before {
     </div>
   </div>
   <div class="wrap foot-meta">
-    <span>BUILD · 2026.5.5 · main · clean</span>
+    <span>BUILD · 2026.8.7 · main · clean</span>
     <span>booyajones / claude-at-finexio</span>
     <span>Press <kbd style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.16);color:rgba(255,255,255,0.85)">⌘</kbd> <kbd style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.16);color:rgba(255,255,255,0.85)">K</kbd> to navigate</span>
   </div>
@@ -1358,6 +1373,12 @@ footer.foot::before {
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CASE_COUNT = DATA.projects.reduce((s, c) => s + c.items.length, 0);
+  function setActiveChip(container, btn, cls = '.filter-chip') {
+    $$(cls, container).forEach(x => { x.classList.remove('is-active'); x.setAttribute('aria-pressed', 'false'); });
+    btn.classList.add('is-active'); btn.setAttribute('aria-pressed', 'true');
+  }
   const SVGNS = "http://www.w3.org/2000/svg";
   function svg(name, attrs={}) { const el = document.createElementNS(SVGNS, name); for (const k in attrs) el.setAttribute(k, attrs[k]); return el; }
 
@@ -1378,8 +1399,9 @@ footer.foot::before {
       { id: 'briefings', label: 'Briefings', sub: 'sales, board, leadership' }
     ];
     const NODE_W = 130, NODE_H = 44, GAP = 16;
-    const leftCount = left.length, rightCount = right.length;
-    const startY = 60;
+    const rightCount = right.length;
+    // center the left rail on the core (y=240): 4 nodes × 44px + 3 gaps × 16px = 224px tall
+    const startY = 240 - (left.length * NODE_H + (left.length - 1) * GAP) / 2;
     const nodesL = $('#dfNodesLeft');
     const nodesR = $('#dfNodesRight');
     const edgesG = $('#dfEdges');
@@ -1442,23 +1464,22 @@ footer.foot::before {
       const start = performance.now();
       function step(t) {
         const k = Math.min(1, (t - start) / dur);
-        // approximate cubic bezier with control points
         const c1 = { x: e.from.x + (e.to.x - e.from.x) * 0.55, y: e.from.y };
         const c2 = { x: e.to.x - (e.to.x - e.from.x) * 0.55, y: e.to.y };
         const u = 1 - k;
         const px = u*u*u * e.from.x + 3*u*u*k*c1.x + 3*u*k*k*c2.x + k*k*k * e.to.x;
-        const py = u*u*u * e.from.y + 3*u*u*k*c1.y + 3*u*u*k*c2.y;
-        // simpler accurate cubic for y
-        const py2 = u*u*u * e.from.y + 3*u*u*k*c1.y + 3*u*k*k*c2.y + k*k*k * e.to.y;
+        const py = u*u*u * e.from.y + 3*u*u*k*c1.y + 3*u*k*k*c2.y + k*k*k * e.to.y;
         p.setAttribute('cx', px);
-        p.setAttribute('cy', py2);
+        p.setAttribute('cy', py);
         p.setAttribute('opacity', String(0.95 * (1 - k * 0.4)));
         if (k < 1) requestAnimationFrame(step); else p.remove();
       }
       requestAnimationFrame(step);
     }
-    setInterval(spawnPulse, 240);
-    for (let i = 0; i < 6; i++) setTimeout(spawnPulse, i * 90);
+    if (!REDUCED_MOTION) {
+      setInterval(spawnPulse, 240);
+      for (let i = 0; i < 6; i++) setTimeout(spawnPulse, i * 90);
+    }
   }
 
   // ─── HEADER METER ANIMATION ─────────────────────────────────
@@ -1468,7 +1489,8 @@ footer.foot::before {
       rps.textContent = (8 + Math.random() * 6).toFixed(1);
       med.textContent = Math.round(180 + Math.random() * 140);
     }
-    tick(); setInterval(tick, 1800);
+    tick();
+    if (!REDUCED_MOTION) setInterval(tick, 1800);
   }
 
   // ─── PROGRAM AGE ───────────────────────────────────────────
@@ -1518,33 +1540,48 @@ footer.foot::before {
       while (consoleEl.children.length > max) consoleEl.lastChild.remove();
     }
     add(); add(); add();
-    setInterval(add, 1400 + Math.random() * 800);
+    if (!REDUCED_MOTION) setInterval(add, 1400 + Math.random() * 800);
   }
 
   // ─── TICKER ────────────────────────────────────────────────
   function renderTicker() {
     const items = [
-      ['SKILLS IN PRODUCTION', '14', 'up'],
-      ['MCPs CONNECTED', '12', 'flat'],
-      ['CASE STUDIES SHIPPED', '18', 'up'],
-      ['WORKFLOWS GREEN', '9/9', 'flat'],
-      ['DISCIPLINE RULES', '11', 'flat'],
+      ['SKILLS IN PRODUCTION', String(DATA.integrations.length), 'up'],
+      ['MCPs CONNECTED', String(DATA.providers.length), 'flat'],
+      ['CASE STUDIES SHIPPED', String(CASE_COUNT), 'up'],
+      ['WORKFLOWS GREEN', `${DATA.crons.length}/${DATA.crons.length}`, 'flat'],
+      ['DISCIPLINE RULES', String(DATA.stack.length), 'flat'],
       ['VOICE-GUARD BLOCKS (7d)', '34', 'up'],
       ['QA PYTEST (last run)', '61/61', 'flat'],
       ['AUDIT LAYER-1 RUNS', '128', 'up'],
       ['AUDIT LAYER-2 RUNS', '47', 'up'],
       ['LIBRARY HIT RATE', '62%', 'up'],
       ['BLOG POSTS AUTOPUBLISHED', '23', 'up'],
-      ['LAST RELEASE', '2026.5.5', 'flat'],
+      ['LAST RELEASE', '2026.8.7', 'flat'],
     ];
     const html = items.map(([k,v,d]) => `<span class="ticker-item"><b>${k}</b> ${v} <span class="delta-${d}">${d==='up'?'▲':'•'}</span></span>`).join('');
     $('#tickerTrack').innerHTML = html + html;
   }
 
   // ─── COUNTERS ──────────────────────────────────────────────
+  function syncCounts() {
+    // hero stat targets track the DATA arrays so the numbers can never drift
+    const counts = {
+      integrations: DATA.integrations.length,
+      providers: DATA.providers.length,
+      crons: DATA.crons.length,
+      cases: CASE_COUNT,
+      stack: DATA.stack.length
+    };
+    $$('.counter[data-count]').forEach(el => {
+      const k = el.dataset.count;
+      if (k in counts) el.dataset.target = counts[k];
+    });
+  }
   function animateCounters() {
     $$('.counter').forEach(el => {
       const target = parseInt(el.dataset.target, 10) || 0;
+      if (REDUCED_MOTION) { el.textContent = target; return; }
       const dur = 1100, start = performance.now();
       function step(t) {
         const k = Math.min(1, (t - start) / dur);
@@ -1557,7 +1594,7 @@ footer.foot::before {
   }
 
   // ─── INTEGRATIONS ──────────────────────────────────────────
-  function initialsOf(name) { return name.replace(/\(.*?\)/g,'').trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase(); }
+  function initialsOf(name) { return name.replace(/\(.*?\)/g,'').trim().split(/[\s\-:_.]+/).filter(Boolean).map(w => w[0]).slice(0,2).join('').toUpperCase(); }
   function renderIntegrations() {
     const grid = $('#integGrid');
     const filtersEl = $('#integFilters');
@@ -1565,7 +1602,7 @@ footer.foot::before {
     const filters = ['All', ...types];
     filtersEl.innerHTML = filters.map((f, i) => {
       const count = f === 'All' ? DATA.integrations.length : DATA.integrations.filter(d => d.type === f).length;
-      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button">${f}<span class="filter-count">${count}</span></button>`;
+      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button" aria-pressed="${i===0}">${f}<span class="filter-count">${count}</span></button>`;
     }).join('');
     grid.innerHTML = DATA.integrations.map(d => `
       <div class="integ-card" data-type="${d.type}" data-name="${esc(d.name.toLowerCase())}" data-desc="${esc(d.desc.toLowerCase())}">
@@ -1586,7 +1623,7 @@ footer.foot::before {
         c.hidden = !((af==='All' || c.dataset.type===af) && (!q || c.dataset.name.includes(q) || c.dataset.desc.includes(q)));
       });
     }
-    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; $$('.filter-chip',filtersEl).forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); af=b.dataset.filter; apply(); });
+    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; setActiveChip(filtersEl, b); af=b.dataset.filter; apply(); });
     $('#integSearch').addEventListener('input', e => { aq=e.target.value; apply(); });
   }
 
@@ -1607,7 +1644,7 @@ footer.foot::before {
     const filters = ['All', ...tags];
     filtersEl.innerHTML = filters.map((f, i) => {
       const count = f === 'All' ? DATA.crons.length : DATA.crons.filter(d => d.tag === f).length;
-      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button">${f}<span class="filter-count">${count}</span></button>`;
+      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button" aria-pressed="${i===0}">${f}<span class="filter-count">${count}</span></button>`;
     }).join('');
     table.innerHTML = DATA.crons.map((c, i) => {
       const up = (99.5 + Math.random() * 0.49).toFixed(2);
@@ -1623,7 +1660,7 @@ footer.foot::before {
     }).join('');
     let af='All', aq='';
     function apply() { const q=aq.trim().toLowerCase(); $$('.cron-row',table).forEach(r => { r.hidden = !((af==='All'||r.dataset.tag===af) && (!q||r.dataset.name.includes(q))); }); }
-    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; $$('.filter-chip',filtersEl).forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); af=b.dataset.filter; apply(); });
+    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; setActiveChip(filtersEl, b); af=b.dataset.filter; apply(); });
     $('#cronSearch').addEventListener('input', e => { aq=e.target.value; apply(); });
   }
 
@@ -1632,7 +1669,7 @@ footer.foot::before {
     const grid = $('#provGrid');
     grid.innerHTML = DATA.providers.map(p => `
       <div class="prov-card${p.primary?' is-primary':''}">
-        <span class="prov-tag">${p.primary?'PRIMARY · 70% of traffic':'CONFIGURED · routed'}</span>
+        <span class="prov-tag">${p.primary?'PRIMARY · most-used connection':'CONFIGURED · routed'}</span>
         <div class="prov-name">${esc(p.name)}</div>
         <div class="prov-models">${p.models}</div>
         <div class="prov-meter"><div class="bar"><i style="width:${p.weight}%"></i></div><span class="val">${p.weight}%</span></div>
@@ -1660,13 +1697,13 @@ footer.foot::before {
     const filters = ['All', ...tags];
     filtersEl.innerHTML = filters.map((f, i) => {
       const count = f === 'All'
-        ? DATA.projects.reduce((s, c) => s + c.items.length, 0)
+        ? CASE_COUNT
         : DATA.projects.filter(p => p.tag === f).reduce((s, c) => s + c.items.length, 0);
-      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button">${f}<span class="filter-count">${count}</span></button>`;
+      return `<button class="filter-chip${i===0?' is-active':''}" data-filter="${f}" type="button" aria-pressed="${i===0}">${f}<span class="filter-count">${count}</span></button>`;
     }).join('');
     container.innerHTML = DATA.projects.map((p, ci) => {
       const items = p.items.map((it, ii) => `
-        <div class="proj-item" data-name="${esc(it.name.toLowerCase())}" data-detail="${esc(it.detail.toLowerCase())}" tabindex="0">
+        <div class="proj-item" data-name="${esc(it.name.toLowerCase())}" data-detail="${esc(it.detail.toLowerCase())}" tabindex="0" role="button" aria-expanded="false">
           <span class="proj-item-status" data-status="${it.status}" title="${it.status}"></span>
           <span class="proj-item-name">${esc(it.name)}</span>
           <span class="proj-item-desc">${esc(it.desc)}</span>
@@ -1697,10 +1734,11 @@ footer.foot::before {
         cat.hidden = !any;
       });
     }
-    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; $$('.filter-chip',filtersEl).forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); af=b.dataset.filter; apply(); });
+    filtersEl.addEventListener('click', e => { const b=e.target.closest('.filter-chip'); if(!b) return; setActiveChip(filtersEl, b); af=b.dataset.filter; apply(); });
     $('#projSearch').addEventListener('input', e => { aq=e.target.value; apply(); });
-    container.addEventListener('click', e => { const it=e.target.closest('.proj-item'); if (!it) return; it.classList.toggle('is-open'); });
-    container.addEventListener('keydown', e => { if (e.key!=='Enter' && e.key!==' ') return; const it=e.target.closest('.proj-item'); if (!it) return; e.preventDefault(); it.classList.toggle('is-open'); });
+    function toggleItem(it) { const open = it.classList.toggle('is-open'); it.setAttribute('aria-expanded', String(open)); }
+    container.addEventListener('click', e => { const it=e.target.closest('.proj-item'); if (!it) return; toggleItem(it); });
+    container.addEventListener('keydown', e => { if (e.key!=='Enter' && e.key!==' ') return; const it=e.target.closest('.proj-item'); if (!it) return; e.preventDefault(); toggleItem(it); });
   }
 
   // ─── MEMORY EXPLORER ──────────────────────────────────────
@@ -1719,17 +1757,18 @@ footer.foot::before {
     if (!tabsEl || !filesEl) return;
     const types = ['all','user','feedback','project','reference'];
     const counts = Object.fromEntries(types.map(t => [t, t === 'all' ? DATA.memoryFiles.length : DATA.memoryFiles.filter(f => f.type === t).length]));
-    tabsEl.innerHTML = types.map((t, i) => `<button class="memory-tab${i===0?' is-active':''}" data-type="${t}" type="button">${t === 'all' ? 'All' : t}<span class="tab-count">${counts[t]}</span></button>`).join('');
+    tabsEl.innerHTML = types.map((t, i) => `<button class="memory-tab${i===0?' is-active':''}" data-type="${t}" type="button" aria-pressed="${i===0}">${t === 'all' ? 'All' : t}<span class="tab-count">${counts[t]}</span></button>`).join('');
     function paint(active) {
       filesEl.innerHTML = DATA.memoryFiles
         .filter(f => active === 'all' || f.type === active)
         .map(f => `<div class="memory-file" data-type="${f.type}"><span class="file-dot"></span><div><b>${esc(f.name)}</b><div style="font-size:11.5px;color:var(--fg-3);line-height:1.35;">${esc(f.desc)}</div></div></div>`).join('');
     }
     paint('all');
+    const countEl = $('#memFileCount');
+    if (countEl) countEl.textContent = DATA.memoryFiles.length;
     tabsEl.addEventListener('click', e => {
       const b = e.target.closest('.memory-tab'); if (!b) return;
-      $$('.memory-tab', tabsEl).forEach(x => x.classList.remove('is-active'));
-      b.classList.add('is-active');
+      setActiveChip(tabsEl, b, '.memory-tab');
       paint(b.dataset.type);
     });
 
@@ -1782,11 +1821,11 @@ footer.foot::before {
 
     const sectionItems = [
       { group: 'Sections', label: 'How it works', sub: '01 · stakeholder ask to ship', href: '#flow', meta: '6 steps', ico: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' },
-      { group: 'Sections', label: 'Skills', sub: '02 · Finexio skills', href: '#integrations', meta: '14', ico: 'M16 18l6-6-6-6 M8 6l-6 6 6 6' },
-      { group: 'Sections', label: 'Workflows', sub: '03 · automation', href: '#crons', meta: '9', ico: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' },
-      { group: 'Sections', label: 'Connections', sub: '04 · MCP servers', href: '#providers', meta: '12', ico: 'M3 18v-6a9 9 0 0 1 18 0v6 M21 19a2 2 0 0 1-2 2h-1v-6h3v4z' },
-      { group: 'Sections', label: 'Case studies', sub: '05 · what shipped', href: '#projects', meta: '18', ico: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' },
-      { group: 'Sections', label: 'Discipline', sub: '06 · standing rules', href: '#stack', meta: '11', ico: 'M12 2L2 7l10 5 10-5z M2 17l10 5 10-5 M2 12l10 5 10-5' },
+      { group: 'Sections', label: 'Skills', sub: '02 · Finexio skills', href: '#integrations', meta: String(DATA.integrations.length), ico: 'M16 18l6-6-6-6 M8 6l-6 6 6 6' },
+      { group: 'Sections', label: 'Workflows', sub: '03 · automation', href: '#crons', meta: String(DATA.crons.length), ico: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' },
+      { group: 'Sections', label: 'Connections', sub: '04 · MCP servers', href: '#providers', meta: String(DATA.providers.length), ico: 'M3 18v-6a9 9 0 0 1 18 0v6 M21 19a2 2 0 0 1-2 2h-1v-6h3v4z' },
+      { group: 'Sections', label: 'Case studies', sub: '05 · what shipped', href: '#projects', meta: String(CASE_COUNT), ico: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' },
+      { group: 'Sections', label: 'Discipline', sub: '06 · standing rules', href: '#stack', meta: String(DATA.stack.length), ico: 'M12 2L2 7l10 5 10-5z M2 17l10 5 10-5 M2 12l10 5 10-5' },
       { group: 'Sections', label: 'Memory', sub: '07 · cortex + memory files', href: '#memory', meta: 'live', ico: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' },
       { group: 'Sections', label: 'Architecture', sub: '08 · blueprint', href: '#arch', meta: '6 layers', ico: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10' },
     ];
@@ -1810,8 +1849,9 @@ footer.foot::before {
       });
       list.innerHTML = html || '<div class="cmdk-group">No matches</div>';
     }
-    function open() { overlay.classList.add('is-open'); input.value=''; filtered = all.slice(); idx=0; render(); setTimeout(()=>input.focus(), 30); }
-    function close() { overlay.classList.remove('is-open'); }
+    let lastFocus = null;
+    function open() { lastFocus = document.activeElement; overlay.classList.add('is-open'); input.value=''; filtered = all.slice(); idx=0; render(); setTimeout(()=>input.focus(), 30); }
+    function close() { overlay.classList.remove('is-open'); if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus(); lastFocus = null; }
     function go(it) { close(); setTimeout(() => location.hash = it.href, 60); }
 
     $('#cmdkOpen').addEventListener('click', open);
@@ -1836,6 +1876,7 @@ footer.foot::before {
 
   // ─── INIT ────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
+    syncCounts();
     renderDataflow();
     renderTicker();
     renderIntegrations();
